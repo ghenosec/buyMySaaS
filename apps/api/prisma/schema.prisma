@@ -1,0 +1,240 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum SaasStatus {
+  DRAFT
+  PENDING_PAYMENT
+  PENDING_REVIEW
+  PUBLISHED
+  REJECTED
+  ARCHIVED
+}
+
+enum PricingType {
+  FREE
+  FREEMIUM
+  SUBSCRIPTION
+  ONE_TIME
+  LIFETIME
+  CUSTOM
+}
+
+enum BillingInterval {
+  MONTH
+  YEAR
+  ONE_TIME
+}
+
+enum DealType {
+  LIFETIME
+  DISCOUNT
+  COUPON
+}
+
+enum AnalyticsEventType {
+  PAGE_VIEW
+  WEBSITE_CLICK
+  TRIAL_CLICK
+  BUY_CLICK
+  FAVORITE
+}
+
+enum PublicationOrderStatus {
+  PENDING
+  PAID
+  FAILED
+  CANCELED
+  REFUNDED
+}
+
+enum PaymentProviderName {
+  MOCK
+  MERCADO_PAGO
+}
+
+model User {
+  id              String   @id @default(uuid())
+  name            String
+  email           String   @unique
+  emailVerifiedAt DateTime?
+  passwordHash    String
+  avatarUrl       String?
+  role            UserRole @default(USER)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  saas            Saas[]
+  reviews         Review[]
+  favorites       Favorite[]
+  orders          PublicationOrder[]
+  auditLogs       AuditLog[] @relation("AuditActor")
+}
+
+model Saas {
+  id               String      @id @default(uuid())
+  ownerId          String
+  name             String
+  slug             String      @unique
+  tagline          String
+  shortDescription String
+  description      String
+  logoUrl          String?
+  accentColor      String?
+  countryCode      String      @default("BR")
+  language         String      @default("pt-BR")
+  websiteUrl       String
+  trialUrl         String?
+  checkoutUrl      String?
+  docsUrl          String?
+  demoUrl          String?
+  pricingType      PricingType
+  priceCents       Int?
+  currency         String      @default("BRL")
+  billingInterval  BillingInterval?
+  pricingLabel     String?
+  isBrazilian      Boolean     @default(true)
+  tags             String[]
+  technologies     String[]
+  status           SaasStatus  @default(DRAFT)
+  rejectionReason  String?
+  launchDate       DateTime?
+  publishedAt      DateTime?
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  owner             User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  screenshots      SaasScreenshot[]
+  categories       SaasCategory[]
+  deal             Deal?
+  reviews          Review[]
+  favorites        Favorite[]
+  analyticsEvents  AnalyticsEvent[]
+  orders           PublicationOrder[]
+  @@index([status, publishedAt])
+  @@index([ownerId, status])
+  @@index([priceCents])
+}
+
+model SaasScreenshot {
+  id       String @id @default(uuid())
+  saasId   String
+  url      String
+  alt      String
+  position Int    @default(0)
+  saas     Saas   @relation(fields: [saasId], references: [id], onDelete: Cascade)
+  @@index([saasId, position])
+}
+
+model Category {
+  id          String @id @default(uuid())
+  name        String @unique
+  slug        String @unique
+  description String
+  icon        String?
+  saas        SaasCategory[]
+}
+
+model SaasCategory {
+  saasId     String
+  categoryId String
+  saas       Saas     @relation(fields: [saasId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  @@id([saasId, categoryId])
+}
+
+model Deal {
+  id                   String   @id @default(uuid())
+  saasId               String   @unique
+  type                 DealType
+  originalPriceCents   Int?
+  promotionalPriceCents Int?
+  discountPercent      Int?
+  couponCode           String?
+  startsAt             DateTime
+  endsAt               DateTime?
+  licenseLimit         Int?
+  soldCount            Int?
+  saas                  Saas     @relation(fields: [saasId], references: [id], onDelete: Cascade)
+  @@index([startsAt, endsAt])
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  userId    String
+  saasId    String
+  rating    Int
+  comment   String
+  hidden    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  saas      Saas     @relation(fields: [saasId], references: [id], onDelete: Cascade)
+  @@unique([userId, saasId])
+  @@index([saasId, createdAt])
+}
+
+model Favorite {
+  userId    String
+  saasId    String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  saas      Saas     @relation(fields: [saasId], references: [id], onDelete: Cascade)
+  @@id([userId, saasId])
+  @@index([saasId, createdAt])
+}
+
+model AnalyticsEvent {
+  id         String             @id @default(uuid())
+  saasId     String
+  type       AnalyticsEventType
+  referrer   String?
+  visitorHash String?
+  createdAt  DateTime           @default(now())
+  saas       Saas               @relation(fields: [saasId], references: [id], onDelete: Cascade)
+  @@index([saasId, type, createdAt])
+}
+
+model PublicationOrder {
+  id                String                 @id @default(uuid())
+  userId            String
+  saasId            String
+  provider          PaymentProviderName
+  providerPaymentId String?                @unique
+  amountCents       Int
+  currency          String
+  status            PublicationOrderStatus @default(PENDING)
+  checkoutUrl       String?
+  paidAt            DateTime?
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
+  user              User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  saas              Saas                   @relation(fields: [saasId], references: [id], onDelete: Cascade)
+  @@index([saasId, status])
+}
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  actorUserId String?
+  action      String
+  entityType  String
+  entityId    String
+  metadata    Json?
+  createdAt   DateTime @default(now())
+  actor       User?    @relation("AuditActor", fields: [actorUserId], references: [id], onDelete: SetNull)
+  @@index([entityType, entityId, createdAt])
+}
+
+model WebhookEvent {
+  id         String   @id
+  provider   String
+  receivedAt DateTime @default(now())
+}
