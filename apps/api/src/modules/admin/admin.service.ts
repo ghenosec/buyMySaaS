@@ -1,0 +1,108 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+import { PublicationStateService } from '../saas/publication-state.service';
+
+@Injectable()
+export class AdminService {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly states: PublicationStateService,
+  ) {}
+  async dashboard() {
+    const [pending, published, users, recentSubmissions, recentPayments] =
+      await this.prisma.$transaction([
+        this.prisma.saas.count({ where: { status: 'PENDING_REVIEW' } }),
+        this.prisma.saas.count({ where: { status: 'PUBLISHED' } }),
+        this.prisma.user.count(),
+        this.prisma.saas.findMany({
+          where: {
+            status: { in: ['PENDING_REVIEW', 'PUBLISHED', 'REJECTED'] },
+          },
+          take: 6,
+          orderBy: { updatedAt: 'desc' },
+          include: { owner: { select: { name: true, email: true } } },
+        }),
+        this.prisma.publicationOrder.findMany({
+          take: 6,
+          orderBy: { updatedAt: 'desc' },
+          include: {
+            saas: { select: { name: true } },
+            user: { select: { email: true } },
+          },
+        }),
+      ]);
+    return { pending, published, users, recentSubmissions, recentPayments };
+  }
+  submissions(page = 1) {
+    return this.prisma.saas.findMany({
+      where: { status: { in: ['PENDING_REVIEW', 'REJECTED'] } },
+      skip: (page - 1) * 20,
+      take: 20,
+      orderBy: { updatedAt: 'asc' },
+      include: {
+        owner: { select: { name: true, email: true } },
+        categories: { include: { category: true } },
+        deal: true,
+      },
+    });
+  }
+  async submission(id: string) {
+    const item = await this.prisma.saas.findUnique({
+      where: { id },
+      include: {
+        owner: { select: { name: true, email: true } },
+        categories: { include: { category: true } },
+        screenshots: true,
+        deal: true,
+        orders: { orderBy: { createdAt: 'desc' } },
+      },
+    });
+    if (!item) throw new NotFoundException();
+    return item;
+  }
+  async approve(actorUserId: string, id: string) {
+    const item = await this.prisma.saas.findUnique({ where: { id } });
+    if (!item) throw new NotFoundException();
+    this.states.assertCanModerate(item.status);
+    return this.prisma.$transaction(async (tx) => {
+      const saas = await tx.saas.update({
+        where: { id },
+        data: {
+          status: 'PUBLISHED',
+          publishedAt: item.publishedAt ?? new Date(),
+          rejectionReason: null,
+        },
+      });
+      await tx.auditLog.create({
+        data: {
+          actorUserId,
+          action: 'SAAS_APPROVED',
+          entityType: 'Saas',
+          entityId: id,
+        },
+      });
+      return saas;
+    });
+  }
+  async reject(actorUserId: string, id: string, reason: string) {
+    const item = await this.prisma.saas.findUnique({ where: { id } });
+    if (!item) throw new NotFoundException();
+    this.states.assertCanModerate(item.status);
+    return this.prisma.$transaction(async (tx) => {
+      const saas = await tx.saas.update({
+        where: { id },
+        data: { status: 'REJECTED', rejectionReason: reason },
+      });
+      await tx.auditLog.create({
+        data: {
+          actorUserId,
+          action: 'SAAS_REJECTED',
+          entityType: 'Saas',
+          entityId: id,
+          metadata: { reason },
+        },
+      });
+      return saas;
+    });
+  }
+}
