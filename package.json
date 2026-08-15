@@ -1,0 +1,25 @@
+{
+  "name": "buy-my-saas",
+  "private": true,
+  "packageManager": "npm@11.8.0",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web -c blue,green \"npm run dev --workspace=@bms/api\" \"npm run dev --workspace=@bms/web\"",
+    "build": "npm run build --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspace=@bms/api",
+    "test:e2e": "npm run test:e2e --workspace=@bms/web",
+    "db:generate": "npm run prisma:generate --workspace=@bms/api",
+    "db:migrate": "npm run prisma:migrate --workspace=@bms/api",
+    "db:seed": "npm run prisma:seed --workspace=@bms/api",
+    "db:studio": "npm run prisma:studio --workspace=@bms/api",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "prettier": "^3.6.2"
+  }
+}
