@@ -10,7 +10,6 @@ const publicInclude = {
   owner: { select: { id: true, name: true, avatarUrl: true } },
   categories: { include: { category: true } },
   screenshots: { orderBy: { position: 'asc' as const } },
-  deal: true,
   reviews: { where: { hidden: false }, select: { rating: true } },
   _count: { select: { favorites: true, analyticsEvents: true, reviews: true } },
 };
@@ -139,13 +138,6 @@ export class SaasService {
     if (query.free) where.pricingType = 'FREE';
     if (query.trial) where.trialUrl = { not: null };
     if (query.brazilian) where.isBrazilian = true;
-    if (query.discount)
-      where.deal = {
-        is: {
-          startsAt: { lte: new Date() },
-          OR: [{ endsAt: null }, { endsAt: { gte: new Date() } }],
-        },
-      };
     if (query.minPrice !== undefined || query.maxPrice !== undefined)
       where.priceCents = { gte: query.minPrice, lte: query.maxPrice };
     const orderBy: Prisma.SaasOrderByWithRelationInput =

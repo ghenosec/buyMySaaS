@@ -73,10 +73,6 @@ export class ExploreQueryDto {
   @Transform(({ value }) => value === 'true')
   @IsBoolean()
   brazilian?: boolean;
-  @IsOptional()
-  @Transform(({ value }) => value === 'true')
-  @IsBoolean()
-  discount?: boolean;
   @IsOptional() @Type(() => Number) @IsInt() @Min(0) minPrice?: number;
   @IsOptional() @Type(() => Number) @IsInt() @Min(0) maxPrice?: number;
   @IsOptional()

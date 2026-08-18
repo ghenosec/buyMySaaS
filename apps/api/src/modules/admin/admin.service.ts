@@ -42,7 +42,6 @@ export class AdminService {
       include: {
         owner: { select: { name: true, email: true } },
         categories: { include: { category: true } },
-        deal: true,
       },
     });
   }
@@ -53,7 +52,6 @@ export class AdminService {
         owner: { select: { name: true, email: true } },
         categories: { include: { category: true } },
         screenshots: true,
-        deal: true,
         orders: { orderBy: { createdAt: 'desc' } },
       },
     });

@@ -82,11 +82,8 @@ describe('API contracts', () => {
             unfavorite: jest.fn(),
             favorites: jest.fn(),
             listReviews: jest.fn(),
-            dealsPublic: jest.fn(),
-            upsertDeal: jest.fn(),
             updateReview: jest.fn(),
             deleteReview: jest.fn(),
-            deleteDeal: jest.fn(),
           },
         },
         {
