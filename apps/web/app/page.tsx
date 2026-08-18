@@ -5,18 +5,16 @@ import { EmptyState } from '@/components/empty-state';
 import { SaasCard } from '@/components/saas-card';
 import { SearchBar } from '@/components/search-bar';
 import { SectionHeading } from '@/components/section-heading';
-import { getCatalog, getCategories, getDeals } from '@/lib/api';
+import { getCatalog, getCategories } from '@/lib/api';
 
 export default async function Home() {
-  const [trending, recent, brazil, affordable, categories, deals] =
-    await Promise.all([
-      getCatalog('?sort=trending&pageSize=8'),
-      getCatalog('?sort=recent&pageSize=4'),
-      getCatalog('?brazilian=true&pageSize=4'),
-      getCatalog('?maxPrice=2000&pageSize=4'),
-      getCategories(),
-      getDeals(),
-    ]);
+  const [trending, recent, brazil, affordable, categories] = await Promise.all([
+    getCatalog('?sort=trending&pageSize=8'),
+    getCatalog('?sort=recent&pageSize=4'),
+    getCatalog('?brazilian=true&pageSize=4'),
+    getCatalog('?maxPrice=2000&pageSize=4'),
+    getCategories(),
+  ]);
   return (
     <>
       <section className="hero">
@@ -61,27 +59,6 @@ export default async function Home() {
             </div>
           ) : (
             <EmptyState />
-          )}
-        </div>
-      </section>
-      <section className="section" style={{ background: 'var(--surface-2)' }}>
-        <div className="container">
-          <SectionHeading
-            title="Indie Deals"
-            subtitle="Ofertas reais, diretamente dos makers."
-            href="/deals"
-          />
-          {deals.length ? (
-            <div className="grid-cards">
-              {deals.slice(0, 4).map((d) => (
-                <SaasCard saas={{ ...d.saas, deal: d }} key={d.id} />
-              ))}
-            </div>
-          ) : (
-            <EmptyState
-              title="Deals chegando em breve"
-              description="Os primeiros makers estão preparando ofertas especiais."
-            />
           )}
         </div>
       </section>

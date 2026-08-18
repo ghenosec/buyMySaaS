@@ -14,6 +14,11 @@ export const metadata: Metadata = {
   },
   description:
     'Descubra, avalie e apoie SaaS independentes criados por makers brasileiros.',
+  icons: {
+    icon: '/logo.ico',
+    shortcut: '/logo.ico',
+    apple: '/logo.png',
+  },
   openGraph: {
     title: 'Buy My SaaS',
     description:
