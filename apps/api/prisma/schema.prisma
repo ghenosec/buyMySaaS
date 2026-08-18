@@ -36,12 +36,6 @@ enum BillingInterval {
   ONE_TIME
 }
 
-enum DealType {
-  LIFETIME
-  DISCOUNT
-  COUPON
-}
-
 enum AnalyticsEventType {
   PAGE_VIEW
   WEBSITE_CLICK
@@ -114,7 +108,6 @@ model Saas {
   owner             User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   screenshots      SaasScreenshot[]
   categories       SaasCategory[]
-  deal             Deal?
   reviews          Review[]
   favorites        Favorite[]
   analyticsEvents  AnalyticsEvent[]
@@ -149,22 +142,6 @@ model SaasCategory {
   saas       Saas     @relation(fields: [saasId], references: [id], onDelete: Cascade)
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   @@id([saasId, categoryId])
-}
-
-model Deal {
-  id                   String   @id @default(uuid())
-  saasId               String   @unique
-  type                 DealType
-  originalPriceCents   Int?
-  promotionalPriceCents Int?
-  discountPercent      Int?
-  couponCode           String?
-  startsAt             DateTime
-  endsAt               DateTime?
-  licenseLimit         Int?
-  soldCount            Int?
-  saas                  Saas     @relation(fields: [saasId], references: [id], onDelete: Cascade)
-  @@index([startsAt, endsAt])
 }
 
 model Review {
