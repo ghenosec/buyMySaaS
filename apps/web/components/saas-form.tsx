@@ -278,7 +278,7 @@ export function SaasForm({ id }: { id?: string }) {
         <section className="card stack" style={{ padding: 24 }}>
           <div>
             <span className="eyebrow">3. Preço e links</span>
-            <h2>Deixe a oferta fácil de entender</h2>
+            <h2>Deixe a proposta fácil de entender</h2>
           </div>
           <label className="label">
             Website HTTPS

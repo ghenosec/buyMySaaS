@@ -1,5 +1,6 @@
 'use client';
 import { Menu, Moon, Plus, Sun, X } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
@@ -22,9 +23,6 @@ export function Header() {
     <>
       <Link className="nav-link" href="/explore">
         Explorar
-      </Link>
-      <Link className="nav-link" href="/deals">
-        Deals
       </Link>
       <Link className="nav-link" href="/categories">
         Categorias
@@ -58,19 +56,18 @@ export function Header() {
             fontSize: 20,
           }}
         >
-          <span
+          <Image
+            src="/logo.png"
+            alt=""
+            width={36}
+            height={36}
             style={{
-              display: 'grid',
-              placeItems: 'center',
               width: 34,
               height: 34,
-              borderRadius: 10,
-              background: 'var(--accent)',
-              color: '#14200f',
+              objectFit: 'contain',
             }}
-          >
-            B
-          </span>
+            priority
+          />
           Buy My SaaS
         </Link>
         <nav

@@ -1,4 +1,4 @@
-import { ArrowUpRight, BadgePercent, MapPin, Star } from 'lucide-react';
+import { ArrowUpRight, MapPin, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { money } from '@/lib/api';
@@ -11,7 +11,7 @@ export function SaasCard({ saas }: { saas: Saas }) {
       : saas.pricingType === 'FREEMIUM'
         ? 'Freemium'
         : money(
-            saas.deal?.promotionalPriceCents ?? saas.priceCents,
+            saas.priceCents,
             saas.currency,
           );
   return (
@@ -58,14 +58,6 @@ export function SaasCard({ saas }: { saas: Saas }) {
       <div
         style={{ display: 'flex', gap: 7, flexWrap: 'wrap', marginTop: 'auto' }}
       >
-        {saas.deal && (
-          <span className="pill" style={{ color: 'var(--brand)' }}>
-            <BadgePercent size={13} />
-            {saas.deal.discountPercent
-              ? `-${saas.deal.discountPercent}%`
-              : 'Deal'}
-          </span>
-        )}
         {saas.isBrazilian && (
           <span className="pill">
             <MapPin size={13} />
