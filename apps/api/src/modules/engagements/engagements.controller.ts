@@ -12,7 +12,7 @@ import {
 import { AuthGuard } from '../../common/auth.guard';
 import { AuthUser } from '../../common/auth-user';
 import { CurrentUser } from '../../common/current-user.decorator';
-import { DealDto, ReviewDto } from './engagements.dto';
+import { ReviewDto } from './engagements.dto';
 import { EngagementsService } from './engagements.service';
 
 @Controller()
@@ -57,28 +57,5 @@ export class EngagementsController {
     @CurrentUser() user: AuthUser,
   ) {
     return this.service.favorites(user.id);
-  }
-  @Get('deals') deals() {
-    return this.service.dealsPublic();
-  }
-  @Post('me/saas/:id/deal') @UseGuards(AuthGuard) deal(
-    @CurrentUser() user: AuthUser,
-    @Param('id') id: string,
-    @Body() dto: DealDto,
-  ) {
-    return this.service.upsertDeal(user.id, id, dto);
-  }
-  @Patch('me/saas/:id/deal') @UseGuards(AuthGuard) updateDeal(
-    @CurrentUser() user: AuthUser,
-    @Param('id') id: string,
-    @Body() dto: DealDto,
-  ) {
-    return this.service.upsertDeal(user.id, id, dto);
-  }
-  @Delete('me/saas/:id/deal') @UseGuards(AuthGuard) @HttpCode(204) deleteDeal(
-    @CurrentUser() user: AuthUser,
-    @Param('id') id: string,
-  ) {
-    return this.service.deleteDeal(user.id, id);
   }
 }
