@@ -13,16 +13,6 @@ export type Review = {
   createdAt: string;
   user: { id: string; name: string; avatarUrl?: string | null };
 };
-export type Deal = {
-  id: string;
-  type: 'LIFETIME' | 'DISCOUNT' | 'COUPON';
-  originalPriceCents?: number | null;
-  promotionalPriceCents?: number | null;
-  discountPercent?: number | null;
-  couponCode?: string | null;
-  startsAt: string;
-  endsAt?: string | null;
-};
 export type Saas = {
   id: string;
   ownerId: string;
@@ -65,7 +55,6 @@ export type Saas = {
   owner?: { id: string; name: string; avatarUrl?: string | null };
   categories?: { category: Category }[];
   screenshots?: { id: string; url: string; alt: string; position: number }[];
-  deal?: Deal | null;
   reviews?: Review[];
   _count?: { favorites: number; analyticsEvents: number; reviews: number };
 };

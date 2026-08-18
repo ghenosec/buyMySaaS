@@ -1,4 +1,4 @@
-import { Category, Deal, Paginated, Saas } from './types';
+import { Category, Paginated, Saas } from './types';
 
 export const browserApiUrl =
   process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1';
@@ -56,9 +56,6 @@ export async function getCatalog(query = '') {
 }
 export async function getCategories() {
   return publicApi<Category[]>('/categories', []);
-}
-export async function getDeals() {
-  return publicApi<(Deal & { saas: Saas })[]>('/deals', []);
 }
 export function money(cents?: number | null, currency = 'BRL') {
   if (cents === null || cents === undefined) return 'Preço sob consulta';
