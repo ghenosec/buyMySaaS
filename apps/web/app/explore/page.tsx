@@ -120,15 +120,6 @@ export default async function Explore({ searchParams }: Props) {
               />{' '}
               Feito no Brasil
             </label>
-            <label style={{ display: 'flex', gap: 8 }}>
-              <input
-                type="checkbox"
-                name="discount"
-                value="true"
-                defaultChecked={params.discount === 'true'}
-              />{' '}
-              Com desconto
-            </label>
             {params.search && (
               <input type="hidden" name="search" value={params.search} />
             )}

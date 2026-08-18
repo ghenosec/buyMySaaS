@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import {
   ArrowUpRight,
-  BadgePercent,
   CalendarDays,
   Check,
   Globe2,
@@ -55,7 +54,7 @@ export default async function SaasDetail({ params }: Props) {
       : saas.pricingType === 'FREEMIUM'
         ? 'Freemium'
         : money(
-            saas.deal?.promotionalPriceCents ?? saas.priceCents,
+            saas.priceCents,
             saas.currency,
           );
   const jsonLd = {
@@ -196,19 +195,6 @@ export default async function SaasDetail({ params }: Props) {
           </div>
           {saas.billingInterval === 'MONTH' && (
             <span className="muted">por mês</span>
-          )}
-          {saas.deal && (
-            <div className="notice" style={{ margin: '16px 0' }}>
-              <strong>
-                <BadgePercent size={16} style={{ display: 'inline' }} /> Deal
-                ativo
-              </strong>
-              {saas.deal.couponCode && (
-                <p>
-                  Cupom: <code>{saas.deal.couponCode}</code>
-                </p>
-              )}
-            </div>
           )}
           <a
             className="btn btn-primary"
