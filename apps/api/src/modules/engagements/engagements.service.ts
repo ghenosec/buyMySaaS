@@ -4,17 +4,12 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { assertOwnership } from '../../common/ownership';
 import { PrismaService } from '../prisma/prisma.service';
-import { DealRulesService } from './deal-rules.service';
-import { DealDto, ReviewDto } from './engagements.dto';
+import { ReviewDto } from './engagements.dto';
 
 @Injectable()
 export class EngagementsService {
-  constructor(
-    private readonly prisma: PrismaService,
-    private readonly deals: DealRulesService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
   listReviews(saasId: string) {
     return this.prisma.review.findMany({
       where: { saasId, hidden: false },
@@ -70,47 +65,11 @@ export class EngagementsService {
         saas: {
           include: {
             categories: { include: { category: true } },
-            deal: true,
             reviews: { select: { rating: true } },
           },
         },
       },
       orderBy: { createdAt: 'desc' },
     });
-  }
-  dealsPublic() {
-    return this.prisma.deal.findMany({
-      where: {
-        startsAt: { lte: new Date() },
-        OR: [{ endsAt: null }, { endsAt: { gte: new Date() } }],
-        saas: { status: 'PUBLISHED' },
-      },
-      include: {
-        saas: {
-          include: {
-            categories: { include: { category: true } },
-            reviews: { select: { rating: true } },
-          },
-        },
-      },
-      orderBy: { startsAt: 'desc' },
-    });
-  }
-  async upsertDeal(userId: string, saasId: string, dto: DealDto) {
-    if (process.env.DEALS_ENABLED === 'false')
-      throw new BadRequestException('Deals estão desativados');
-    this.deals.validate(dto);
-    const saas = await this.prisma.saas.findUnique({ where: { id: saasId } });
-    assertOwnership(saas, userId);
-    return this.prisma.deal.upsert({
-      where: { saasId },
-      create: { saasId, ...dto },
-      update: dto,
-    });
-  }
-  async deleteDeal(userId: string, saasId: string) {
-    const saas = await this.prisma.saas.findUnique({ where: { id: saasId } });
-    assertOwnership(saas, userId);
-    await this.prisma.deal.deleteMany({ where: { saasId } });
   }
 }
