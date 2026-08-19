@@ -4,11 +4,13 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
-import { join } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import type { NextFunction, Request, Response } from 'express';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/http-exception.filter';
+import { getUploadRoot } from './modules/storage/image-file';
+
+const stateChangingMethods = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -48,10 +50,35 @@ async function bootstrap() {
     origin: process.env.WEB_URL ?? 'http://localhost:3000',
     credentials: true,
   });
-  app.useStaticAssets(
-    join(process.cwd(), process.env.UPLOAD_DIR ?? 'uploads'),
-    { prefix: '/uploads/' },
-  );
+  const webOrigin = new URL(process.env.WEB_URL ?? 'http://localhost:3000')
+    .origin;
+  app.use((request: Request, response: Response, next: NextFunction) => {
+    if (!stateChangingMethods.has(request.method)) return next();
+    const origin = request.get('origin');
+    const referer = request.get('referer');
+    const requestOrigin = origin ?? (referer ? safeOrigin(referer) : undefined);
+    if (requestOrigin && requestOrigin !== webOrigin) {
+      response.status(403).json({
+        statusCode: 403,
+        code: 'CSRF_ORIGIN_DENIED',
+        message: 'Origem da requisição não permitida',
+      });
+      return;
+    }
+    next();
+  });
+  app.useStaticAssets(getUploadRoot(), {
+    prefix: '/uploads/',
+    dotfiles: 'deny',
+    index: false,
+    setHeaders: (response: Response) => {
+      response.setHeader('X-Content-Type-Options', 'nosniff');
+      response.setHeader(
+        'Cache-Control',
+        'public, max-age=31536000, immutable',
+      );
+    },
+  });
 
   const document = SwaggerModule.createDocument(
     app,
@@ -69,3 +96,11 @@ async function bootstrap() {
 }
 
 void bootstrap();
+
+function safeOrigin(value: string) {
+  try {
+    return new URL(value).origin;
+  } catch {
+    return undefined;
+  }
+}

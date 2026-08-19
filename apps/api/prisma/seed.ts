@@ -1,7 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../src/generated/prisma/client';
+import { createPrismaAdapter } from '../src/modules/prisma/prisma-adapter';
 import { hash } from 'argon2';
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({ adapter: createPrismaAdapter() });
 const categories = [
   [
     'Inteligência Artificial',
