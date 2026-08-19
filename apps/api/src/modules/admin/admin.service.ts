@@ -35,7 +35,7 @@ export class AdminService {
   }
   submissions(page = 1) {
     return this.prisma.saas.findMany({
-      where: { status: { in: ['PENDING_REVIEW', 'REJECTED'] } },
+      where: { status: { in: ['PENDING_REVIEW', 'PUBLISHED', 'REJECTED'] } },
       skip: (page - 1) * 20,
       take: 20,
       orderBy: { updatedAt: 'asc' },
@@ -101,6 +101,25 @@ export class AdminService {
         },
       });
       return saas;
+    });
+  }
+  async remove(actorUserId: string, id: string) {
+    const item = await this.prisma.saas.findUnique({
+      where: { id },
+      select: { id: true, name: true, slug: true, status: true, ownerId: true },
+    });
+    if (!item) throw new NotFoundException();
+    await this.prisma.$transaction(async (tx) => {
+      await tx.auditLog.create({
+        data: {
+          actorUserId,
+          action: 'SAAS_DELETED',
+          entityType: 'Saas',
+          entityId: id,
+          metadata: item,
+        },
+      });
+      await tx.saas.delete({ where: { id } });
     });
   }
 }

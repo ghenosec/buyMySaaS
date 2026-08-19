@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
   Param,
   Post,
   Query,
@@ -39,5 +41,10 @@ export class AdminController {
     @Body() dto: RejectSubmissionDto,
   ) {
     return this.admin.reject(user.id, id, dto.reason);
+  }
+  @Delete('saas/:id')
+  @HttpCode(204)
+  remove(@CurrentUser() user: AuthUser, @Param('id') id: string) {
+    return this.admin.remove(user.id, id);
   }
 }

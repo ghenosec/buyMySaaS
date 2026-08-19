@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { AnalyticsEventType } from '@prisma/client';
+import { AnalyticsEventType } from '../../generated/prisma/client';
 import { createHmac } from 'node:crypto';
 import { assertOwnership } from '../../common/ownership';
 import { assertSafeExternalUrl } from '../../common/safe-url';

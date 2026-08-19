@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma, SaasStatus } from '@prisma/client';
+import { Prisma, SaasStatus } from '../../generated/prisma/client';
 import { assertOwnership } from '../../common/ownership';
 import { assertSafeExternalUrl } from '../../common/safe-url';
 import { PrismaService } from '../prisma/prisma.service';
@@ -33,7 +33,7 @@ export class SaasService {
         shortDescription: dto.shortDescription.trim(),
         description: dto.description.trim(),
         websiteUrl: assertSafeExternalUrl(dto.websiteUrl),
-        logoUrl: dto.logoUrl,
+        logoUrl: dto.logoUrl ? assertSafeExternalUrl(dto.logoUrl) : undefined,
         accentColor: dto.accentColor,
         countryCode: dto.countryCode.toUpperCase(),
         language: dto.language,
@@ -71,12 +71,13 @@ export class SaasService {
       'tagline',
       'shortDescription',
       'description',
-      'logoUrl',
       'accentColor',
       'language',
       'pricingLabel',
     ] as const)
       if (dto[key] !== undefined) data[key] = dto[key];
+    if (dto.logoUrl !== undefined)
+      data.logoUrl = dto.logoUrl ? assertSafeExternalUrl(dto.logoUrl) : null;
     if (dto.countryCode !== undefined) {
       data.countryCode = dto.countryCode.toUpperCase();
       data.isBrazilian =

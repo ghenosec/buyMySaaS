@@ -1,5 +1,5 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { BillingInterval, PricingType } from '@prisma/client';
+import { BillingInterval, PricingType } from '../../generated/prisma/client';
 import { Transform, Type } from 'class-transformer';
 import {
   ArrayMaxSize,
@@ -27,15 +27,30 @@ export class CreateSaasDto {
   @IsString() @Length(3, 120) tagline!: string;
   @IsString() @Length(20, 220) shortDescription!: string;
   @IsString() @Length(40, 10_000) description!: string;
-  @IsOptional() @IsString() @MaxLength(500) logoUrl?: string;
+  @IsOptional()
+  @IsUrl({ require_protocol: true })
+  @MaxLength(500)
+  logoUrl?: string;
   @IsOptional() @IsHexColor() accentColor?: string;
   @IsString() @Length(2, 2) countryCode!: string;
   @IsString() @MaxLength(12) language!: string;
-  @IsUrl({ require_protocol: true }) websiteUrl!: string;
-  @IsOptional() @IsUrl({ require_protocol: true }) trialUrl?: string;
-  @IsOptional() @IsUrl({ require_protocol: true }) checkoutUrl?: string;
-  @IsOptional() @IsUrl({ require_protocol: true }) docsUrl?: string;
-  @IsOptional() @IsUrl({ require_protocol: true }) demoUrl?: string;
+  @IsUrl({ require_protocol: true }) @MaxLength(500) websiteUrl!: string;
+  @IsOptional()
+  @IsUrl({ require_protocol: true })
+  @MaxLength(500)
+  trialUrl?: string;
+  @IsOptional()
+  @IsUrl({ require_protocol: true })
+  @MaxLength(500)
+  checkoutUrl?: string;
+  @IsOptional()
+  @IsUrl({ require_protocol: true })
+  @MaxLength(500)
+  docsUrl?: string;
+  @IsOptional()
+  @IsUrl({ require_protocol: true })
+  @MaxLength(500)
+  demoUrl?: string;
   @IsEnum(PricingType) pricingType!: PricingType;
   @IsOptional() @IsInt() @Min(0) priceCents?: number;
   @IsString() @Length(3, 3) currency!: string;
@@ -51,7 +66,8 @@ export class CreateSaasDto {
   @IsOptional()
   @IsArray()
   @ArrayMaxSize(6)
-  @IsString({ each: true })
+  @IsUrl({ require_protocol: true }, { each: true })
+  @MaxLength(500, { each: true })
   screenshotUrls?: string[];
 }
 

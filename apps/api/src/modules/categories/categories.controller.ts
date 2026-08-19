@@ -7,13 +7,25 @@ export class CategoriesController {
   @Get() list() {
     return this.prisma.category.findMany({
       orderBy: { name: 'asc' },
-      include: { _count: { select: { saas: true } } },
+      include: {
+        _count: {
+          select: {
+            saas: { where: { saas: { status: 'PUBLISHED' } } },
+          },
+        },
+      },
     });
   }
   @Get(':slug') get(@Param('slug') slug: string) {
     return this.prisma.category.findUniqueOrThrow({
       where: { slug },
-      include: { _count: { select: { saas: true } } },
+      include: {
+        _count: {
+          select: {
+            saas: { where: { saas: { status: 'PUBLISHED' } } },
+          },
+        },
+      },
     });
   }
 }

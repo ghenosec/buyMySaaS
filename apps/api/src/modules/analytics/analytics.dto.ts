@@ -1,4 +1,4 @@
-import { AnalyticsEventType } from '@prisma/client';
+import { AnalyticsEventType } from '../../generated/prisma/client';
 import {
   IsEnum,
   IsOptional,

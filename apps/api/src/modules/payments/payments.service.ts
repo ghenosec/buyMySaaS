@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '../../generated/prisma/client';
 import { assertOwnership } from '../../common/ownership';
 import { PrismaService } from '../prisma/prisma.service';
 import { PublicationStateService } from '../saas/publication-state.service';

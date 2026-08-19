@@ -9,7 +9,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { AnalyticsEventType } from '@prisma/client';
+import { AnalyticsEventType } from '../../generated/prisma/client';
 import { Request, Response } from 'express';
 import { AuthGuard } from '../../common/auth.guard';
 import { AuthUser } from '../../common/auth-user';

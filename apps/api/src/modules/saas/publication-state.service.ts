@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { SaasStatus } from '@prisma/client';
+import { SaasStatus } from '../../generated/prisma/client';
 
 @Injectable()
 export class PublicationStateService {
