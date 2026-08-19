@@ -52,7 +52,7 @@ export function SubmissionsList() {
   ) : (
     <EmptyState
       title="Fila em dia"
-      description="Não há submissões aguardando análise."
+      description="Não há produtos aguardando análise ou já moderados."
     />
   );
 }

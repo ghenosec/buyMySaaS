@@ -53,10 +53,7 @@ export default async function SaasDetail({ params }: Props) {
       ? 'Grátis'
       : saas.pricingType === 'FREEMIUM'
         ? 'Freemium'
-        : money(
-            saas.priceCents,
-            saas.currency,
-          );
+        : money(saas.priceCents, saas.currency);
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
@@ -82,7 +79,7 @@ export default async function SaasDetail({ params }: Props) {
       <PageView saasId={saas.id} />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
       />
       <header
         className="page-head"
@@ -270,4 +267,23 @@ export default async function SaasDetail({ params }: Props) {
       </div>
     </div>
   );
+}
+
+function safeJsonLd(value: unknown) {
+  return JSON.stringify(value).replace(/[<>&\u2028\u2029]/g, (character) => {
+    switch (character) {
+      case '<':
+        return '\\u003c';
+      case '>':
+        return '\\u003e';
+      case '&':
+        return '\\u0026';
+      case '\u2028':
+        return '\\u2028';
+      case '\u2029':
+        return '\\u2029';
+      default:
+        return character;
+    }
+  });
 }

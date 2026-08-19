@@ -34,7 +34,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning data-scroll-behavior="smooth">
-      <body className={manrope.variable}>
+      <body className={manrope.variable} suppressHydrationWarning>
         <Providers>
           <Header />
           <main>{children}</main>

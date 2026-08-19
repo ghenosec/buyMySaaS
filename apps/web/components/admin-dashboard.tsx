@@ -80,7 +80,7 @@ export function AdminDashboard() {
                       className="btn btn-sm"
                       href={`/admin/submissions/${s.id}`}
                     >
-                      Revisar
+                      Abrir
                     </Link>
                   </td>
                 </tr>

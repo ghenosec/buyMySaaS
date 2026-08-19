@@ -1,16 +1,29 @@
 'use client';
-import { Menu, Moon, Plus, Sun, X } from 'lucide-react';
+import {
+  ChevronDown,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  Moon,
+  Plus,
+  Sun,
+  X,
+} from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { clientApi } from '@/lib/api';
 import { User } from '@/lib/types';
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const { resolvedTheme, setTheme } = useTheme();
   useEffect(() => setMounted(true), []);
   const { data: user } = useQuery({
@@ -18,6 +31,18 @@ export function Header() {
     queryFn: () => clientApi<User>('/auth/me'),
     retry: false,
     staleTime: 60_000,
+  });
+  const dashboardHref = user?.role === 'ADMIN' ? '/admin' : '/dashboard';
+  const logout = useMutation({
+    mutationFn: () => clientApi<void>('/auth/logout', { method: 'POST' }),
+    onSuccess: () => {
+      setAccountOpen(false);
+      setOpen(false);
+      queryClient.setQueryData(['me'], null);
+      queryClient.removeQueries({ queryKey: ['me'] });
+      router.push('/');
+      router.refresh();
+    },
   });
   const links = (
     <>
@@ -95,12 +120,57 @@ export function Header() {
           )}
         </button>
         {user ? (
-          <Link
-            className="btn btn-primary btn-sm desktop-nav"
-            href={user.role === 'ADMIN' ? '/admin' : '/dashboard'}
+          <div
+            className="desktop-nav"
+            style={{ position: 'relative', display: 'flex' }}
           >
-            {user.name.split(' ')[0]}
-          </Link>
+            <button
+              className="btn btn-primary btn-sm"
+              type="button"
+              aria-expanded={accountOpen}
+              aria-haspopup="menu"
+              onClick={() => setAccountOpen((current) => !current)}
+            >
+              {user.name.split(' ')[0]}
+              <ChevronDown size={14} />
+            </button>
+            {accountOpen && (
+              <div
+                role="menu"
+                style={{
+                  position: 'absolute',
+                  top: 'calc(100% + 8px)',
+                  right: 0,
+                  minWidth: 190,
+                  padding: 8,
+                  border: '1px solid var(--line)',
+                  borderRadius: 14,
+                  background: 'var(--surface)',
+                  boxShadow: 'var(--shadow)',
+                }}
+              >
+                <Link
+                  className="account-menu-item"
+                  href={dashboardHref}
+                  role="menuitem"
+                  onClick={() => setAccountOpen(false)}
+                >
+                  <LayoutDashboard size={15} />
+                  {user.role === 'ADMIN' ? 'Admin' : 'Dashboard'}
+                </Link>
+                <button
+                  className="account-menu-item"
+                  type="button"
+                  role="menuitem"
+                  onClick={() => logout.mutate()}
+                  disabled={logout.isPending}
+                >
+                  <LogOut size={15} />
+                  Sair
+                </button>
+              </div>
+            )}
+          </div>
         ) : (
           <Link className="btn btn-sm desktop-nav" href="/login">
             Entrar
@@ -125,12 +195,26 @@ export function Header() {
           }}
         >
           {links}
-          <Link
-            className="btn btn-primary"
-            href={user ? '/dashboard' : '/login'}
-          >
-            {user ? 'Abrir dashboard' : 'Entrar'}
-          </Link>
+          {user ? (
+            <>
+              <Link className="btn btn-primary" href={dashboardHref}>
+                Abrir dashboard
+              </Link>
+              <button
+                className="btn"
+                type="button"
+                onClick={() => logout.mutate()}
+                disabled={logout.isPending}
+              >
+                <LogOut size={16} />
+                Sair
+              </button>
+            </>
+          ) : (
+            <Link className="btn btn-primary" href="/login">
+              Entrar
+            </Link>
+          )}
           <Link className="btn" href="/dashboard/saas/new">
             <Plus size={16} />
             Publicar meu SaaS
