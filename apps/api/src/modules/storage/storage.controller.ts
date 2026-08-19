@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '../../common/auth.guard';
+import { ALLOWED_IMAGE_MIME_TYPES, MAX_IMAGE_SIZE_BYTES } from './image-file';
 import { StorageService } from './storage.service';
 
 @Controller('uploads')
@@ -17,11 +18,13 @@ export class StorageController {
   @Post()
   @UseInterceptors(
     FileInterceptor('file', {
-      limits: { fileSize: 5 * 1024 * 1024 },
+      limits: { fileSize: MAX_IMAGE_SIZE_BYTES, files: 1 },
       fileFilter: (_req, file, callback) =>
         callback(
           null,
-          ['image/jpeg', 'image/png', 'image/webp'].includes(file.mimetype),
+          ALLOWED_IMAGE_MIME_TYPES.includes(
+            file.mimetype as (typeof ALLOWED_IMAGE_MIME_TYPES)[number],
+          ),
         ),
     }),
   )
