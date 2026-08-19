@@ -6,7 +6,7 @@
     "apps/*"
   ],
   "scripts": {
-    "dev": "concurrently -n api,web -c blue,green \"npm run dev --workspace=@bms/api\" \"npm run dev --workspace=@bms/web\"",
+    "dev": "concurrently -n api,web -c blue,green \"npm run dev --workspace=@bms/api\" \"wait-on http://localhost:3001/api/v1/health && npm run dev --workspace=@bms/web\"",
     "build": "npm run build --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
@@ -20,6 +20,12 @@
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "wait-on": "^9.1.0"
+  },
+  "dependencies": {
+    "next": "16.3.1",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
   }
 }
