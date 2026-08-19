@@ -114,6 +114,7 @@ describe('API contracts', () => {
             submission: jest.fn(),
             approve: jest.fn().mockResolvedValue({ status: 'PUBLISHED' }),
             reject: jest.fn(),
+            remove: jest.fn(),
           },
         },
         { provide: JwtService, useValue: {} },
@@ -183,5 +184,8 @@ describe('API contracts', () => {
     await request(app.getHttpServer())
       .post('/api/v1/admin/submissions/saas-1/approve')
       .expect(201);
+    await request(app.getHttpServer())
+      .delete('/api/v1/admin/saas/saas-1')
+      .expect(204);
   });
 });
