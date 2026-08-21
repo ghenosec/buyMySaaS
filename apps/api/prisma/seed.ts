@@ -57,23 +57,31 @@ async function main() {
   await prisma.saas.deleteMany();
   await prisma.category.deleteMany();
   await prisma.user.deleteMany();
-  const passwordHash = await hash('Dev12345!');
-  await prisma.user.create({
-    data: {
-      name: 'Admin Buy My SaaS',
-      email: 'admin@buymysaas.dev',
-      passwordHash,
-      role: 'ADMIN',
-      emailVerifiedAt: new Date(),
-    },
-  });
+  const adminEmail = process.env.SEED_ADMIN_EMAIL?.trim().toLowerCase();
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD;
+  const adminName = process.env.SEED_ADMIN_NAME?.trim() || 'Admin Buy My SaaS';
+  if (adminEmail && adminPassword) {
+    if (adminPassword.length < 8)
+      throw new Error('SEED_ADMIN_PASSWORD deve ter pelo menos 8 caracteres');
+    await prisma.user.create({
+      data: {
+        name: adminName,
+        email: adminEmail,
+        passwordHash: await hash(adminPassword),
+        role: 'ADMIN',
+        emailVerifiedAt: new Date(),
+      },
+    });
+  }
   for (const [name, slug, description, icon] of categories) {
     await prisma.category.create({
       data: { name, slug, description, icon },
     });
   }
   console.log(
-    'Seed concluído: catálogo sem SaaS de demonstração. Login admin: admin@buymysaas.dev / Dev12345!',
+    adminEmail
+      ? `Seed concluído: catálogo sem SaaS de demonstração. Admin criado via SEED_ADMIN_EMAIL=${adminEmail}.`
+      : 'Seed concluído: catálogo sem SaaS de demonstração. Nenhum admin criado; defina SEED_ADMIN_EMAIL e SEED_ADMIN_PASSWORD se precisar semear uma conta admin.',
   );
 }
 void main().finally(async () => prisma.$disconnect());
