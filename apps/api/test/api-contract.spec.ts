@@ -51,10 +51,10 @@ describe('API contracts', () => {
         {
           provide: AuthService,
           useValue: {
-            register: jest
+            googleAuthorizationUrl: jest
               .fn()
-              .mockResolvedValue({ token: 'token', user: { id: 'user-1' } }),
-            login: jest
+              .mockReturnValue('https://accounts.google.com/o/oauth2/v2/auth'),
+            loginWithGoogle: jest
               .fn()
               .mockResolvedValue({ token: 'token', user: { id: 'user-1' } }),
             me: jest.fn(),
@@ -123,6 +123,7 @@ describe('API contracts', () => {
             approve: jest.fn().mockResolvedValue({ status: 'PUBLISHED' }),
             reject: jest.fn(),
             remove: jest.fn(),
+            removeReview: jest.fn(),
           },
         },
         {
@@ -151,7 +152,7 @@ describe('API contracts', () => {
     await app.init();
   });
   afterAll(() => app?.close());
-  it('cadastra usuário e inicia sessão', () =>
+  it('bloqueia cadastro por email e senha', () =>
     request(app.getHttpServer())
       .post('/api/v1/auth/register')
       .send({
@@ -159,8 +160,7 @@ describe('API contracts', () => {
         email: 'maker@example.com',
         password: 'password123',
       })
-      .expect(201)
-      .expect('set-cookie', /bms_session/));
+      .expect(410));
   it('lista e cria SaaS', async () => {
     await request(app.getHttpServer()).get('/api/v1/saas').expect(200);
     await request(app.getHttpServer())
@@ -207,6 +207,9 @@ describe('API contracts', () => {
       .expect(200);
     await request(app.getHttpServer())
       .delete('/api/v1/admin/saas/saas-1')
+      .expect(204);
+    await request(app.getHttpServer())
+      .delete('/api/v1/admin/reviews/review-1')
       .expect(204);
   });
 });
