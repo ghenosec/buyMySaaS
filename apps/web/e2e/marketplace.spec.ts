@@ -18,12 +18,21 @@ test('cadastro de SaaS exige autenticação', async ({ page }) => {
 });
 
 test('maker publica e admin aprova o SaaS', async ({ page }, testInfo) => {
+  const adminEmail =
+    process.env.E2E_ADMIN_EMAIL ?? process.env.SEED_ADMIN_EMAIL;
+  const adminPassword =
+    process.env.E2E_ADMIN_PASSWORD ?? process.env.SEED_ADMIN_PASSWORD;
+  test.skip(
+    !adminEmail || !adminPassword,
+    'Configure E2E_ADMIN_EMAIL e E2E_ADMIN_PASSWORD para rodar o fluxo admin.',
+  );
+  if (!adminEmail || !adminPassword) return;
   const suffix = `${testInfo.project.name}-${Date.now()}`;
   const name = `E2E ${suffix}`;
   const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
   await page.goto('/login');
-  await page.getByLabel('Email').fill('admin@buymysaas.dev');
-  await page.getByLabel('Senha').fill('Dev12345!');
+  await page.getByLabel('Email').fill(adminEmail);
+  await page.getByLabel('Senha').fill(adminPassword);
   await page.getByRole('button', { name: 'Entrar' }).click();
   await expect(page).toHaveURL(/\/dashboard/);
 

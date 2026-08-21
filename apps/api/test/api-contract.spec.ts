@@ -22,6 +22,7 @@ import { PaymentsService } from '../src/modules/payments/payments.service';
 import { SaasController } from '../src/modules/saas/saas.controller';
 import { SaasService } from '../src/modules/saas/saas.service';
 import { AuthUser } from '../src/common/auth-user';
+import { PrismaService } from '../src/modules/prisma/prisma.service';
 
 class AllowGuard implements CanActivate {
   canActivate(context: ExecutionContext) {
@@ -110,11 +111,26 @@ describe('API contracts', () => {
           provide: AdminService,
           useValue: {
             dashboard: jest.fn(),
+            users: jest.fn().mockResolvedValue([]),
+            updateUserRole: jest.fn().mockResolvedValue({
+              id: 'user-2',
+              name: 'User 2',
+              email: 'user2@example.com',
+              role: 'ADMIN',
+            }),
             submissions: jest.fn(),
             submission: jest.fn(),
             approve: jest.fn().mockResolvedValue({ status: 'PUBLISHED' }),
             reject: jest.fn(),
             remove: jest.fn(),
+          },
+        },
+        {
+          provide: PrismaService,
+          useValue: {
+            user: {
+              findUnique: jest.fn(),
+            },
           },
         },
         { provide: JwtService, useValue: {} },
@@ -184,6 +200,11 @@ describe('API contracts', () => {
     await request(app.getHttpServer())
       .post('/api/v1/admin/submissions/saas-1/approve')
       .expect(201);
+    await request(app.getHttpServer()).get('/api/v1/admin/users').expect(200);
+    await request(app.getHttpServer())
+      .patch('/api/v1/admin/users/user-2/role')
+      .send({ role: 'ADMIN' })
+      .expect(200);
     await request(app.getHttpServer())
       .delete('/api/v1/admin/saas/saas-1')
       .expect(204);
