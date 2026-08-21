@@ -58,34 +58,36 @@ enum PaymentProviderName {
 }
 
 model User {
-  id              String   @id @default(uuid())
+  id              String             @id @default(uuid())
   name            String
-  email           String   @unique
+  email           String             @unique
   emailVerifiedAt DateTime?
-  passwordHash    String
+  passwordHash    String?
+  googleId        String?            @unique
   avatarUrl       String?
-  role            UserRole @default(USER)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  role            UserRole           @default(USER)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
   saas            Saas[]
   reviews         Review[]
   favorites       Favorite[]
+  boosts          SaasBoost[]
   orders          PublicationOrder[]
-  auditLogs       AuditLog[] @relation("AuditActor")
+  auditLogs       AuditLog[]         @relation("AuditActor")
 }
 
 model Saas {
-  id               String      @id @default(uuid())
+  id               String             @id @default(uuid())
   ownerId          String
   name             String
-  slug             String      @unique
+  slug             String             @unique
   tagline          String
   shortDescription String
   description      String
   logoUrl          String?
   accentColor      String?
-  countryCode      String      @default("BR")
-  language         String      @default("pt-BR")
+  countryCode      String             @default("BR")
+  language         String             @default("pt-BR")
   websiteUrl       String
   trialUrl         String?
   checkoutUrl      String?
@@ -93,25 +95,28 @@ model Saas {
   demoUrl          String?
   pricingType      PricingType
   priceCents       Int?
-  currency         String      @default("BRL")
+  currency         String             @default("BRL")
   billingInterval  BillingInterval?
   pricingLabel     String?
-  isBrazilian      Boolean     @default(true)
+  isBrazilian      Boolean            @default(true)
+  isAdult          Boolean            @default(false)
   tags             String[]
   technologies     String[]
-  status           SaasStatus  @default(DRAFT)
+  status           SaasStatus         @default(DRAFT)
   rejectionReason  String?
   launchDate       DateTime?
   publishedAt      DateTime?
-  createdAt        DateTime    @default(now())
-  updatedAt        DateTime    @updatedAt
-  owner             User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  owner            User               @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   screenshots      SaasScreenshot[]
   categories       SaasCategory[]
   reviews          Review[]
   favorites        Favorite[]
+  boosts           SaasBoost[]
   analyticsEvents  AnalyticsEvent[]
   orders           PublicationOrder[]
+
   @@index([status, publishedAt])
   @@index([ownerId, status])
   @@index([priceCents])
@@ -124,13 +129,14 @@ model SaasScreenshot {
   alt      String
   position Int    @default(0)
   saas     Saas   @relation(fields: [saasId], references: [id], onDelete: Cascade)
+
   @@index([saasId, position])
 }
 
 model Category {
-  id          String @id @default(uuid())
-  name        String @unique
-  slug        String @unique
+  id          String         @id @default(uuid())
+  name        String         @unique
+  slug        String         @unique
   description String
   icon        String?
   saas        SaasCategory[]
@@ -141,6 +147,7 @@ model SaasCategory {
   categoryId String
   saas       Saas     @relation(fields: [saasId], references: [id], onDelete: Cascade)
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
   @@id([saasId, categoryId])
 }
 
@@ -155,6 +162,7 @@ model Review {
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   saas      Saas     @relation(fields: [saasId], references: [id], onDelete: Cascade)
+
   @@unique([userId, saasId])
   @@index([saasId, createdAt])
 }
@@ -165,18 +173,31 @@ model Favorite {
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   saas      Saas     @relation(fields: [saasId], references: [id], onDelete: Cascade)
+
+  @@id([userId, saasId])
+  @@index([saasId, createdAt])
+}
+
+model SaasBoost {
+  userId    String
+  saasId    String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  saas      Saas     @relation(fields: [saasId], references: [id], onDelete: Cascade)
+
   @@id([userId, saasId])
   @@index([saasId, createdAt])
 }
 
 model AnalyticsEvent {
-  id         String             @id @default(uuid())
-  saasId     String
-  type       AnalyticsEventType
-  referrer   String?
+  id          String             @id @default(uuid())
+  saasId      String
+  type        AnalyticsEventType
+  referrer    String?
   visitorHash String?
-  createdAt  DateTime           @default(now())
-  saas       Saas               @relation(fields: [saasId], references: [id], onDelete: Cascade)
+  createdAt   DateTime           @default(now())
+  saas        Saas               @relation(fields: [saasId], references: [id], onDelete: Cascade)
+
   @@index([saasId, type, createdAt])
 }
 
@@ -195,6 +216,7 @@ model PublicationOrder {
   updatedAt         DateTime               @updatedAt
   user              User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
   saas              Saas                   @relation(fields: [saasId], references: [id], onDelete: Cascade)
+
   @@index([saasId, status])
 }
 
@@ -207,6 +229,7 @@ model AuditLog {
   metadata    Json?
   createdAt   DateTime @default(now())
   actor       User?    @relation("AuditActor", fields: [actorUserId], references: [id], onDelete: SetNull)
+
   @@index([entityType, entityId, createdAt])
 }
 
