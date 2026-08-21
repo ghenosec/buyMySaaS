@@ -369,6 +369,36 @@ textarea.input {
   color: var(--muted);
   font-size: 14px;
 }
+.cookie-banner {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  z-index: 60;
+  width: min(720px, calc(100% - 32px));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+  transform: translateX(-50%);
+}
+.cookie-banner p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.cookie-actions {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-shrink: 0;
+}
 .skeleton {
   background: linear-gradient(
     90deg,
@@ -434,6 +464,16 @@ textarea.input {
   }
   .footer-inner {
     flex-direction: column;
+  }
+  .cookie-banner {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .cookie-actions {
+    justify-content: stretch;
+  }
+  .cookie-actions .btn {
+    flex: 1;
   }
   .page-head {
     padding-top: 36px;
