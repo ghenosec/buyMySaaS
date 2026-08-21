@@ -1,6 +1,5 @@
 import { PrismaClient } from '../src/generated/prisma/client';
 import { createPrismaAdapter } from '../src/modules/prisma/prisma-adapter';
-import { hash } from 'argon2';
 
 const prisma = new PrismaClient({ adapter: createPrismaAdapter() });
 const categories = [
@@ -43,6 +42,12 @@ const categories = [
   ['Recursos Humanos', 'recursos-humanos', 'Pessoas e cultura', 'Users'],
   ['Social Media', 'social-media', 'Conteúdo e comunidades', 'MessagesSquare'],
   ['Segurança', 'seguranca', 'Privacidade e proteção', 'ShieldCheck'],
+  [
+    'Adulto +18',
+    'adulto-18',
+    'Produtos destinados somente a maiores de 18 anos',
+    'BadgeAlert',
+  ],
   ['Outros', 'outros', 'Soluções independentes diversas', 'Shapes'],
 ] as const;
 async function main() {
@@ -51,6 +56,7 @@ async function main() {
   await prisma.publicationOrder.deleteMany();
   await prisma.analyticsEvent.deleteMany();
   await prisma.favorite.deleteMany();
+  await prisma.saasBoost.deleteMany();
   await prisma.review.deleteMany();
   await prisma.saasScreenshot.deleteMany();
   await prisma.saasCategory.deleteMany();
@@ -58,16 +64,12 @@ async function main() {
   await prisma.category.deleteMany();
   await prisma.user.deleteMany();
   const adminEmail = process.env.SEED_ADMIN_EMAIL?.trim().toLowerCase();
-  const adminPassword = process.env.SEED_ADMIN_PASSWORD;
   const adminName = process.env.SEED_ADMIN_NAME?.trim() || 'Admin Buy My SaaS';
-  if (adminEmail && adminPassword) {
-    if (adminPassword.length < 8)
-      throw new Error('SEED_ADMIN_PASSWORD deve ter pelo menos 8 caracteres');
+  if (adminEmail) {
     await prisma.user.create({
       data: {
         name: adminName,
         email: adminEmail,
-        passwordHash: await hash(adminPassword),
         role: 'ADMIN',
         emailVerifiedAt: new Date(),
       },
@@ -80,8 +82,8 @@ async function main() {
   }
   console.log(
     adminEmail
-      ? `Seed concluído: catálogo sem SaaS de demonstração. Admin criado via SEED_ADMIN_EMAIL=${adminEmail}.`
-      : 'Seed concluído: catálogo sem SaaS de demonstração. Nenhum admin criado; defina SEED_ADMIN_EMAIL e SEED_ADMIN_PASSWORD se precisar semear uma conta admin.',
+      ? `Seed concluído: catálogo sem SaaS de demonstração. Admin Google preparado via SEED_ADMIN_EMAIL=${adminEmail}.`
+      : 'Seed concluído: catálogo sem SaaS de demonstração. Nenhum admin criado; defina SEED_ADMIN_EMAIL se precisar preparar uma conta admin para login Google.',
   );
 }
 void main().finally(async () => prisma.$disconnect());
