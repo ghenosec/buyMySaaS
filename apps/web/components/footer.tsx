@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { PublishSaasLink } from './publish-saas-link';
 
 export function Footer() {
   return (
@@ -31,7 +32,9 @@ export function Footer() {
         </div>
         <nav style={{ display: 'flex', gap: 18, flexWrap: 'wrap' }}>
           <Link href="/explore">Explorar</Link>
-          <Link href="/dashboard/saas/new">Publicar</Link>
+          <PublishSaasLink className="nav-link" showIcon={false}>
+            Publicar
+          </PublishSaasLink>
           <Link href="/privacy">Privacidade</Link>
           <Link href="/terms">Termos</Link>
         </nav>

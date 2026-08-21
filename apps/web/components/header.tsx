@@ -5,7 +5,6 @@ import {
   LogOut,
   Menu,
   Moon,
-  Plus,
   Sun,
   X,
 } from 'lucide-react';
@@ -17,6 +16,7 @@ import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { clientApi } from '@/lib/api';
 import { User } from '@/lib/types';
+import { PublishSaasLink } from './publish-saas-link';
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -102,12 +102,7 @@ export function Header() {
           {links}
         </nav>
         <div style={{ flex: 1 }} />
-        <Link
-          className="btn btn-ghost btn-sm desktop-nav"
-          href="/dashboard/saas/new"
-        >
-          <Plus size={16} /> Publicar meu SaaS
-        </Link>
+        <PublishSaasLink className="btn btn-ghost btn-sm desktop-nav" />
         <button
           className="btn btn-ghost btn-sm"
           aria-label="Alternar tema"
@@ -215,10 +210,7 @@ export function Header() {
               Entrar
             </Link>
           )}
-          <Link className="btn" href="/dashboard/saas/new">
-            <Plus size={16} />
-            Publicar meu SaaS
-          </Link>
+          <PublishSaasLink className="btn" />
         </nav>
       )}
     </header>
