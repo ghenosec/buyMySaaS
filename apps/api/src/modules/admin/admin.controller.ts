@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   Param,
+  Patch,
   Post,
   Query,
   UseGuards,
@@ -13,7 +14,7 @@ import { AdminGuard } from '../../common/admin.guard';
 import { AuthGuard } from '../../common/auth.guard';
 import { AuthUser } from '../../common/auth-user';
 import { CurrentUser } from '../../common/current-user.decorator';
-import { RejectSubmissionDto } from './admin.dto';
+import { RejectSubmissionDto, UpdateUserRoleDto } from './admin.dto';
 import { AdminService } from './admin.service';
 
 @Controller('admin')
@@ -28,6 +29,16 @@ export class AdminController {
   }
   @Get('submissions/:id') get(@Param('id') id: string) {
     return this.admin.submission(id);
+  }
+  @Get('users') users(@Query('search') search?: string) {
+    return this.admin.users(search);
+  }
+  @Patch('users/:id/role') updateUserRole(
+    @CurrentUser() user: AuthUser,
+    @Param('id') id: string,
+    @Body() dto: UpdateUserRoleDto,
+  ) {
+    return this.admin.updateUserRole(user.id, id, dto.role);
   }
   @Post('submissions/:id/approve') approve(
     @CurrentUser() user: AuthUser,

@@ -47,9 +47,14 @@ export function AdminDashboard() {
       <section className="section">
         <div className="section-title">
           <h2>Submissões recentes</h2>
-          <Link className="btn btn-sm" href="/admin/submissions">
-            Ver fila
-          </Link>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <Link className="btn btn-sm" href="/admin/users">
+              Permissões
+            </Link>
+            <Link className="btn btn-sm" href="/admin/submissions">
+              Ver fila
+            </Link>
+          </div>
         </div>
         <div className="card table-wrap">
           <table className="table">

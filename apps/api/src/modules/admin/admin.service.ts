@@ -1,4 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { Prisma, UserRole } from '../../generated/prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { PublicationStateService } from '../saas/publication-state.service';
 
@@ -57,6 +63,76 @@ export class AdminService {
     });
     if (!item) throw new NotFoundException();
     return item;
+  }
+  users(search?: string) {
+    const term = search?.trim();
+    const where: Prisma.UserWhereInput = term
+      ? {
+          OR: [
+            { name: { contains: term, mode: 'insensitive' } },
+            { email: { contains: term, mode: 'insensitive' } },
+          ],
+        }
+      : {};
+    return this.prisma.user.findMany({
+      where,
+      take: 100,
+      orderBy: [{ role: 'asc' }, { createdAt: 'desc' }],
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        createdAt: true,
+        _count: { select: { saas: true, reviews: true } },
+      },
+    });
+  }
+  async updateUserRole(
+    actorUserId: string,
+    targetUserId: string,
+    role: UserRole,
+  ) {
+    const target = await this.prisma.user.findUnique({
+      where: { id: targetUserId },
+      select: { id: true, name: true, email: true, role: true },
+    });
+    if (!target) throw new NotFoundException('Usuário não encontrado');
+    if (actorUserId === targetUserId && role !== UserRole.ADMIN)
+      throw new ForbiddenException(
+        'Você não pode remover sua própria permissão de administrador',
+      );
+    if (target.role === role) return target;
+    return this.prisma.$transaction(async (tx) => {
+      if (target.role === UserRole.ADMIN && role === UserRole.USER) {
+        const adminCount = await tx.user.count({
+          where: { role: UserRole.ADMIN },
+        });
+        if (adminCount <= 1)
+          throw new BadRequestException(
+            'Mantenha pelo menos um administrador ativo',
+          );
+      }
+      const updated = await tx.user.update({
+        where: { id: targetUserId },
+        data: { role },
+        select: { id: true, name: true, email: true, role: true },
+      });
+      await tx.auditLog.create({
+        data: {
+          actorUserId,
+          action: 'USER_ROLE_UPDATED',
+          entityType: 'User',
+          entityId: targetUserId,
+          metadata: {
+            targetEmail: target.email,
+            previousRole: target.role,
+            nextRole: role,
+          },
+        },
+      });
+      return updated;
+    });
   }
   async approve(actorUserId: string, id: string) {
     const item = await this.prisma.saas.findUnique({ where: { id } });
