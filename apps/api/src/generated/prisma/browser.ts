@@ -53,6 +53,11 @@ export type Review = Prisma.ReviewModel
  */
 export type Favorite = Prisma.FavoriteModel
 /**
+ * Model SaasBoost
+ * 
+ */
+export type SaasBoost = Prisma.SaasBoostModel
+/**
  * Model AnalyticsEvent
  * 
  */

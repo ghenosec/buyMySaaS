@@ -57,6 +57,7 @@ export type SaasMinAggregateOutputType = {
   billingInterval: $Enums.BillingInterval | null
   pricingLabel: string | null
   isBrazilian: boolean | null
+  isAdult: boolean | null
   status: $Enums.SaasStatus | null
   rejectionReason: string | null
   launchDate: Date | null
@@ -88,6 +89,7 @@ export type SaasMaxAggregateOutputType = {
   billingInterval: $Enums.BillingInterval | null
   pricingLabel: string | null
   isBrazilian: boolean | null
+  isAdult: boolean | null
   status: $Enums.SaasStatus | null
   rejectionReason: string | null
   launchDate: Date | null
@@ -119,6 +121,7 @@ export type SaasCountAggregateOutputType = {
   billingInterval: number
   pricingLabel: number
   isBrazilian: number
+  isAdult: number
   tags: number
   technologies: number
   status: number
@@ -162,6 +165,7 @@ export type SaasMinAggregateInputType = {
   billingInterval?: true
   pricingLabel?: true
   isBrazilian?: true
+  isAdult?: true
   status?: true
   rejectionReason?: true
   launchDate?: true
@@ -193,6 +197,7 @@ export type SaasMaxAggregateInputType = {
   billingInterval?: true
   pricingLabel?: true
   isBrazilian?: true
+  isAdult?: true
   status?: true
   rejectionReason?: true
   launchDate?: true
@@ -224,6 +229,7 @@ export type SaasCountAggregateInputType = {
   billingInterval?: true
   pricingLabel?: true
   isBrazilian?: true
+  isAdult?: true
   tags?: true
   technologies?: true
   status?: true
@@ -344,6 +350,7 @@ export type SaasGroupByOutputType = {
   billingInterval: $Enums.BillingInterval | null
   pricingLabel: string | null
   isBrazilian: boolean
+  isAdult: boolean
   tags: string[]
   technologies: string[]
   status: $Enums.SaasStatus
@@ -400,6 +407,7 @@ export type SaasWhereInput = {
   billingInterval?: Prisma.EnumBillingIntervalNullableFilter<"Saas"> | $Enums.BillingInterval | null
   pricingLabel?: Prisma.StringNullableFilter<"Saas"> | string | null
   isBrazilian?: Prisma.BoolFilter<"Saas"> | boolean
+  isAdult?: Prisma.BoolFilter<"Saas"> | boolean
   tags?: Prisma.StringNullableListFilter<"Saas">
   technologies?: Prisma.StringNullableListFilter<"Saas">
   status?: Prisma.EnumSaasStatusFilter<"Saas"> | $Enums.SaasStatus
@@ -413,6 +421,7 @@ export type SaasWhereInput = {
   categories?: Prisma.SaasCategoryListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
   favorites?: Prisma.FavoriteListRelationFilter
+  boosts?: Prisma.SaasBoostListRelationFilter
   analyticsEvents?: Prisma.AnalyticsEventListRelationFilter
   orders?: Prisma.PublicationOrderListRelationFilter
 }
@@ -440,6 +449,7 @@ export type SaasOrderByWithRelationInput = {
   billingInterval?: Prisma.SortOrderInput | Prisma.SortOrder
   pricingLabel?: Prisma.SortOrderInput | Prisma.SortOrder
   isBrazilian?: Prisma.SortOrder
+  isAdult?: Prisma.SortOrder
   tags?: Prisma.SortOrder
   technologies?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -453,6 +463,7 @@ export type SaasOrderByWithRelationInput = {
   categories?: Prisma.SaasCategoryOrderByRelationAggregateInput
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
   favorites?: Prisma.FavoriteOrderByRelationAggregateInput
+  boosts?: Prisma.SaasBoostOrderByRelationAggregateInput
   analyticsEvents?: Prisma.AnalyticsEventOrderByRelationAggregateInput
   orders?: Prisma.PublicationOrderOrderByRelationAggregateInput
 }
@@ -483,6 +494,7 @@ export type SaasWhereUniqueInput = Prisma.AtLeast<{
   billingInterval?: Prisma.EnumBillingIntervalNullableFilter<"Saas"> | $Enums.BillingInterval | null
   pricingLabel?: Prisma.StringNullableFilter<"Saas"> | string | null
   isBrazilian?: Prisma.BoolFilter<"Saas"> | boolean
+  isAdult?: Prisma.BoolFilter<"Saas"> | boolean
   tags?: Prisma.StringNullableListFilter<"Saas">
   technologies?: Prisma.StringNullableListFilter<"Saas">
   status?: Prisma.EnumSaasStatusFilter<"Saas"> | $Enums.SaasStatus
@@ -496,6 +508,7 @@ export type SaasWhereUniqueInput = Prisma.AtLeast<{
   categories?: Prisma.SaasCategoryListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
   favorites?: Prisma.FavoriteListRelationFilter
+  boosts?: Prisma.SaasBoostListRelationFilter
   analyticsEvents?: Prisma.AnalyticsEventListRelationFilter
   orders?: Prisma.PublicationOrderListRelationFilter
 }, "id" | "slug">
@@ -523,6 +536,7 @@ export type SaasOrderByWithAggregationInput = {
   billingInterval?: Prisma.SortOrderInput | Prisma.SortOrder
   pricingLabel?: Prisma.SortOrderInput | Prisma.SortOrder
   isBrazilian?: Prisma.SortOrder
+  isAdult?: Prisma.SortOrder
   tags?: Prisma.SortOrder
   technologies?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -564,6 +578,7 @@ export type SaasScalarWhereWithAggregatesInput = {
   billingInterval?: Prisma.EnumBillingIntervalNullableWithAggregatesFilter<"Saas"> | $Enums.BillingInterval | null
   pricingLabel?: Prisma.StringNullableWithAggregatesFilter<"Saas"> | string | null
   isBrazilian?: Prisma.BoolWithAggregatesFilter<"Saas"> | boolean
+  isAdult?: Prisma.BoolWithAggregatesFilter<"Saas"> | boolean
   tags?: Prisma.StringNullableListFilter<"Saas">
   technologies?: Prisma.StringNullableListFilter<"Saas">
   status?: Prisma.EnumSaasStatusWithAggregatesFilter<"Saas"> | $Enums.SaasStatus
@@ -596,6 +611,7 @@ export type SaasCreateInput = {
   billingInterval?: $Enums.BillingInterval | null
   pricingLabel?: string | null
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: Prisma.SaasCreatetagsInput | string[]
   technologies?: Prisma.SaasCreatetechnologiesInput | string[]
   status?: $Enums.SaasStatus
@@ -609,6 +625,7 @@ export type SaasCreateInput = {
   categories?: Prisma.SaasCategoryCreateNestedManyWithoutSaasInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutSaasInput
+  boosts?: Prisma.SaasBoostCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventCreateNestedManyWithoutSaasInput
   orders?: Prisma.PublicationOrderCreateNestedManyWithoutSaasInput
 }
@@ -636,6 +653,7 @@ export type SaasUncheckedCreateInput = {
   billingInterval?: $Enums.BillingInterval | null
   pricingLabel?: string | null
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: Prisma.SaasCreatetagsInput | string[]
   technologies?: Prisma.SaasCreatetechnologiesInput | string[]
   status?: $Enums.SaasStatus
@@ -648,6 +666,7 @@ export type SaasUncheckedCreateInput = {
   categories?: Prisma.SaasCategoryUncheckedCreateNestedManyWithoutSaasInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutSaasInput
+  boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedCreateNestedManyWithoutSaasInput
   orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutSaasInput
 }
@@ -674,6 +693,7 @@ export type SaasUpdateInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tags?: Prisma.SaasUpdatetagsInput | string[]
   technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
   status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
@@ -687,6 +707,7 @@ export type SaasUpdateInput = {
   categories?: Prisma.SaasCategoryUpdateManyWithoutSaasNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutSaasNestedInput
+  boosts?: Prisma.SaasBoostUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUpdateManyWithoutSaasNestedInput
   orders?: Prisma.PublicationOrderUpdateManyWithoutSaasNestedInput
 }
@@ -714,6 +735,7 @@ export type SaasUncheckedUpdateInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tags?: Prisma.SaasUpdatetagsInput | string[]
   technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
   status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
@@ -726,6 +748,7 @@ export type SaasUncheckedUpdateInput = {
   categories?: Prisma.SaasCategoryUncheckedUpdateManyWithoutSaasNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutSaasNestedInput
+  boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedUpdateManyWithoutSaasNestedInput
   orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutSaasNestedInput
 }
@@ -753,6 +776,7 @@ export type SaasCreateManyInput = {
   billingInterval?: $Enums.BillingInterval | null
   pricingLabel?: string | null
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: Prisma.SaasCreatetagsInput | string[]
   technologies?: Prisma.SaasCreatetechnologiesInput | string[]
   status?: $Enums.SaasStatus
@@ -785,6 +809,7 @@ export type SaasUpdateManyMutationInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tags?: Prisma.SaasUpdatetagsInput | string[]
   technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
   status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
@@ -818,6 +843,7 @@ export type SaasUncheckedUpdateManyInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tags?: Prisma.SaasUpdatetagsInput | string[]
   technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
   status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
@@ -869,6 +895,7 @@ export type SaasCountOrderByAggregateInput = {
   billingInterval?: Prisma.SortOrder
   pricingLabel?: Prisma.SortOrder
   isBrazilian?: Prisma.SortOrder
+  isAdult?: Prisma.SortOrder
   tags?: Prisma.SortOrder
   technologies?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -906,6 +933,7 @@ export type SaasMaxOrderByAggregateInput = {
   billingInterval?: Prisma.SortOrder
   pricingLabel?: Prisma.SortOrder
   isBrazilian?: Prisma.SortOrder
+  isAdult?: Prisma.SortOrder
   status?: Prisma.SortOrder
   rejectionReason?: Prisma.SortOrder
   launchDate?: Prisma.SortOrder
@@ -937,6 +965,7 @@ export type SaasMinOrderByAggregateInput = {
   billingInterval?: Prisma.SortOrder
   pricingLabel?: Prisma.SortOrder
   isBrazilian?: Prisma.SortOrder
+  isAdult?: Prisma.SortOrder
   status?: Prisma.SortOrder
   rejectionReason?: Prisma.SortOrder
   launchDate?: Prisma.SortOrder
@@ -1094,6 +1123,20 @@ export type SaasUpdateOneRequiredWithoutFavoritesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SaasUpdateToOneWithWhereWithoutFavoritesInput, Prisma.SaasUpdateWithoutFavoritesInput>, Prisma.SaasUncheckedUpdateWithoutFavoritesInput>
 }
 
+export type SaasCreateNestedOneWithoutBoostsInput = {
+  create?: Prisma.XOR<Prisma.SaasCreateWithoutBoostsInput, Prisma.SaasUncheckedCreateWithoutBoostsInput>
+  connectOrCreate?: Prisma.SaasCreateOrConnectWithoutBoostsInput
+  connect?: Prisma.SaasWhereUniqueInput
+}
+
+export type SaasUpdateOneRequiredWithoutBoostsNestedInput = {
+  create?: Prisma.XOR<Prisma.SaasCreateWithoutBoostsInput, Prisma.SaasUncheckedCreateWithoutBoostsInput>
+  connectOrCreate?: Prisma.SaasCreateOrConnectWithoutBoostsInput
+  upsert?: Prisma.SaasUpsertWithoutBoostsInput
+  connect?: Prisma.SaasWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SaasUpdateToOneWithWhereWithoutBoostsInput, Prisma.SaasUpdateWithoutBoostsInput>, Prisma.SaasUncheckedUpdateWithoutBoostsInput>
+}
+
 export type SaasCreateNestedOneWithoutAnalyticsEventsInput = {
   create?: Prisma.XOR<Prisma.SaasCreateWithoutAnalyticsEventsInput, Prisma.SaasUncheckedCreateWithoutAnalyticsEventsInput>
   connectOrCreate?: Prisma.SaasCreateOrConnectWithoutAnalyticsEventsInput
@@ -1144,6 +1187,7 @@ export type SaasCreateWithoutOwnerInput = {
   billingInterval?: $Enums.BillingInterval | null
   pricingLabel?: string | null
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: Prisma.SaasCreatetagsInput | string[]
   technologies?: Prisma.SaasCreatetechnologiesInput | string[]
   status?: $Enums.SaasStatus
@@ -1156,6 +1200,7 @@ export type SaasCreateWithoutOwnerInput = {
   categories?: Prisma.SaasCategoryCreateNestedManyWithoutSaasInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutSaasInput
+  boosts?: Prisma.SaasBoostCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventCreateNestedManyWithoutSaasInput
   orders?: Prisma.PublicationOrderCreateNestedManyWithoutSaasInput
 }
@@ -1182,6 +1227,7 @@ export type SaasUncheckedCreateWithoutOwnerInput = {
   billingInterval?: $Enums.BillingInterval | null
   pricingLabel?: string | null
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: Prisma.SaasCreatetagsInput | string[]
   technologies?: Prisma.SaasCreatetechnologiesInput | string[]
   status?: $Enums.SaasStatus
@@ -1194,6 +1240,7 @@ export type SaasUncheckedCreateWithoutOwnerInput = {
   categories?: Prisma.SaasCategoryUncheckedCreateNestedManyWithoutSaasInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutSaasInput
+  boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedCreateNestedManyWithoutSaasInput
   orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutSaasInput
 }
@@ -1250,6 +1297,7 @@ export type SaasScalarWhereInput = {
   billingInterval?: Prisma.EnumBillingIntervalNullableFilter<"Saas"> | $Enums.BillingInterval | null
   pricingLabel?: Prisma.StringNullableFilter<"Saas"> | string | null
   isBrazilian?: Prisma.BoolFilter<"Saas"> | boolean
+  isAdult?: Prisma.BoolFilter<"Saas"> | boolean
   tags?: Prisma.StringNullableListFilter<"Saas">
   technologies?: Prisma.StringNullableListFilter<"Saas">
   status?: Prisma.EnumSaasStatusFilter<"Saas"> | $Enums.SaasStatus
@@ -1282,6 +1330,7 @@ export type SaasCreateWithoutScreenshotsInput = {
   billingInterval?: $Enums.BillingInterval | null
   pricingLabel?: string | null
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: Prisma.SaasCreatetagsInput | string[]
   technologies?: Prisma.SaasCreatetechnologiesInput | string[]
   status?: $Enums.SaasStatus
@@ -1294,6 +1343,7 @@ export type SaasCreateWithoutScreenshotsInput = {
   categories?: Prisma.SaasCategoryCreateNestedManyWithoutSaasInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutSaasInput
+  boosts?: Prisma.SaasBoostCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventCreateNestedManyWithoutSaasInput
   orders?: Prisma.PublicationOrderCreateNestedManyWithoutSaasInput
 }
@@ -1321,6 +1371,7 @@ export type SaasUncheckedCreateWithoutScreenshotsInput = {
   billingInterval?: $Enums.BillingInterval | null
   pricingLabel?: string | null
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: Prisma.SaasCreatetagsInput | string[]
   technologies?: Prisma.SaasCreatetechnologiesInput | string[]
   status?: $Enums.SaasStatus
@@ -1332,6 +1383,7 @@ export type SaasUncheckedCreateWithoutScreenshotsInput = {
   categories?: Prisma.SaasCategoryUncheckedCreateNestedManyWithoutSaasInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutSaasInput
+  boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedCreateNestedManyWithoutSaasInput
   orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutSaasInput
 }
@@ -1374,6 +1426,7 @@ export type SaasUpdateWithoutScreenshotsInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tags?: Prisma.SaasUpdatetagsInput | string[]
   technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
   status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
@@ -1386,6 +1439,7 @@ export type SaasUpdateWithoutScreenshotsInput = {
   categories?: Prisma.SaasCategoryUpdateManyWithoutSaasNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutSaasNestedInput
+  boosts?: Prisma.SaasBoostUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUpdateManyWithoutSaasNestedInput
   orders?: Prisma.PublicationOrderUpdateManyWithoutSaasNestedInput
 }
@@ -1413,6 +1467,7 @@ export type SaasUncheckedUpdateWithoutScreenshotsInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tags?: Prisma.SaasUpdatetagsInput | string[]
   technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
   status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
@@ -1424,6 +1479,7 @@ export type SaasUncheckedUpdateWithoutScreenshotsInput = {
   categories?: Prisma.SaasCategoryUncheckedUpdateManyWithoutSaasNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutSaasNestedInput
+  boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedUpdateManyWithoutSaasNestedInput
   orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutSaasNestedInput
 }
@@ -1450,6 +1506,7 @@ export type SaasCreateWithoutCategoriesInput = {
   billingInterval?: $Enums.BillingInterval | null
   pricingLabel?: string | null
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: Prisma.SaasCreatetagsInput | string[]
   technologies?: Prisma.SaasCreatetechnologiesInput | string[]
   status?: $Enums.SaasStatus
@@ -1462,6 +1519,7 @@ export type SaasCreateWithoutCategoriesInput = {
   screenshots?: Prisma.SaasScreenshotCreateNestedManyWithoutSaasInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutSaasInput
+  boosts?: Prisma.SaasBoostCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventCreateNestedManyWithoutSaasInput
   orders?: Prisma.PublicationOrderCreateNestedManyWithoutSaasInput
 }
@@ -1489,6 +1547,7 @@ export type SaasUncheckedCreateWithoutCategoriesInput = {
   billingInterval?: $Enums.BillingInterval | null
   pricingLabel?: string | null
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: Prisma.SaasCreatetagsInput | string[]
   technologies?: Prisma.SaasCreatetechnologiesInput | string[]
   status?: $Enums.SaasStatus
@@ -1500,6 +1559,7 @@ export type SaasUncheckedCreateWithoutCategoriesInput = {
   screenshots?: Prisma.SaasScreenshotUncheckedCreateNestedManyWithoutSaasInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutSaasInput
+  boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedCreateNestedManyWithoutSaasInput
   orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutSaasInput
 }
@@ -1542,6 +1602,7 @@ export type SaasUpdateWithoutCategoriesInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tags?: Prisma.SaasUpdatetagsInput | string[]
   technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
   status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
@@ -1554,6 +1615,7 @@ export type SaasUpdateWithoutCategoriesInput = {
   screenshots?: Prisma.SaasScreenshotUpdateManyWithoutSaasNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutSaasNestedInput
+  boosts?: Prisma.SaasBoostUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUpdateManyWithoutSaasNestedInput
   orders?: Prisma.PublicationOrderUpdateManyWithoutSaasNestedInput
 }
@@ -1581,6 +1643,7 @@ export type SaasUncheckedUpdateWithoutCategoriesInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tags?: Prisma.SaasUpdatetagsInput | string[]
   technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
   status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
@@ -1592,6 +1655,7 @@ export type SaasUncheckedUpdateWithoutCategoriesInput = {
   screenshots?: Prisma.SaasScreenshotUncheckedUpdateManyWithoutSaasNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutSaasNestedInput
+  boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedUpdateManyWithoutSaasNestedInput
   orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutSaasNestedInput
 }
@@ -1618,6 +1682,7 @@ export type SaasCreateWithoutReviewsInput = {
   billingInterval?: $Enums.BillingInterval | null
   pricingLabel?: string | null
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: Prisma.SaasCreatetagsInput | string[]
   technologies?: Prisma.SaasCreatetechnologiesInput | string[]
   status?: $Enums.SaasStatus
@@ -1630,6 +1695,7 @@ export type SaasCreateWithoutReviewsInput = {
   screenshots?: Prisma.SaasScreenshotCreateNestedManyWithoutSaasInput
   categories?: Prisma.SaasCategoryCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutSaasInput
+  boosts?: Prisma.SaasBoostCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventCreateNestedManyWithoutSaasInput
   orders?: Prisma.PublicationOrderCreateNestedManyWithoutSaasInput
 }
@@ -1657,6 +1723,7 @@ export type SaasUncheckedCreateWithoutReviewsInput = {
   billingInterval?: $Enums.BillingInterval | null
   pricingLabel?: string | null
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: Prisma.SaasCreatetagsInput | string[]
   technologies?: Prisma.SaasCreatetechnologiesInput | string[]
   status?: $Enums.SaasStatus
@@ -1668,6 +1735,7 @@ export type SaasUncheckedCreateWithoutReviewsInput = {
   screenshots?: Prisma.SaasScreenshotUncheckedCreateNestedManyWithoutSaasInput
   categories?: Prisma.SaasCategoryUncheckedCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutSaasInput
+  boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedCreateNestedManyWithoutSaasInput
   orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutSaasInput
 }
@@ -1710,6 +1778,7 @@ export type SaasUpdateWithoutReviewsInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tags?: Prisma.SaasUpdatetagsInput | string[]
   technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
   status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
@@ -1722,6 +1791,7 @@ export type SaasUpdateWithoutReviewsInput = {
   screenshots?: Prisma.SaasScreenshotUpdateManyWithoutSaasNestedInput
   categories?: Prisma.SaasCategoryUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutSaasNestedInput
+  boosts?: Prisma.SaasBoostUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUpdateManyWithoutSaasNestedInput
   orders?: Prisma.PublicationOrderUpdateManyWithoutSaasNestedInput
 }
@@ -1749,6 +1819,7 @@ export type SaasUncheckedUpdateWithoutReviewsInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tags?: Prisma.SaasUpdatetagsInput | string[]
   technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
   status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
@@ -1760,6 +1831,7 @@ export type SaasUncheckedUpdateWithoutReviewsInput = {
   screenshots?: Prisma.SaasScreenshotUncheckedUpdateManyWithoutSaasNestedInput
   categories?: Prisma.SaasCategoryUncheckedUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutSaasNestedInput
+  boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedUpdateManyWithoutSaasNestedInput
   orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutSaasNestedInput
 }
@@ -1786,6 +1858,7 @@ export type SaasCreateWithoutFavoritesInput = {
   billingInterval?: $Enums.BillingInterval | null
   pricingLabel?: string | null
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: Prisma.SaasCreatetagsInput | string[]
   technologies?: Prisma.SaasCreatetechnologiesInput | string[]
   status?: $Enums.SaasStatus
@@ -1798,6 +1871,7 @@ export type SaasCreateWithoutFavoritesInput = {
   screenshots?: Prisma.SaasScreenshotCreateNestedManyWithoutSaasInput
   categories?: Prisma.SaasCategoryCreateNestedManyWithoutSaasInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutSaasInput
+  boosts?: Prisma.SaasBoostCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventCreateNestedManyWithoutSaasInput
   orders?: Prisma.PublicationOrderCreateNestedManyWithoutSaasInput
 }
@@ -1825,6 +1899,7 @@ export type SaasUncheckedCreateWithoutFavoritesInput = {
   billingInterval?: $Enums.BillingInterval | null
   pricingLabel?: string | null
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: Prisma.SaasCreatetagsInput | string[]
   technologies?: Prisma.SaasCreatetechnologiesInput | string[]
   status?: $Enums.SaasStatus
@@ -1836,6 +1911,7 @@ export type SaasUncheckedCreateWithoutFavoritesInput = {
   screenshots?: Prisma.SaasScreenshotUncheckedCreateNestedManyWithoutSaasInput
   categories?: Prisma.SaasCategoryUncheckedCreateNestedManyWithoutSaasInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutSaasInput
+  boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedCreateNestedManyWithoutSaasInput
   orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutSaasInput
 }
@@ -1878,6 +1954,7 @@ export type SaasUpdateWithoutFavoritesInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tags?: Prisma.SaasUpdatetagsInput | string[]
   technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
   status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
@@ -1890,6 +1967,7 @@ export type SaasUpdateWithoutFavoritesInput = {
   screenshots?: Prisma.SaasScreenshotUpdateManyWithoutSaasNestedInput
   categories?: Prisma.SaasCategoryUpdateManyWithoutSaasNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutSaasNestedInput
+  boosts?: Prisma.SaasBoostUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUpdateManyWithoutSaasNestedInput
   orders?: Prisma.PublicationOrderUpdateManyWithoutSaasNestedInput
 }
@@ -1917,6 +1995,7 @@ export type SaasUncheckedUpdateWithoutFavoritesInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tags?: Prisma.SaasUpdatetagsInput | string[]
   technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
   status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
@@ -1928,6 +2007,183 @@ export type SaasUncheckedUpdateWithoutFavoritesInput = {
   screenshots?: Prisma.SaasScreenshotUncheckedUpdateManyWithoutSaasNestedInput
   categories?: Prisma.SaasCategoryUncheckedUpdateManyWithoutSaasNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutSaasNestedInput
+  boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutSaasNestedInput
+  analyticsEvents?: Prisma.AnalyticsEventUncheckedUpdateManyWithoutSaasNestedInput
+  orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutSaasNestedInput
+}
+
+export type SaasCreateWithoutBoostsInput = {
+  id?: string
+  name: string
+  slug: string
+  tagline: string
+  shortDescription: string
+  description: string
+  logoUrl?: string | null
+  accentColor?: string | null
+  countryCode?: string
+  language?: string
+  websiteUrl: string
+  trialUrl?: string | null
+  checkoutUrl?: string | null
+  docsUrl?: string | null
+  demoUrl?: string | null
+  pricingType: $Enums.PricingType
+  priceCents?: number | null
+  currency?: string
+  billingInterval?: $Enums.BillingInterval | null
+  pricingLabel?: string | null
+  isBrazilian?: boolean
+  isAdult?: boolean
+  tags?: Prisma.SaasCreatetagsInput | string[]
+  technologies?: Prisma.SaasCreatetechnologiesInput | string[]
+  status?: $Enums.SaasStatus
+  rejectionReason?: string | null
+  launchDate?: Date | string | null
+  publishedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutSaasInput
+  screenshots?: Prisma.SaasScreenshotCreateNestedManyWithoutSaasInput
+  categories?: Prisma.SaasCategoryCreateNestedManyWithoutSaasInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutSaasInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutSaasInput
+  analyticsEvents?: Prisma.AnalyticsEventCreateNestedManyWithoutSaasInput
+  orders?: Prisma.PublicationOrderCreateNestedManyWithoutSaasInput
+}
+
+export type SaasUncheckedCreateWithoutBoostsInput = {
+  id?: string
+  ownerId: string
+  name: string
+  slug: string
+  tagline: string
+  shortDescription: string
+  description: string
+  logoUrl?: string | null
+  accentColor?: string | null
+  countryCode?: string
+  language?: string
+  websiteUrl: string
+  trialUrl?: string | null
+  checkoutUrl?: string | null
+  docsUrl?: string | null
+  demoUrl?: string | null
+  pricingType: $Enums.PricingType
+  priceCents?: number | null
+  currency?: string
+  billingInterval?: $Enums.BillingInterval | null
+  pricingLabel?: string | null
+  isBrazilian?: boolean
+  isAdult?: boolean
+  tags?: Prisma.SaasCreatetagsInput | string[]
+  technologies?: Prisma.SaasCreatetechnologiesInput | string[]
+  status?: $Enums.SaasStatus
+  rejectionReason?: string | null
+  launchDate?: Date | string | null
+  publishedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  screenshots?: Prisma.SaasScreenshotUncheckedCreateNestedManyWithoutSaasInput
+  categories?: Prisma.SaasCategoryUncheckedCreateNestedManyWithoutSaasInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutSaasInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutSaasInput
+  analyticsEvents?: Prisma.AnalyticsEventUncheckedCreateNestedManyWithoutSaasInput
+  orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutSaasInput
+}
+
+export type SaasCreateOrConnectWithoutBoostsInput = {
+  where: Prisma.SaasWhereUniqueInput
+  create: Prisma.XOR<Prisma.SaasCreateWithoutBoostsInput, Prisma.SaasUncheckedCreateWithoutBoostsInput>
+}
+
+export type SaasUpsertWithoutBoostsInput = {
+  update: Prisma.XOR<Prisma.SaasUpdateWithoutBoostsInput, Prisma.SaasUncheckedUpdateWithoutBoostsInput>
+  create: Prisma.XOR<Prisma.SaasCreateWithoutBoostsInput, Prisma.SaasUncheckedCreateWithoutBoostsInput>
+  where?: Prisma.SaasWhereInput
+}
+
+export type SaasUpdateToOneWithWhereWithoutBoostsInput = {
+  where?: Prisma.SaasWhereInput
+  data: Prisma.XOR<Prisma.SaasUpdateWithoutBoostsInput, Prisma.SaasUncheckedUpdateWithoutBoostsInput>
+}
+
+export type SaasUpdateWithoutBoostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  tagline?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accentColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
+  priceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
+  pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  tags?: Prisma.SaasUpdatetagsInput | string[]
+  technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
+  status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutSaasNestedInput
+  screenshots?: Prisma.SaasScreenshotUpdateManyWithoutSaasNestedInput
+  categories?: Prisma.SaasCategoryUpdateManyWithoutSaasNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutSaasNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutSaasNestedInput
+  analyticsEvents?: Prisma.AnalyticsEventUpdateManyWithoutSaasNestedInput
+  orders?: Prisma.PublicationOrderUpdateManyWithoutSaasNestedInput
+}
+
+export type SaasUncheckedUpdateWithoutBoostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  tagline?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accentColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
+  priceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
+  pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  tags?: Prisma.SaasUpdatetagsInput | string[]
+  technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
+  status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  screenshots?: Prisma.SaasScreenshotUncheckedUpdateManyWithoutSaasNestedInput
+  categories?: Prisma.SaasCategoryUncheckedUpdateManyWithoutSaasNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutSaasNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedUpdateManyWithoutSaasNestedInput
   orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutSaasNestedInput
 }
@@ -1954,6 +2210,7 @@ export type SaasCreateWithoutAnalyticsEventsInput = {
   billingInterval?: $Enums.BillingInterval | null
   pricingLabel?: string | null
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: Prisma.SaasCreatetagsInput | string[]
   technologies?: Prisma.SaasCreatetechnologiesInput | string[]
   status?: $Enums.SaasStatus
@@ -1967,6 +2224,7 @@ export type SaasCreateWithoutAnalyticsEventsInput = {
   categories?: Prisma.SaasCategoryCreateNestedManyWithoutSaasInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutSaasInput
+  boosts?: Prisma.SaasBoostCreateNestedManyWithoutSaasInput
   orders?: Prisma.PublicationOrderCreateNestedManyWithoutSaasInput
 }
 
@@ -1993,6 +2251,7 @@ export type SaasUncheckedCreateWithoutAnalyticsEventsInput = {
   billingInterval?: $Enums.BillingInterval | null
   pricingLabel?: string | null
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: Prisma.SaasCreatetagsInput | string[]
   technologies?: Prisma.SaasCreatetechnologiesInput | string[]
   status?: $Enums.SaasStatus
@@ -2005,6 +2264,7 @@ export type SaasUncheckedCreateWithoutAnalyticsEventsInput = {
   categories?: Prisma.SaasCategoryUncheckedCreateNestedManyWithoutSaasInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutSaasInput
+  boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutSaasInput
   orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutSaasInput
 }
 
@@ -2046,6 +2306,7 @@ export type SaasUpdateWithoutAnalyticsEventsInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tags?: Prisma.SaasUpdatetagsInput | string[]
   technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
   status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
@@ -2059,6 +2320,7 @@ export type SaasUpdateWithoutAnalyticsEventsInput = {
   categories?: Prisma.SaasCategoryUpdateManyWithoutSaasNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutSaasNestedInput
+  boosts?: Prisma.SaasBoostUpdateManyWithoutSaasNestedInput
   orders?: Prisma.PublicationOrderUpdateManyWithoutSaasNestedInput
 }
 
@@ -2085,6 +2347,7 @@ export type SaasUncheckedUpdateWithoutAnalyticsEventsInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tags?: Prisma.SaasUpdatetagsInput | string[]
   technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
   status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
@@ -2097,6 +2360,7 @@ export type SaasUncheckedUpdateWithoutAnalyticsEventsInput = {
   categories?: Prisma.SaasCategoryUncheckedUpdateManyWithoutSaasNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutSaasNestedInput
+  boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutSaasNestedInput
   orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutSaasNestedInput
 }
 
@@ -2122,6 +2386,7 @@ export type SaasCreateWithoutOrdersInput = {
   billingInterval?: $Enums.BillingInterval | null
   pricingLabel?: string | null
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: Prisma.SaasCreatetagsInput | string[]
   technologies?: Prisma.SaasCreatetechnologiesInput | string[]
   status?: $Enums.SaasStatus
@@ -2135,6 +2400,7 @@ export type SaasCreateWithoutOrdersInput = {
   categories?: Prisma.SaasCategoryCreateNestedManyWithoutSaasInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutSaasInput
+  boosts?: Prisma.SaasBoostCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventCreateNestedManyWithoutSaasInput
 }
 
@@ -2161,6 +2427,7 @@ export type SaasUncheckedCreateWithoutOrdersInput = {
   billingInterval?: $Enums.BillingInterval | null
   pricingLabel?: string | null
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: Prisma.SaasCreatetagsInput | string[]
   technologies?: Prisma.SaasCreatetechnologiesInput | string[]
   status?: $Enums.SaasStatus
@@ -2173,6 +2440,7 @@ export type SaasUncheckedCreateWithoutOrdersInput = {
   categories?: Prisma.SaasCategoryUncheckedCreateNestedManyWithoutSaasInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutSaasInput
+  boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedCreateNestedManyWithoutSaasInput
 }
 
@@ -2214,6 +2482,7 @@ export type SaasUpdateWithoutOrdersInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tags?: Prisma.SaasUpdatetagsInput | string[]
   technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
   status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
@@ -2227,6 +2496,7 @@ export type SaasUpdateWithoutOrdersInput = {
   categories?: Prisma.SaasCategoryUpdateManyWithoutSaasNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutSaasNestedInput
+  boosts?: Prisma.SaasBoostUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUpdateManyWithoutSaasNestedInput
 }
 
@@ -2253,6 +2523,7 @@ export type SaasUncheckedUpdateWithoutOrdersInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tags?: Prisma.SaasUpdatetagsInput | string[]
   technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
   status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
@@ -2265,6 +2536,7 @@ export type SaasUncheckedUpdateWithoutOrdersInput = {
   categories?: Prisma.SaasCategoryUncheckedUpdateManyWithoutSaasNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutSaasNestedInput
+  boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedUpdateManyWithoutSaasNestedInput
 }
 
@@ -2290,6 +2562,7 @@ export type SaasCreateManyOwnerInput = {
   billingInterval?: $Enums.BillingInterval | null
   pricingLabel?: string | null
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: Prisma.SaasCreatetagsInput | string[]
   technologies?: Prisma.SaasCreatetechnologiesInput | string[]
   status?: $Enums.SaasStatus
@@ -2322,6 +2595,7 @@ export type SaasUpdateWithoutOwnerInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tags?: Prisma.SaasUpdatetagsInput | string[]
   technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
   status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
@@ -2334,6 +2608,7 @@ export type SaasUpdateWithoutOwnerInput = {
   categories?: Prisma.SaasCategoryUpdateManyWithoutSaasNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutSaasNestedInput
+  boosts?: Prisma.SaasBoostUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUpdateManyWithoutSaasNestedInput
   orders?: Prisma.PublicationOrderUpdateManyWithoutSaasNestedInput
 }
@@ -2360,6 +2635,7 @@ export type SaasUncheckedUpdateWithoutOwnerInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tags?: Prisma.SaasUpdatetagsInput | string[]
   technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
   status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
@@ -2372,6 +2648,7 @@ export type SaasUncheckedUpdateWithoutOwnerInput = {
   categories?: Prisma.SaasCategoryUncheckedUpdateManyWithoutSaasNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutSaasNestedInput
+  boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedUpdateManyWithoutSaasNestedInput
   orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutSaasNestedInput
 }
@@ -2398,6 +2675,7 @@ export type SaasUncheckedUpdateManyWithoutOwnerInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tags?: Prisma.SaasUpdatetagsInput | string[]
   technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
   status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
@@ -2418,6 +2696,7 @@ export type SaasCountOutputType = {
   categories: number
   reviews: number
   favorites: number
+  boosts: number
   analyticsEvents: number
   orders: number
 }
@@ -2427,6 +2706,7 @@ export type SaasCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   categories?: boolean | SaasCountOutputTypeCountCategoriesArgs
   reviews?: boolean | SaasCountOutputTypeCountReviewsArgs
   favorites?: boolean | SaasCountOutputTypeCountFavoritesArgs
+  boosts?: boolean | SaasCountOutputTypeCountBoostsArgs
   analyticsEvents?: boolean | SaasCountOutputTypeCountAnalyticsEventsArgs
   orders?: boolean | SaasCountOutputTypeCountOrdersArgs
 }
@@ -2472,6 +2752,13 @@ export type SaasCountOutputTypeCountFavoritesArgs<ExtArgs extends runtime.Types.
 /**
  * SaasCountOutputType without action
  */
+export type SaasCountOutputTypeCountBoostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SaasBoostWhereInput
+}
+
+/**
+ * SaasCountOutputType without action
+ */
 export type SaasCountOutputTypeCountAnalyticsEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.AnalyticsEventWhereInput
 }
@@ -2507,6 +2794,7 @@ export type SaasSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   billingInterval?: boolean
   pricingLabel?: boolean
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: boolean
   technologies?: boolean
   status?: boolean
@@ -2520,6 +2808,7 @@ export type SaasSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   categories?: boolean | Prisma.Saas$categoriesArgs<ExtArgs>
   reviews?: boolean | Prisma.Saas$reviewsArgs<ExtArgs>
   favorites?: boolean | Prisma.Saas$favoritesArgs<ExtArgs>
+  boosts?: boolean | Prisma.Saas$boostsArgs<ExtArgs>
   analyticsEvents?: boolean | Prisma.Saas$analyticsEventsArgs<ExtArgs>
   orders?: boolean | Prisma.Saas$ordersArgs<ExtArgs>
   _count?: boolean | Prisma.SaasCountOutputTypeDefaultArgs<ExtArgs>
@@ -2548,6 +2837,7 @@ export type SaasSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   billingInterval?: boolean
   pricingLabel?: boolean
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: boolean
   technologies?: boolean
   status?: boolean
@@ -2582,6 +2872,7 @@ export type SaasSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   billingInterval?: boolean
   pricingLabel?: boolean
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: boolean
   technologies?: boolean
   status?: boolean
@@ -2616,6 +2907,7 @@ export type SaasSelectScalar = {
   billingInterval?: boolean
   pricingLabel?: boolean
   isBrazilian?: boolean
+  isAdult?: boolean
   tags?: boolean
   technologies?: boolean
   status?: boolean
@@ -2626,13 +2918,14 @@ export type SaasSelectScalar = {
   updatedAt?: boolean
 }
 
-export type SaasOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "name" | "slug" | "tagline" | "shortDescription" | "description" | "logoUrl" | "accentColor" | "countryCode" | "language" | "websiteUrl" | "trialUrl" | "checkoutUrl" | "docsUrl" | "demoUrl" | "pricingType" | "priceCents" | "currency" | "billingInterval" | "pricingLabel" | "isBrazilian" | "tags" | "technologies" | "status" | "rejectionReason" | "launchDate" | "publishedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["saas"]>
+export type SaasOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "name" | "slug" | "tagline" | "shortDescription" | "description" | "logoUrl" | "accentColor" | "countryCode" | "language" | "websiteUrl" | "trialUrl" | "checkoutUrl" | "docsUrl" | "demoUrl" | "pricingType" | "priceCents" | "currency" | "billingInterval" | "pricingLabel" | "isBrazilian" | "isAdult" | "tags" | "technologies" | "status" | "rejectionReason" | "launchDate" | "publishedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["saas"]>
 export type SaasInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   screenshots?: boolean | Prisma.Saas$screenshotsArgs<ExtArgs>
   categories?: boolean | Prisma.Saas$categoriesArgs<ExtArgs>
   reviews?: boolean | Prisma.Saas$reviewsArgs<ExtArgs>
   favorites?: boolean | Prisma.Saas$favoritesArgs<ExtArgs>
+  boosts?: boolean | Prisma.Saas$boostsArgs<ExtArgs>
   analyticsEvents?: boolean | Prisma.Saas$analyticsEventsArgs<ExtArgs>
   orders?: boolean | Prisma.Saas$ordersArgs<ExtArgs>
   _count?: boolean | Prisma.SaasCountOutputTypeDefaultArgs<ExtArgs>
@@ -2652,6 +2945,7 @@ export type $SaasPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     categories: Prisma.$SaasCategoryPayload<ExtArgs>[]
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
     favorites: Prisma.$FavoritePayload<ExtArgs>[]
+    boosts: Prisma.$SaasBoostPayload<ExtArgs>[]
     analyticsEvents: Prisma.$AnalyticsEventPayload<ExtArgs>[]
     orders: Prisma.$PublicationOrderPayload<ExtArgs>[]
   }
@@ -2678,6 +2972,7 @@ export type $SaasPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     billingInterval: $Enums.BillingInterval | null
     pricingLabel: string | null
     isBrazilian: boolean
+    isAdult: boolean
     tags: string[]
     technologies: string[]
     status: $Enums.SaasStatus
@@ -3085,6 +3380,7 @@ export interface Prisma__SaasClient<T, Null = never, ExtArgs extends runtime.Typ
   categories<T extends Prisma.Saas$categoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Saas$categoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SaasCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviews<T extends Prisma.Saas$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Saas$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   favorites<T extends Prisma.Saas$favoritesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Saas$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  boosts<T extends Prisma.Saas$boostsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Saas$boostsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SaasBoostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   analyticsEvents<T extends Prisma.Saas$analyticsEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Saas$analyticsEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnalyticsEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   orders<T extends Prisma.Saas$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Saas$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PublicationOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -3138,6 +3434,7 @@ export interface SaasFieldRefs {
   readonly billingInterval: Prisma.FieldRef<"Saas", 'BillingInterval'>
   readonly pricingLabel: Prisma.FieldRef<"Saas", 'String'>
   readonly isBrazilian: Prisma.FieldRef<"Saas", 'Boolean'>
+  readonly isAdult: Prisma.FieldRef<"Saas", 'Boolean'>
   readonly tags: Prisma.FieldRef<"Saas", 'String[]'>
   readonly technologies: Prisma.FieldRef<"Saas", 'String[]'>
   readonly status: Prisma.FieldRef<"Saas", 'SaasStatus'>
@@ -3640,6 +3937,30 @@ export type Saas$favoritesArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.FavoriteScalarFieldEnum | Prisma.FavoriteScalarFieldEnum[]
+}
+
+/**
+ * Saas.boosts
+ */
+export type Saas$boostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SaasBoost
+   */
+  select?: Prisma.SaasBoostSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SaasBoost
+   */
+  omit?: Prisma.SaasBoostOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SaasBoostInclude<ExtArgs> | null
+  where?: Prisma.SaasBoostWhereInput
+  orderBy?: Prisma.SaasBoostOrderByWithRelationInput | Prisma.SaasBoostOrderByWithRelationInput[]
+  cursor?: Prisma.SaasBoostWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SaasBoostScalarFieldEnum | Prisma.SaasBoostScalarFieldEnum[]
 }
 
 /**

@@ -58,6 +58,7 @@ export const ModelName = {
   SaasCategory: 'SaasCategory',
   Review: 'Review',
   Favorite: 'Favorite',
+  SaasBoost: 'SaasBoost',
   AnalyticsEvent: 'AnalyticsEvent',
   PublicationOrder: 'PublicationOrder',
   AuditLog: 'AuditLog',
@@ -86,6 +87,7 @@ export const UserScalarFieldEnum = {
   email: 'email',
   emailVerifiedAt: 'emailVerifiedAt',
   passwordHash: 'passwordHash',
+  googleId: 'googleId',
   avatarUrl: 'avatarUrl',
   role: 'role',
   createdAt: 'createdAt',
@@ -118,6 +120,7 @@ export const SaasScalarFieldEnum = {
   billingInterval: 'billingInterval',
   pricingLabel: 'pricingLabel',
   isBrazilian: 'isBrazilian',
+  isAdult: 'isAdult',
   tags: 'tags',
   technologies: 'technologies',
   status: 'status',
@@ -168,6 +171,8 @@ export const ReviewScalarFieldEnum = {
   rating: 'rating',
   comment: 'comment',
   hidden: 'hidden',
+  spam: 'spam',
+  spamTerms: 'spamTerms',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -182,6 +187,15 @@ export const FavoriteScalarFieldEnum = {
 } as const
 
 export type FavoriteScalarFieldEnum = (typeof FavoriteScalarFieldEnum)[keyof typeof FavoriteScalarFieldEnum]
+
+
+export const SaasBoostScalarFieldEnum = {
+  userId: 'userId',
+  saasId: 'saasId',
+  createdAt: 'createdAt'
+} as const
+
+export type SaasBoostScalarFieldEnum = (typeof SaasBoostScalarFieldEnum)[keyof typeof SaasBoostScalarFieldEnum]
 
 
 export const AnalyticsEventScalarFieldEnum = {

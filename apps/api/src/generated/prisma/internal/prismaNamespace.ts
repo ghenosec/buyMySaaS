@@ -404,6 +404,7 @@ export const ModelName = {
   SaasCategory: 'SaasCategory',
   Review: 'Review',
   Favorite: 'Favorite',
+  SaasBoost: 'SaasBoost',
   AnalyticsEvent: 'AnalyticsEvent',
   PublicationOrder: 'PublicationOrder',
   AuditLog: 'AuditLog',
@@ -423,7 +424,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "saas" | "saasScreenshot" | "category" | "saasCategory" | "review" | "favorite" | "analyticsEvent" | "publicationOrder" | "auditLog" | "webhookEvent"
+    modelProps: "user" | "saas" | "saasScreenshot" | "category" | "saasCategory" | "review" | "favorite" | "saasBoost" | "analyticsEvent" | "publicationOrder" | "auditLog" | "webhookEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -945,6 +946,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SaasBoost: {
+      payload: Prisma.$SaasBoostPayload<ExtArgs>
+      fields: Prisma.SaasBoostFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SaasBoostFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasBoostPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SaasBoostFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasBoostPayload>
+        }
+        findFirst: {
+          args: Prisma.SaasBoostFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasBoostPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SaasBoostFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasBoostPayload>
+        }
+        findMany: {
+          args: Prisma.SaasBoostFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasBoostPayload>[]
+        }
+        create: {
+          args: Prisma.SaasBoostCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasBoostPayload>
+        }
+        createMany: {
+          args: Prisma.SaasBoostCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SaasBoostCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasBoostPayload>[]
+        }
+        delete: {
+          args: Prisma.SaasBoostDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasBoostPayload>
+        }
+        update: {
+          args: Prisma.SaasBoostUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasBoostPayload>
+        }
+        deleteMany: {
+          args: Prisma.SaasBoostDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SaasBoostUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SaasBoostUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasBoostPayload>[]
+        }
+        upsert: {
+          args: Prisma.SaasBoostUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasBoostPayload>
+        }
+        aggregate: {
+          args: Prisma.SaasBoostAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSaasBoost>
+        }
+        groupBy: {
+          args: Prisma.SaasBoostGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SaasBoostGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SaasBoostCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SaasBoostCountAggregateOutputType> | number
+        }
+      }
+    }
     AnalyticsEvent: {
       payload: Prisma.$AnalyticsEventPayload<ExtArgs>
       fields: Prisma.AnalyticsEventFieldRefs
@@ -1286,6 +1361,7 @@ export const UserScalarFieldEnum = {
   email: 'email',
   emailVerifiedAt: 'emailVerifiedAt',
   passwordHash: 'passwordHash',
+  googleId: 'googleId',
   avatarUrl: 'avatarUrl',
   role: 'role',
   createdAt: 'createdAt',
@@ -1318,6 +1394,7 @@ export const SaasScalarFieldEnum = {
   billingInterval: 'billingInterval',
   pricingLabel: 'pricingLabel',
   isBrazilian: 'isBrazilian',
+  isAdult: 'isAdult',
   tags: 'tags',
   technologies: 'technologies',
   status: 'status',
@@ -1368,6 +1445,8 @@ export const ReviewScalarFieldEnum = {
   rating: 'rating',
   comment: 'comment',
   hidden: 'hidden',
+  spam: 'spam',
+  spamTerms: 'spamTerms',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1382,6 +1461,15 @@ export const FavoriteScalarFieldEnum = {
 } as const
 
 export type FavoriteScalarFieldEnum = (typeof FavoriteScalarFieldEnum)[keyof typeof FavoriteScalarFieldEnum]
+
+
+export const SaasBoostScalarFieldEnum = {
+  userId: 'userId',
+  saasId: 'saasId',
+  createdAt: 'createdAt'
+} as const
+
+export type SaasBoostScalarFieldEnum = (typeof SaasBoostScalarFieldEnum)[keyof typeof SaasBoostScalarFieldEnum]
 
 
 export const AnalyticsEventScalarFieldEnum = {
@@ -1815,6 +1903,7 @@ export type GlobalOmitConfig = {
   saasCategory?: Prisma.SaasCategoryOmit
   review?: Prisma.ReviewOmit
   favorite?: Prisma.FavoriteOmit
+  saasBoost?: Prisma.SaasBoostOmit
   analyticsEvent?: Prisma.AnalyticsEventOmit
   publicationOrder?: Prisma.PublicationOrderOmit
   auditLog?: Prisma.AuditLogOmit
