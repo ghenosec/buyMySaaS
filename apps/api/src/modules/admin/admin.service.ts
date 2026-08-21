@@ -52,24 +52,33 @@ export class AdminService {
     });
   }
   async submission(id: string) {
-    const item = await this.prisma.saas.findUnique({
-      where: { id },
-      include: {
-        owner: { select: { name: true, email: true } },
-        categories: { include: { category: true } },
-        screenshots: true,
-        reviews: {
-          where: { hidden: false },
-          include: {
-            user: { select: { id: true, name: true, email: true } },
+    const [item, spamReviews] = await this.prisma.$transaction([
+      this.prisma.saas.findUnique({
+        where: { id },
+        include: {
+          owner: { select: { name: true, email: true } },
+          categories: { include: { category: true } },
+          screenshots: true,
+          reviews: {
+            where: { hidden: false },
+            include: {
+              user: { select: { id: true, name: true, email: true } },
+            },
+            orderBy: { createdAt: 'desc' },
           },
-          orderBy: { createdAt: 'desc' },
+          orders: { orderBy: { createdAt: 'desc' } },
         },
-        orders: { orderBy: { createdAt: 'desc' } },
-      },
-    });
+      }),
+      this.prisma.review.findMany({
+        where: { saasId: id, spam: true },
+        include: {
+          user: { select: { id: true, name: true, email: true } },
+        },
+        orderBy: { createdAt: 'desc' },
+      }),
+    ]);
     if (!item) throw new NotFoundException();
-    return item;
+    return { ...item, spamReviews };
   }
   users(search?: string) {
     const term = search?.trim();
@@ -213,7 +222,7 @@ export class AdminService {
         user: { select: { id: true, email: true } },
       },
     });
-    if (!review || review.saas.status !== 'PUBLISHED')
+    if (!review || review.saas.status !== 'PUBLISHED' || !review.spam)
       throw new NotFoundException('Avaliação não encontrada');
     await this.prisma.$transaction(async (tx) => {
       await tx.auditLog.create({
@@ -229,6 +238,7 @@ export class AdminService {
             userId: review.user.id,
             userEmail: review.user.email,
             rating: review.rating,
+            spamTerms: review.spamTerms,
           },
         },
       });

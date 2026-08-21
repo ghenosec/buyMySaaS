@@ -6,6 +6,7 @@ import {
 import { Prisma } from '../../generated/prisma/client';
 import { assertOwnership } from '../../common/ownership';
 import { PrismaService } from '../prisma/prisma.service';
+import { ModerationService } from '../moderation/moderation.service';
 import { PublicationStateService } from '../saas/publication-state.service';
 import { MercadoPagoPaymentProvider } from './mercado-pago.provider';
 import { MockPaymentProvider } from './mock-payment.provider';
@@ -16,6 +17,7 @@ export class PaymentsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly states: PublicationStateService,
+    private readonly moderation: ModerationService,
     private readonly mock: MockPaymentProvider,
     private readonly mercadoPago: MercadoPagoPaymentProvider,
   ) {}
@@ -28,6 +30,21 @@ export class PaymentsService {
   async submit(userId: string, saasId: string) {
     const saas = await this.prisma.saas.findUnique({ where: { id: saasId } });
     assertOwnership(saas, userId);
+    this.moderation.assertAllowed([
+      saas.name,
+      saas.slug,
+      saas.tagline,
+      saas.shortDescription,
+      saas.description,
+      saas.websiteUrl,
+      saas.trialUrl,
+      saas.checkoutUrl,
+      saas.docsUrl,
+      saas.demoUrl,
+      saas.pricingLabel,
+      saas.tags,
+      saas.technologies,
+    ]);
     this.states.assertCanSubmit(saas.status);
     const feeEnabled = process.env.PUBLICATION_FEE_ENABLED !== 'false';
     if (!feeEnabled) {

@@ -5,11 +5,15 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { ModerationService } from '../moderation/moderation.service';
 import { ReviewDto } from './engagements.dto';
 
 @Injectable()
 export class EngagementsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly moderation: ModerationService,
+  ) {}
   listReviews(saasId: string) {
     return this.prisma.review.findMany({
       where: { saasId, hidden: false },
@@ -25,17 +29,35 @@ export class EngagementsService {
       throw new NotFoundException('SaaS não encontrado');
     if (saas.ownerId === userId)
       throw new ForbiddenException('Você não pode avaliar o próprio produto');
+    const moderation = this.moderation.scan([dto.comment]);
+    const reviewData = {
+      rating: dto.rating,
+      comment: dto.comment,
+      hidden: moderation.blocked,
+      spam: moderation.blocked,
+      spamTerms: moderation.terms,
+    };
     return this.prisma.review.upsert({
       where: { userId_saasId: { userId, saasId } },
-      create: { userId, saasId, rating: dto.rating, comment: dto.comment },
-      update: { rating: dto.rating, comment: dto.comment, hidden: false },
+      create: { userId, saasId, ...reviewData },
+      update: reviewData,
     });
   }
   async updateReview(userId: string, id: string, dto: ReviewDto) {
     const review = await this.prisma.review.findUnique({ where: { id } });
     if (!review) throw new NotFoundException('Review não encontrada');
     if (review.userId !== userId) throw new ForbiddenException();
-    return this.prisma.review.update({ where: { id }, data: dto });
+    const moderation = this.moderation.scan([dto.comment]);
+    return this.prisma.review.update({
+      where: { id },
+      data: {
+        rating: dto.rating,
+        comment: dto.comment,
+        hidden: moderation.blocked,
+        spam: moderation.blocked,
+        spamTerms: moderation.terms,
+      },
+    });
   }
   async deleteReview(userId: string, id: string) {
     const review = await this.prisma.review.findUnique({ where: { id } });

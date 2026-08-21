@@ -57,6 +57,7 @@ export class CreateSaasDto {
   @IsOptional() @IsEnum(BillingInterval) billingInterval?: BillingInterval;
   @IsOptional() @IsString() @MaxLength(60) pricingLabel?: string;
   @IsOptional() @IsBoolean() isBrazilian?: boolean;
+  @IsOptional() @IsBoolean() isAdult?: boolean;
   @IsArray() @ArrayMaxSize(12) @IsString({ each: true }) tags!: string[];
   @IsArray()
   @ArrayMaxSize(15)
@@ -88,7 +89,7 @@ export class ExploreQueryDto {
   @IsOptional()
   @Transform(({ value }) => value === 'true')
   @IsBoolean()
-  brazilian?: boolean;
+  adult?: boolean;
   @IsOptional() @Type(() => Number) @IsInt() @Min(0) minPrice?: number;
   @IsOptional() @Type(() => Number) @IsInt() @Min(0) maxPrice?: number;
   @IsOptional()

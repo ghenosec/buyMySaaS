@@ -3,6 +3,7 @@ import { Prisma, SaasStatus } from '../../generated/prisma/client';
 import { assertOwnership } from '../../common/ownership';
 import { assertSafeExternalUrl } from '../../common/safe-url';
 import { PrismaService } from '../prisma/prisma.service';
+import { ModerationService } from '../moderation/moderation.service';
 import { CreateSaasDto, ExploreQueryDto, UpdateSaasDto } from './saas.dto';
 import { TrendingService, type TrendSignals } from './trending.service';
 
@@ -16,7 +17,7 @@ const publicInclude = {
       favorites: true,
       boosts: true,
       analyticsEvents: true,
-      reviews: true,
+      reviews: { where: { hidden: false } },
     },
   },
 };
@@ -26,9 +27,11 @@ export class SaasService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly trending: TrendingService,
+    private readonly moderation: ModerationService,
   ) {}
 
   async create(ownerId: string, dto: CreateSaasDto) {
+    this.assertSaasContentAllowed(dto);
     const slug = await this.uniqueSlug(dto.slug ?? dto.name);
     const urls = this.validatedUrls(dto);
     return this.prisma.saas.create({
@@ -72,6 +75,7 @@ export class SaasService {
   async update(ownerId: string, id: string, dto: UpdateSaasDto) {
     const current = await this.prisma.saas.findUnique({ where: { id } });
     assertOwnership(current, ownerId);
+    this.assertSaasContentAllowed(dto);
     const urls = this.validatedUrls(dto);
     const data: Prisma.SaasUpdateInput = { ...urls };
     for (const key of [
@@ -254,6 +258,23 @@ export class SaasService {
   }
   private cleanList(values: string[]) {
     return [...new Set(values.map((value) => value.trim()).filter(Boolean))];
+  }
+  private assertSaasContentAllowed(dto: Partial<CreateSaasDto>) {
+    this.moderation.assertAllowed([
+      dto.name,
+      dto.slug,
+      dto.tagline,
+      dto.shortDescription,
+      dto.description,
+      dto.websiteUrl,
+      dto.trialUrl,
+      dto.checkoutUrl,
+      dto.docsUrl,
+      dto.demoUrl,
+      dto.pricingLabel,
+      dto.tags,
+      dto.technologies,
+    ]);
   }
   private average(reviews: { rating: number }[]) {
     return reviews.length
