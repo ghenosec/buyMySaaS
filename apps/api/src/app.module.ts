@@ -22,6 +22,10 @@ const envSchema = z.object({
   DATABASE_URL: z.string().min(1),
   AUTH_SECRET: z.string().min(32),
   WEB_URL: z.string().url().default('http://localhost:3000'),
+  GOOGLE_CLIENT_ID: z.string().optional(),
+  GOOGLE_CLIENT_SECRET: z.string().optional(),
+  GOOGLE_REDIRECT_URI: z.string().url().optional(),
+  MODERATION_BLOCKED_TERMS: z.string().optional(),
   PUBLICATION_FEE_CENTS: z.coerce.number().int().nonnegative().default(990),
 });
 
