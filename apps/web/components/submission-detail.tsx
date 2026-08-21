@@ -1,13 +1,30 @@
 'use client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Check, ExternalLink, Trash2, X } from 'lucide-react';
+import {
+  Check,
+  ExternalLink,
+  ShieldAlert,
+  Star,
+  Trash2,
+  X,
+} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { clientApi, money } from '@/lib/api';
 import { Saas } from '@/lib/types';
 import { StatusBadge } from './status-badge';
-type Item = Saas & { owner: { name: string; email: string } };
+type Item = Omit<Saas, 'owner' | 'reviews'> & {
+  owner: { name: string; email: string };
+  spamReviews?: {
+    id: string;
+    rating: number;
+    comment: string;
+    spamTerms?: string[];
+    createdAt: string;
+    user: { id: string; name: string; email: string };
+  }[];
+};
 export function SubmissionDetail({ id }: { id: string }) {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -47,6 +64,20 @@ export function SubmissionDetail({ id }: { id: string }) {
       );
     }
   }
+  async function removeReview(reviewId: string) {
+    try {
+      await clientApi(`/admin/reviews/${reviewId}`, { method: 'DELETE' });
+      toast.success('Avaliação excluída');
+      await queryClient.invalidateQueries({ queryKey: ['submission', id] });
+      await queryClient.invalidateQueries({ queryKey: ['submissions'] });
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : 'Não foi possível excluir a avaliação',
+      );
+    }
+  }
   if (!item)
     return (
       <div className="skeleton" style={{ height: 360, borderRadius: 18 }} />
@@ -58,6 +89,12 @@ export function SubmissionDetail({ id }: { id: string }) {
           <div>
             <span className="eyebrow">Submissão</span>
             <h2>{item.name}</h2>
+            {item.isAdult ? (
+              <span className="pill" style={{ color: 'var(--danger)' }}>
+                <ShieldAlert size={13} />
+                Produto +18
+              </span>
+            ) : null}
           </div>
           <StatusBadge status={item.status} />
         </div>
@@ -83,6 +120,72 @@ export function SubmissionDetail({ id }: { id: string }) {
         >
           Verificar website <ExternalLink size={16} />
         </a>
+        {item.spamReviews?.length ? (
+          <section className="stack" style={{ marginTop: 10 }}>
+            <div>
+              <span className="eyebrow">Caixa de spam</span>
+              <h3 style={{ margin: '6px 0 0' }}>
+                Avaliações retidas automaticamente
+              </h3>
+              <p className="muted" style={{ margin: '6px 0 0' }}>
+                Avaliações com palavras bloqueadas ficam escondidas do público.
+                O admin pode apagar somente por esta caixa.
+              </p>
+            </div>
+            {item.spamReviews.map((review) => (
+              <article
+                className="card stack"
+                style={{ padding: 16 }}
+                key={review.id}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    gap: 12,
+                    alignItems: 'flex-start',
+                  }}
+                >
+                  <div>
+                    <strong>{review.user.name}</strong>
+                    <br />
+                    <span className="muted" style={{ fontSize: 13 }}>
+                      {review.user.email} ·{' '}
+                      {new Date(review.createdAt).toLocaleDateString('pt-BR')}
+                    </span>
+                  </div>
+                  <span className="pill">
+                    <Star size={13} fill="currentColor" />
+                    {review.rating}
+                  </span>
+                </div>
+                {review.spamTerms?.length ? (
+                  <div
+                    className="notice"
+                    style={{ fontSize: 13, padding: '10px 12px' }}
+                  >
+                    Termos detectados:{' '}
+                    <strong>{review.spamTerms.join(', ')}</strong>
+                  </div>
+                ) : null}
+                <p style={{ margin: 0 }}>{review.comment}</p>
+                <button
+                  className="btn btn-ghost btn-sm"
+                  style={{ color: 'var(--danger)', width: 'max-content' }}
+                  type="button"
+                  onClick={() => void removeReview(review.id)}
+                >
+                  <Trash2 size={15} />
+                  Excluir avaliação
+                </button>
+              </article>
+            ))}
+          </section>
+        ) : (
+          <p className="muted" style={{ fontSize: 14 }}>
+            Caixa de spam vazia. Nenhuma avaliação retida automaticamente.
+          </p>
+        )}
       </article>
       <aside className="card detail-aside">
         {item.status === 'PENDING_REVIEW' && (
