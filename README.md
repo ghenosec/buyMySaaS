@@ -1,10 +1,8 @@
-# Buy My SaaS
-
 <p align="center">
   <img src="apps/web/public/logo.png" width="120" alt="Logo Buy My SaaS" />
-</p>
+</p> 
 
-<h2 align="center">O marketplace brasileiro para descobrir, publicar e acompanhar SaaS independentes.</h2>
+<h2 align="center">Buy My SaaS</h2>
 
 Buy My SaaS nasceu para dar vitrine a produtos digitais criados por makers, indie hackers, pequenos times e empresas que estão construindo soluções SaaS.
 
