@@ -17,7 +17,7 @@ Visitantes podem explorar produtos por categoria, preço, origem, avaliação e 
 ## Para quem é
 
 - Makers lançando um novo SaaS
-- Indie hackers buscando visibilidade
+- Desenvolvedores buscando visibilidade
 - Pequenas empresas com produtos digitais
 - Usuários procurando ferramentas úteis
 - Comunidades que querem descobrir soluções brasileiras e independentes
