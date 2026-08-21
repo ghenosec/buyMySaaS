@@ -123,12 +123,6 @@ Grupos principais:
 - `/admin`: dashboard, fila, moderação e exclusão administrativa
 - `/uploads`: envio autenticado de imagens
 
-Com o servidor local rodando, a documentação Swagger fica em:
-
-```text
-http://localhost:3001/api/docs
-```
-
 ## Testes e qualidade
 
 A API possui testes cobrindo contratos HTTP, autenticação, ownership, transições de estado, validação de URLs, categorias e helpers de segurança.
