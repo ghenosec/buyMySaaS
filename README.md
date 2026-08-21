@@ -1,10 +1,10 @@
 <p align="center">
   <img src="apps/web/public/logo.png" width="120" alt="Logo Buy My SaaS" />
-</p> 
+</p>
 
 <h2 align="center">Buy My SaaS</h2>
 
-Buy My SaaS nasceu para dar vitrine a produtos digitais criados por makers, indie hackers, pequenos times e empresas que estão construindo soluções SaaS.
+A ideia do Buy My SaaS nasceu do [Find-My-Saas](https://find-my-saas.com/) para dar uma vitrine a produtos digitais criados por desenvolvedores autônomos, pequenos times e empresas que estão construindo soluções SaaS.
 
 A plataforma reúne descoberta, publicação, moderação, analytics e pagamentos em uma experiência simples: quem procura ferramentas encontra bons produtos; quem cria SaaS ganha um espaço organizado para apresentar, validar e divulgar sua solução.
 
@@ -41,6 +41,7 @@ Cada SaaS pode ter:
 - Nome e tagline
 - Descrição curta e completa
 - Logo
+- Imagens de exemplo do produto
 - Categorias
 - Tags
 - Tecnologias usadas
@@ -48,14 +49,14 @@ Cada SaaS pode ter:
 - Link do site
 - Link de trial
 - Link de checkout
+- Marcação para conteúdo +18
 - Avaliações públicas
 
 ### Área do maker
 
 O criador do produto pode:
 
-- Criar conta
-- Fazer login
+- Entrar com Google
 - Cadastrar um SaaS
 - Editar informações do produto
 - Enviar logo
@@ -73,6 +74,7 @@ Administradores podem:
 - Aprovar produtos
 - Rejeitar produtos com motivo
 - Remover produtos publicados quando necessário
+- Remover avaliações indevidas de produtos publicados
 - Gerenciar permissões de usuários
 - Promover usuários comuns para administradores
 - Rebaixar administradores quando necessário
@@ -86,9 +88,10 @@ A plataforma registra interações importantes, como:
 - Cliques em trial
 - Cliques em compra
 - Favoritos
+- Boosts/impulsionamentos únicos por usuário
 - Avaliações
 
-Com isso, o maker consegue entender melhor o interesse gerado pelo produto.
+Com isso, o maker consegue entender melhor o interesse gerado pelo produto, e a vitrine consegue destacar SaaS em alta por engajamento recente da comunidade — não apenas por data de publicação.
 
 ### Pagamentos e publicação
 
@@ -111,6 +114,8 @@ As ações sensíveis são validadas no backend, incluindo:
 - Auditoria de ações administrativas
 
 Uploads de imagem são validados pelo tipo real do arquivo, não apenas pela extensão ou pelo tipo informado pelo navegador.
+
+Produtos marcados como +18 recebem indicação visual e proteção nas imagens, exigindo confirmação antes da visualização.
 
 ## Experiência pública
 
@@ -190,7 +195,7 @@ O produto já cobre a jornada principal: descoberta pública, cadastro de produt
 
 Próximas evoluções naturais incluem:
 
-- Recuperação de senha com e-mail transacional
+- Autenticação obrigatória via Google OAuth
 - Moderação dedicada de avaliações
 - Busca full-text mais avançada
 - Reaprovação para edições sensíveis
