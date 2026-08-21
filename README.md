@@ -62,6 +62,7 @@ Também há cuidados de segurança já aplicados no backend, incluindo validaç�
 - Visualização detalhada de cada produto
 - Aprovação ou rejeição com motivo
 - Exclusão de SaaS aprovado quando necessário
+- Gestão de permissões para promover ou rebaixar administradores
 - Registro de auditoria para ações administrativas
 
 ## Stack técnica
@@ -72,7 +73,7 @@ Também há cuidados de segurança já aplicados no backend, incluindo validaç�
 - Monorepo: npm workspaces
 - Infra local: Docker Compose
 - Testes: Jest, Supertest e Playwright
-- Storage: S3-compatible
+- Storage: s3-compatible em produção
 - Pagamentos: Mercado Pago
 
 ## Arquitetura
@@ -120,8 +121,28 @@ Grupos principais:
 - `/saas/:id/reviews` e `/reviews/:id`: avaliações
 - `/analytics/event` e `/saas/:slug/out`: eventos e redirects rastreados
 - `/webhooks/mercado-pago`: webhook de pagamento
-- `/admin`: dashboard, fila, moderação e exclusão administrativa
+- `/admin`: dashboard, fila, moderação, permissões e exclusão administrativa
 - `/uploads`: envio autenticado de imagens
+
+## Conta administradora no seed
+
+O projeto não mantém e-mail ou senha de administrador hardcoded no código.
+
+Se quiser criar uma conta admin ao rodar o seed local, defina no `.env`:
+
+```env
+SEED_ADMIN_NAME=Seu Nome
+SEED_ADMIN_EMAIL=seu-email@example.com
+SEED_ADMIN_PASSWORD=troque-por-uma-senha-forte
+```
+
+Depois rode:
+
+```bash
+npm run db:seed
+```
+
+Administradores também podem promover ou rebaixar usuários já existentes pelo painel administrativo.
 
 ## Testes e qualidade
 
@@ -129,14 +150,6 @@ A API possui testes cobrindo contratos HTTP, autenticação, ownership, transiç
 
 O Playwright cobre páginas públicas, responsividade e o fluxo maker → submissão → aprovação admin → página pública.
 
-Antes de publicar uma alteração, rode:
-
-```bash
-npm run lint
-npm run typecheck
-npm test
-npm run build
-```
 
 ## Limitações conhecidas do MVP
 
