@@ -1,162 +1,203 @@
+# Buy My SaaS
+
 <p align="center">
   <img src="apps/web/public/logo.png" width="120" alt="Logo Buy My SaaS" />
 </p>
 
-<h1 align="center">Buy My SaaS</h1>
+<h2 align="center">O marketplace brasileiro para descobrir, publicar e acompanhar SaaS independentes.</h2>
 
-Buy My SaaS é um marketplace brasileiro para descobrir, publicar e acompanhar produtos SaaS independentes.
+Buy My SaaS nasceu para dar vitrine a produtos digitais criados por makers, indie hackers, pequenos times e empresas que estão construindo soluções SaaS.
 
-A ideia do projeto é simples: dar visibilidade para makers, indie hackers, pequenos times e empresas que criam soluções digitais, reunindo esses produtos em um catálogo organizado, pesquisável e com fluxo de publicação moderado.
+A plataforma reúne descoberta, publicação, moderação, analytics e pagamentos em uma experiência simples: quem procura ferramentas encontra bons produtos; quem cria SaaS ganha um espaço organizado para apresentar, validar e divulgar sua solução.
 
-No lado público, visitantes podem explorar SaaS por categorias, preço, país, avaliações e popularidade. No lado do maker, cada usuário pode cadastrar seu produto, enviar logo, revisar as informações, acompanhar analytics e submeter para publicação. Já a administração consegue revisar, aprovar, rejeitar e remover produtos quando necessário.
+## O que é o Buy My SaaS?
 
-O MVP inclui:
+Buy My SaaS é um marketplace de SaaS com foco em curadoria e descoberta.
 
-- Catálogo público de SaaS
-- Busca, filtros e páginas por categoria
-- Página individual de produto
-- Cadastro e login com sessão segura
-- Área do maker para criar e editar produtos
-- Upload de logos/imagens
-- Sistema de favoritos e avaliações
-- Fluxo de publicação gratuita ou paga
-- Fila administrativa de moderação
-- Analytics básicos de visualizações e cliques
-- Suporte a armazenamento local ou S3-compatible
-- Suporte a pagamento mock ou Mercado Pago
+Visitantes podem explorar produtos por categoria, preço, origem, avaliação e popularidade. Makers podem cadastrar seus SaaS, adicionar informações comerciais, enviar logo, revisar o anúncio e acompanhar métricas. Administradores mantêm a qualidade da vitrine aprovando, rejeitando ou removendo publicações quando necessário.
 
-## Visão geral
+## Para quem é
 
-O projeto foi pensado como uma base realista para um marketplace de SaaS: público o suficiente para descoberta, controlado o suficiente para evitar spam e com separação clara entre visitante, maker e administrador.
+- Makers lançando um novo SaaS
+- Indie hackers buscando visibilidade
+- Pequenas empresas com produtos digitais
+- Usuários procurando ferramentas úteis
+- Comunidades que querem descobrir soluções brasileiras e independentes
 
-Produtos cadastrados não aparecem automaticamente no catálogo público. Eles passam por estados como rascunho, pagamento pendente, análise, publicado, rejeitado ou arquivado. Isso permite manter a vitrine limpa e dá ao administrador controle sobre o que entra no marketplace.
+## Funcionalidades principais
 
-Também há cuidados de segurança já aplicados no backend, incluindo validação de entrada, cookies HTTP-only, proteção contra URLs perigosas, validação real de arquivos enviados e uso de Prisma ORM para acesso ao banco.
+### Descoberta de produtos
 
-## Funcionalidades por área
+- Catálogo público de SaaS publicados
+- Página inicial com chamada clara para descoberta e publicação
+- Exploração por categorias
+- Busca e filtros
+- Página individual para cada produto
+- Informações de preço, país, tecnologias, categorias e descrição completa
+- Links rastreados para site, trial ou checkout do SaaS
 
-### Público
+### Perfil do produto
 
-- Home com apresentação do marketplace
-- Exploração de produtos publicados
-- Filtros por categoria, preço, origem, trial e ordenação
-- Página detalhada de cada SaaS
+Cada SaaS pode ter:
+
+- Nome e tagline
+- Descrição curta e completa
+- Logo
+- Categorias
+- Tags
+- Tecnologias usadas
+- Modelo de preço
+- Link do site
+- Link de trial
+- Link de checkout
 - Avaliações públicas
-- CTAs rastreados para site, trial ou checkout do produto
-- SEO com metadata, Open Graph, sitemap e robots
 
-### Maker
+### Área do maker
 
-- Cadastro e login
-- Sessão persistente por cookie seguro
-- Cadastro de SaaS com nome, descrição, preço, categorias, tecnologias e links
+O criador do produto pode:
+
+- Criar conta
+- Fazer login
+- Cadastrar um SaaS
+- Editar informações do produto
+- Enviar logo
+- Revisar antes de publicar
+- Enviar para análise
+- Acompanhar favoritos e analytics
+- Ver produtos cadastrados no painel
+
+### Moderação administrativa
+
+Administradores podem:
+
+- Ver o painel administrativo
+- Acompanhar submissões
+- Aprovar produtos
+- Rejeitar produtos com motivo
+- Remover produtos publicados quando necessário
+- Gerenciar permissões de usuários
+- Promover usuários comuns para administradores
+- Rebaixar administradores quando necessário
+
+### Analytics e engajamento
+
+A plataforma registra interações importantes, como:
+
+- Visualizações de página
+- Cliques no site do SaaS
+- Cliques em trial
+- Cliques em compra
+- Favoritos
+- Avaliações
+
+Com isso, o maker consegue entender melhor o interesse gerado pelo produto.
+
+### Pagamentos e publicação
+
+O Buy My SaaS já possui fluxo preparado para publicação gratuita ou paga.
+
+O sistema pode operar com pagamento mock em ambiente local e com Mercado Pago em produção, permitindo cobrar uma taxa de publicação quando essa regra de negócio estiver ativa.
+
+## Segurança e qualidade
+
+O projeto foi pensado para evitar depender do frontend como barreira de segurança.
+
+As ações sensíveis são validadas no backend, incluindo:
+
+- Autenticação
+- Permissões administrativas
+- Ownership de produtos
+- Upload seguro de imagens
+- Proteção contra URLs perigosas
+- Validação de dados enviados pelo usuário
+- Auditoria de ações administrativas
+
+Uploads de imagem são validados pelo tipo real do arquivo, não apenas pela extensão ou pelo tipo informado pelo navegador.
+
+## Experiência pública
+
+O visitante consegue navegar pelo marketplace sem precisar criar conta.
+
+Ele pode:
+
+- Explorar produtos
+- Abrir detalhes de um SaaS
+- Ver avaliações
+- Filtrar por categoria
+- Acessar o site oficial do produto
+- Descobrir ferramentas brasileiras e independentes
+
+## Experiência do maker
+
+O maker tem uma jornada guiada:
+
+1. Cria uma conta
+2. Cadastra o SaaS
+3. Preenche descrição, preço, categorias e links
+4. Envia a logo
+5. Revisa o anúncio
+6. Envia para análise
+7. Acompanha métricas após a publicação
+
+Esse fluxo ajuda a manter o catálogo organizado e evita publicações incompletas.
+
+## Experiência administrativa
+
+A administração mantém a vitrine limpa e confiável.
+
+O painel permite revisar produtos enviados, aprovar o que está pronto, rejeitar o que precisa de ajustes e controlar quais contas têm permissão administrativa.
+
+## O que já foi construído
+
+- Marketplace público
+- Área do maker
+- Painel administrativo
+- Fluxo de login e cadastro
+- Criação e edição de SaaS
 - Upload de logo
-- Revisão antes do envio
-- Publicação gratuita ou via checkout
-- Dashboard com produtos, favoritos e analytics
+- Moderação de publicações
+- Exclusão administrativa de produtos
+- Gestão de permissões de administradores
+- Categorias com contagem apenas de produtos publicados
+- Favoritos
+- Avaliações
+- Analytics
+- Integração preparada para Mercado Pago
+- Storage local ou S3-compatible
+- README público com apresentação do produto
 
-### Administração
+## Tecnologias usadas
 
-- Dashboard administrativo
-- Fila de submissões
-- Visualização detalhada de cada produto
-- Aprovação ou rejeição com motivo
-- Exclusão de SaaS aprovado quando necessário
-- Gestão de permissões para promover ou rebaixar administradores
-- Registro de auditoria para ações administrativas
+O produto foi construído com tecnologias modernas para web, API, banco de dados, testes e deploy.
 
-## Stack técnica
+Entre elas:
 
-- Web: Next.js, React, TypeScript, Tailwind CSS e TanStack Query
-- API: NestJS, REST, Swagger, class-validator, cookies HTTP-only e rate limiting
-- Banco: PostgreSQL com Prisma ORM e migrations versionadas
-- Monorepo: npm workspaces
-- Infra local: Docker Compose
-- Testes: Jest, Supertest e Playwright
-- Storage: s3-compatible em produção
-- Pagamentos: Mercado Pago
+- Next.js
+- React
+- TypeScript
+- NestJS
+- PostgreSQL
+- Prisma
+- Docker
+- Mercado Pago
+- S3-compatible storage
+- Playwright
+- Jest
 
-## Arquitetura
+## Status do projeto
 
-```text
-apps/web (porta 3000)
-  └─ páginas públicas, dashboard maker e admin
-       │ REST /api/v1 + cookie de sessão
-       ▼
-apps/api (porta 3001)
-  ├─ auth, catálogo, avaliações, analytics, pagamentos e uploads
-  ├─ Swagger em /api/docs
-  └─ Prisma ──► PostgreSQL (host 5433 → container 5432)
-```
+Buy My SaaS está em fase de MVP funcional.
 
-O navegador conversa diretamente com a API. A autenticação usa cookie assinado, `httpOnly` e `sameSite=lax`. Senhas são protegidas com Argon2. Mutações de produtos verificam ownership no servidor, e ações administrativas exigem usuário com papel de admin.
+O produto já cobre a jornada principal: descoberta pública, cadastro de produto, envio para análise, aprovação administrativa e publicação no catálogo.
 
-## Segurança implementada
+Próximas evoluções naturais incluem:
 
-- Validação global de DTOs com `whitelist`, `transform` e `forbidNonWhitelisted`
-- Rate limiting global e limites específicos para login/cadastro
-- Senhas com Argon2
-- Sessão em cookie HTTP-only
-- Helmet ativo na API
-- CORS restrito ao `WEB_URL`
-- Proteção básica contra CSRF por validação de `Origin`/`Referer`
-- URLs externas normalizadas e validadas antes de salvar ou redirecionar
-- Bloqueio de protocolos perigosos, credenciais em URL e hosts privados em produção
-- Upload de imagens validado por assinatura real do arquivo, não apenas por MIME informado
-- Upload limitado a JPEG, PNG e WebP de até 5 MB
-- Arquivos enviados recebem nomes aleatórios e extensão inferida com segurança
-- Headers `nosniff` nos arquivos servidos localmente
-- Prisma ORM para reduzir risco de SQL injection
-- JSON-LD serializado com escape contra XSS
+- Recuperação de senha com e-mail transacional
+- Moderação dedicada de avaliações
+- Busca full-text mais avançada
+- Reaprovação para edições sensíveis
+- Deploy final com domínio público, storage externo e Mercado Pago em produção
 
-## API
+## Desenvolvido por
 
-Todos os endpoints usam o prefixo `/api/v1`.
-
-Grupos principais:
-
-- `/auth`: cadastro, login, logout, sessão e estrutura de recuperação de senha
-- `/saas` e `/categories`: catálogo público
-- `/me/saas`, `/me/favorites` e `/me/dashboard`: operações autenticadas do maker
-- `/saas/:id/reviews` e `/reviews/:id`: avaliações
-- `/analytics/event` e `/saas/:slug/out`: eventos e redirects rastreados
-- `/webhooks/mercado-pago`: webhook de pagamento
-- `/admin`: dashboard, fila, moderação, permissões e exclusão administrativa
-- `/uploads`: envio autenticado de imagens
-
-## Conta administradora no seed
-
-O projeto não mantém e-mail ou senha de administrador hardcoded no código.
-
-Se quiser criar uma conta admin ao rodar o seed local, defina no `.env`:
-
-```env
-SEED_ADMIN_NAME=Seu Nome
-SEED_ADMIN_EMAIL=seu-email@example.com
-SEED_ADMIN_PASSWORD=troque-por-uma-senha-forte
-```
-
-Depois rode:
-
-```bash
-npm run db:seed
-```
-
-Administradores também podem promover ou rebaixar usuários já existentes pelo painel administrativo.
-
-## Testes e qualidade
-
-A API possui testes cobrindo contratos HTTP, autenticação, ownership, transições de estado, validação de URLs, categorias e helpers de segurança.
-
-O Playwright cobre páginas públicas, responsividade e o fluxo maker → submissão → aprovação admin → página pública.
-
-
-## Limitações conhecidas do MVP
-
-- Recuperação de senha tem contrato preparado, mas ainda exige provedor de e-mail e emissão de token.
-- Avaliações podem ser ocultadas no modelo, porém ainda não há tela dedicada de moderação.
-- Busca usa filtros PostgreSQL; ranking full-text pode ser adicionado quando houver mais volume.
-- Analytics é agregado na leitura, adequado ao volume inicial.
-- Edições de produtos já publicados permanecem visíveis e são auditadas
-- Mercado Pago real depende de credenciais, webhook HTTPS e validação no sandbox do projeto.
-- Algumas correções de dependências podem exigir upgrades maiores, como Next, Prisma ou SDKs externos.
+Desenvolvido por [ghenosec](https://github.com/ghenosec).
