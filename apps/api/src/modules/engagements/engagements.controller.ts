@@ -53,6 +53,18 @@ export class EngagementsController {
   ) {
     return this.service.unfavorite(user.id, id);
   }
+  @Get('saas/:id/boost') @UseGuards(AuthGuard) boostStatus(
+    @CurrentUser() user: AuthUser,
+    @Param('id') id: string,
+  ) {
+    return this.service.boostStatus(user.id, id);
+  }
+  @Post('saas/:id/boost') @UseGuards(AuthGuard) boost(
+    @CurrentUser() user: AuthUser,
+    @Param('id') id: string,
+  ) {
+    return this.service.boost(user.id, id);
+  }
   @Get('me/favorites') @UseGuards(AuthGuard) favorites(
     @CurrentUser() user: AuthUser,
   ) {

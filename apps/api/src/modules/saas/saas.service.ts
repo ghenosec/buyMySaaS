@@ -4,14 +4,21 @@ import { assertOwnership } from '../../common/ownership';
 import { assertSafeExternalUrl } from '../../common/safe-url';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateSaasDto, ExploreQueryDto, UpdateSaasDto } from './saas.dto';
-import { TrendingService } from './trending.service';
+import { TrendingService, type TrendSignals } from './trending.service';
 
 const publicInclude = {
   owner: { select: { id: true, name: true, avatarUrl: true } },
   categories: { include: { category: true } },
   screenshots: { orderBy: { position: 'asc' as const } },
   reviews: { where: { hidden: false }, select: { rating: true } },
-  _count: { select: { favorites: true, analyticsEvents: true, reviews: true } },
+  _count: {
+    select: {
+      favorites: true,
+      boosts: true,
+      analyticsEvents: true,
+      reviews: true,
+    },
+  },
 };
 
 @Injectable()
@@ -38,6 +45,7 @@ export class SaasService {
         countryCode: dto.countryCode.toUpperCase(),
         language: dto.language,
         isBrazilian: dto.isBrazilian ?? dto.countryCode.toUpperCase() === 'BR',
+        isAdult: dto.isAdult ?? false,
         pricingType: dto.pricingType,
         priceCents: dto.priceCents,
         currency: dto.currency.toUpperCase(),
@@ -83,6 +91,7 @@ export class SaasService {
       data.isBrazilian =
         dto.isBrazilian ?? dto.countryCode.toUpperCase() === 'BR';
     }
+    if (dto.isAdult !== undefined) data.isAdult = dto.isAdult;
     if (dto.pricingType !== undefined) data.pricingType = dto.pricingType;
     if (dto.priceCents !== undefined) data.priceCents = dto.priceCents;
     if (dto.currency !== undefined) data.currency = dto.currency.toUpperCase();
@@ -138,9 +147,11 @@ export class SaasService {
     if (query.pricingType) where.pricingType = query.pricingType;
     if (query.free) where.pricingType = 'FREE';
     if (query.trial) where.trialUrl = { not: null };
-    if (query.brazilian) where.isBrazilian = true;
+    where.isAdult =
+      query.adult || query.category === 'adulto-18' ? true : false;
     if (query.minPrice !== undefined || query.maxPrice !== undefined)
       where.priceCents = { gte: query.minPrice, lte: query.maxPrice };
+    if (query.sort === 'trending') return this.listTrendingPublic(where, query);
     const orderBy: Prisma.SaasOrderByWithRelationInput =
       query.sort === 'price_asc'
         ? { priceCents: 'asc' }
@@ -164,11 +175,11 @@ export class SaasService {
         views: saas._count.analyticsEvents,
         clicks: 0,
         favorites: saas._count.favorites,
+        boosts: saas._count.boosts,
         reviews: saas._count.reviews,
         newestEventAt: saas.publishedAt,
       }),
     }));
-    if (query.sort === 'trending') enriched.sort((a, b) => b.score - a.score);
     if (query.sort === 'rating')
       enriched.sort((a, b) => b.averageRating - a.averageRating);
     return {
@@ -254,6 +265,208 @@ export class SaasService {
         )
       : 0;
   }
+
+  private async listTrendingPublic(
+    where: Prisma.SaasWhereInput,
+    query: ExploreQueryDto,
+  ) {
+    const since = new Date(
+      Date.now() - this.trending.windowDays * 24 * 60 * 60 * 1000,
+    );
+    const candidateIds = await this.trendingCandidateIds(where, since);
+    if (!candidateIds.length)
+      return {
+        data: [],
+        meta: {
+          page: query.page,
+          pageSize: query.pageSize,
+          total: 0,
+          totalPages: 0,
+        },
+      };
+    const scopedWhere: Prisma.SaasWhereInput = {
+      AND: [where, { id: { in: candidateIds } }],
+    };
+    const data = await this.prisma.saas.findMany({
+      where: scopedWhere,
+      include: publicInclude,
+      orderBy: { publishedAt: 'desc' },
+    });
+    const signals = await this.recentTrendSignals(
+      data.map((saas) => saas.id),
+      since,
+    );
+    const enriched = data
+      .map((saas) => ({
+        ...saas,
+        averageRating: this.average(saas.reviews),
+        score: this.trending.score({
+          ...this.emptySignals(saas.publishedAt),
+          ...signals.get(saas.id),
+          newestEventAt:
+            signals.get(saas.id)?.newestEventAt ?? saas.publishedAt,
+        }),
+      }))
+      .sort((a, b) => b.score - a.score || a.name.localeCompare(b.name));
+    const start = (query.page - 1) * query.pageSize;
+    return {
+      data: enriched.slice(start, start + query.pageSize),
+      meta: {
+        page: query.page,
+        pageSize: query.pageSize,
+        total: enriched.length,
+        totalPages: Math.ceil(enriched.length / query.pageSize),
+      },
+    };
+  }
+
+  private async trendingCandidateIds(
+    where: Prisma.SaasWhereInput,
+    since: Date,
+  ) {
+    const [recent, analytics, favorites, boosts, reviews] =
+      await this.prisma.$transaction([
+        this.prisma.saas.findMany({
+          where,
+          select: { id: true },
+          orderBy: { publishedAt: 'desc' },
+          take: 120,
+        }),
+        this.prisma.analyticsEvent.groupBy({
+          by: ['saasId'],
+          where: { createdAt: { gte: since } },
+          orderBy: { saasId: 'asc' },
+        }),
+        this.prisma.favorite.groupBy({
+          by: ['saasId'],
+          where: { createdAt: { gte: since } },
+          orderBy: { saasId: 'asc' },
+        }),
+        this.prisma.saasBoost.groupBy({
+          by: ['saasId'],
+          where: { createdAt: { gte: since } },
+          orderBy: { saasId: 'asc' },
+        }),
+        this.prisma.review.groupBy({
+          by: ['saasId'],
+          where: { createdAt: { gte: since }, hidden: false },
+          orderBy: { saasId: 'asc' },
+        }),
+      ]);
+    return [
+      ...new Set([
+        ...recent.map((item) => item.id),
+        ...analytics.map((item) => item.saasId),
+        ...favorites.map((item) => item.saasId),
+        ...boosts.map((item) => item.saasId),
+        ...reviews.map((item) => item.saasId),
+      ]),
+    ];
+  }
+
+  private async recentTrendSignals(saasIds: string[], since: Date) {
+    const map = new Map<string, TrendSignals>();
+    if (!saasIds.length) return map;
+    const [events, favorites, boosts, reviews] = await this.prisma.$transaction(
+      [
+        this.prisma.analyticsEvent.groupBy({
+          by: ['saasId', 'type'],
+          where: { saasId: { in: saasIds }, createdAt: { gte: since } },
+          orderBy: [{ saasId: 'asc' }, { type: 'asc' }],
+          _count: { _all: true },
+          _max: { createdAt: true },
+        }),
+        this.prisma.favorite.groupBy({
+          by: ['saasId'],
+          where: { saasId: { in: saasIds }, createdAt: { gte: since } },
+          orderBy: { saasId: 'asc' },
+          _count: { _all: true },
+          _max: { createdAt: true },
+        }),
+        this.prisma.saasBoost.groupBy({
+          by: ['saasId'],
+          where: { saasId: { in: saasIds }, createdAt: { gte: since } },
+          orderBy: { saasId: 'asc' },
+          _count: { _all: true },
+          _max: { createdAt: true },
+        }),
+        this.prisma.review.groupBy({
+          by: ['saasId'],
+          where: {
+            saasId: { in: saasIds },
+            createdAt: { gte: since },
+            hidden: false,
+          },
+          orderBy: { saasId: 'asc' },
+          _count: { _all: true },
+          _max: { createdAt: true },
+        }),
+      ],
+    );
+    const get = (saasId: string) => {
+      const signals = map.get(saasId) ?? this.emptySignals();
+      map.set(saasId, signals);
+      return signals;
+    };
+    for (const event of events) {
+      const signals = get(event.saasId);
+      if (event.type === 'PAGE_VIEW')
+        signals.views += this.countAll(event._count);
+      if (event.type.endsWith('CLICK'))
+        signals.clicks += this.countAll(event._count);
+      signals.newestEventAt = this.newestDate(
+        signals.newestEventAt,
+        event._max?.createdAt,
+      );
+    }
+    for (const favorite of favorites) {
+      const signals = get(favorite.saasId);
+      signals.favorites += this.countAll(favorite._count);
+      signals.newestEventAt = this.newestDate(
+        signals.newestEventAt,
+        favorite._max?.createdAt,
+      );
+    }
+    for (const boost of boosts) {
+      const signals = get(boost.saasId);
+      signals.boosts += this.countAll(boost._count);
+      signals.newestEventAt = this.newestDate(
+        signals.newestEventAt,
+        boost._max?.createdAt,
+      );
+    }
+    for (const review of reviews) {
+      const signals = get(review.saasId);
+      signals.reviews += this.countAll(review._count);
+      signals.newestEventAt = this.newestDate(
+        signals.newestEventAt,
+        review._max?.createdAt,
+      );
+    }
+    return map;
+  }
+
+  private emptySignals(newestEventAt: Date | null = null): TrendSignals {
+    return {
+      views: 0,
+      clicks: 0,
+      favorites: 0,
+      boosts: 0,
+      reviews: 0,
+      newestEventAt,
+    };
+  }
+
+  private newestDate(a?: Date | null, b?: Date | null) {
+    if (!a) return b ?? null;
+    if (!b) return a;
+    return a > b ? a : b;
+  }
+
+  private countAll(value?: boolean | { _all?: number | null }) {
+    return typeof value === 'object' ? (value._all ?? 0) : 0;
+  }
+
   private async uniqueSlug(input: string, ignoreId?: string) {
     const base =
       input

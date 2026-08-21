@@ -44,6 +44,10 @@ export class EngagementsService {
     await this.prisma.review.delete({ where: { id } });
   }
   async favorite(userId: string, saasId: string) {
+    await this.assertPublishedEngageable(userId, saasId, {
+      allowOwner: true,
+      notFoundMessage: 'SaaS não encontrado',
+    });
     await this.prisma.favorite.upsert({
       where: { userId_saasId: { userId, saasId } },
       create: { userId, saasId },
@@ -58,6 +62,31 @@ export class EngagementsService {
     await this.prisma.favorite.deleteMany({ where: { userId, saasId } });
     return { favorited: false };
   }
+  async boost(userId: string, saasId: string) {
+    await this.assertPublishedEngageable(userId, saasId, {
+      allowOwner: false,
+      notFoundMessage: 'SaaS não encontrado',
+    });
+    await this.prisma.saasBoost.upsert({
+      where: { userId_saasId: { userId, saasId } },
+      create: { userId, saasId },
+      update: {},
+    });
+    const boosts = await this.prisma.saasBoost.count({ where: { saasId } });
+    return { boosted: true, boosts };
+  }
+  async boostStatus(userId: string, saasId: string) {
+    await this.assertPublishedEngageable(userId, saasId, {
+      allowOwner: true,
+      notFoundMessage: 'SaaS não encontrado',
+    });
+    const boost = await this.prisma.saasBoost.findUnique({
+      where: { userId_saasId: { userId, saasId } },
+      select: { userId: true },
+    });
+    const boosts = await this.prisma.saasBoost.count({ where: { saasId } });
+    return { boosted: Boolean(boost), boosts };
+  }
   favorites(userId: string) {
     return this.prisma.favorite.findMany({
       where: { userId },
@@ -71,5 +100,22 @@ export class EngagementsService {
       },
       orderBy: { createdAt: 'desc' },
     });
+  }
+
+  private async assertPublishedEngageable(
+    userId: string,
+    saasId: string,
+    options: { allowOwner: boolean; notFoundMessage: string },
+  ) {
+    const saas = await this.prisma.saas.findUnique({
+      where: { id: saasId },
+      select: { ownerId: true, status: true },
+    });
+    if (!saas || saas.status !== 'PUBLISHED')
+      throw new NotFoundException(options.notFoundMessage);
+    if (!options.allowOwner && saas.ownerId === userId)
+      throw new ForbiddenException(
+        'Você não pode impulsionar o próprio produto',
+      );
   }
 }

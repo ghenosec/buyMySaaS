@@ -58,4 +58,9 @@ export class AdminController {
   remove(@CurrentUser() user: AuthUser, @Param('id') id: string) {
     return this.admin.remove(user.id, id);
   }
+  @Delete('reviews/:id')
+  @HttpCode(204)
+  removeReview(@CurrentUser() user: AuthUser, @Param('id') id: string) {
+    return this.admin.removeReview(user.id, id);
+  }
 }

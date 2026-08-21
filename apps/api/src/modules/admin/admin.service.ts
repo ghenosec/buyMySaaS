@@ -58,6 +58,13 @@ export class AdminService {
         owner: { select: { name: true, email: true } },
         categories: { include: { category: true } },
         screenshots: true,
+        reviews: {
+          where: { hidden: false },
+          include: {
+            user: { select: { id: true, name: true, email: true } },
+          },
+          orderBy: { createdAt: 'desc' },
+        },
         orders: { orderBy: { createdAt: 'desc' } },
       },
     });
@@ -196,6 +203,36 @@ export class AdminService {
         },
       });
       await tx.saas.delete({ where: { id } });
+    });
+  }
+  async removeReview(actorUserId: string, id: string) {
+    const review = await this.prisma.review.findUnique({
+      where: { id },
+      include: {
+        saas: { select: { id: true, name: true, slug: true, status: true } },
+        user: { select: { id: true, email: true } },
+      },
+    });
+    if (!review || review.saas.status !== 'PUBLISHED')
+      throw new NotFoundException('Avaliação não encontrada');
+    await this.prisma.$transaction(async (tx) => {
+      await tx.auditLog.create({
+        data: {
+          actorUserId,
+          action: 'REVIEW_DELETED',
+          entityType: 'Review',
+          entityId: id,
+          metadata: {
+            saasId: review.saas.id,
+            saasName: review.saas.name,
+            saasSlug: review.saas.slug,
+            userId: review.user.id,
+            userEmail: review.user.email,
+            rating: review.rating,
+          },
+        },
+      });
+      await tx.review.delete({ where: { id } });
     });
   }
 }
