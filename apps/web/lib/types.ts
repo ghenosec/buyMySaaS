@@ -10,6 +10,8 @@ export type Review = {
   id: string;
   rating: number;
   comment: string;
+  spam?: boolean;
+  spamTerms?: string[];
   createdAt: string;
   user: { id: string; name: string; avatarUrl?: string | null };
 };
@@ -37,6 +39,7 @@ export type Saas = {
   billingInterval?: 'MONTH' | 'YEAR' | 'ONE_TIME' | null;
   pricingLabel?: string | null;
   isBrazilian: boolean;
+  isAdult: boolean;
   tags: string[];
   technologies: string[];
   status:
@@ -56,7 +59,12 @@ export type Saas = {
   categories?: { category: Category }[];
   screenshots?: { id: string; url: string; alt: string; position: number }[];
   reviews?: Review[];
-  _count?: { favorites: number; analyticsEvents: number; reviews: number };
+  _count?: {
+    favorites: number;
+    boosts?: number;
+    analyticsEvents: number;
+    reviews: number;
+  };
 };
 export type Paginated<T> = {
   data: T[];
