@@ -4,13 +4,15 @@ import {
   CalendarDays,
   Check,
   Globe2,
-  MapPin,
+  ShieldAlert,
   Star,
   UserRound,
 } from 'lucide-react';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { AdultMedia } from '@/components/adult-media';
 import {
+  BoostButton,
   FavoriteButton,
   PageView,
   ReviewForm,
@@ -102,10 +104,10 @@ export default async function SaasDetail({ params }: Props) {
                 {c.category.name}
               </span>
             ))}
-            {saas.isBrazilian && (
-              <span className="pill">
-                <MapPin size={13} />
-                Feito no Brasil
+            {saas.isAdult && (
+              <span className="pill" style={{ color: 'var(--danger)' }}>
+                <ShieldAlert size={13} />
+                +18
               </span>
             )}
           </div>
@@ -122,8 +124,17 @@ export default async function SaasDetail({ params }: Props) {
       <div className="detail-grid">
         <article className="stack">
           <section className="card" style={{ padding: 26 }}>
-            <h2>Sobre o produto</h2>
-            <p style={{ whiteSpace: 'pre-line', lineHeight: 1.8 }}>
+            <h2 style={{ margin: '0 0 18px', fontWeight: 900 }}>
+              Sobre o produto
+            </h2>
+            <p
+              style={{
+                whiteSpace: 'pre-line',
+                lineHeight: 1.9,
+                fontWeight: 400,
+                margin: 0,
+              }}
+            >
               {saas.description}
             </p>
           </section>
@@ -132,10 +143,11 @@ export default async function SaasDetail({ params }: Props) {
               <h2>Screenshots</h2>
               <div className="stack">
                 {saas.screenshots.map((s) => (
-                  <Image
+                  <AdultMedia
                     key={s.id}
                     src={s.url}
                     alt={s.alt}
+                    adult={saas.isAdult}
                     width={1100}
                     height={680}
                     style={{
@@ -193,15 +205,21 @@ export default async function SaasDetail({ params }: Props) {
           {saas.billingInterval === 'MONTH' && (
             <span className="muted">por mês</span>
           )}
-          <a
-            className="btn btn-primary"
-            style={{ width: '100%', margin: '18px 0 9px' }}
-            href={`${browserApiUrl}/saas/${saas.slug}/out?type=${cta.type}`}
-          >
-            {cta.label}
-            <ArrowUpRight size={17} />
-          </a>
-          <FavoriteButton saasId={saas.id} />
+          <div className="stack" style={{ gap: 12, margin: '20px 0 10px' }}>
+            <a
+              className="btn btn-primary"
+              style={{ width: '100%' }}
+              href={`${browserApiUrl}/saas/${saas.slug}/out?type=${cta.type}`}
+            >
+              {cta.label}
+              <ArrowUpRight size={17} />
+            </a>
+            <BoostButton
+              saasId={saas.id}
+              initialBoosts={saas._count?.boosts ?? 0}
+            />
+            <FavoriteButton saasId={saas.id} />
+          </div>
           <div
             className="stack"
             style={{

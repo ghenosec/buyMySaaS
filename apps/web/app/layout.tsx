@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Manrope } from 'next/font/google';
+import { CookieConsentBanner } from '@/components/cookie-consent-banner';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 import { Providers } from '@/components/providers';
@@ -39,6 +40,7 @@ export default function RootLayout({
           <Header />
           <main>{children}</main>
           <Footer />
+          <CookieConsentBanner />
         </Providers>
       </body>
     </html>

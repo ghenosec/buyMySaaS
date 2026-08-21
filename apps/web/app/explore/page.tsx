@@ -11,13 +11,25 @@ export const metadata: Metadata = {
   description: 'Pesquise e filtre produtos SaaS independentes.',
 };
 type Props = { searchParams: Promise<Record<string, string | undefined>> };
+
+function priceInputToCents(value?: string) {
+  if (!value?.trim()) return undefined;
+  const normalized = value.trim().replace(/\./g, '').replace(',', '.');
+  const price = Number(normalized);
+  if (!Number.isFinite(price) || price < 0) return undefined;
+  return String(Math.round(price * 100));
+}
+
 export default async function Explore({ searchParams }: Props) {
   const params = await searchParams;
+  const apiParams = { ...params };
+  const maxPriceCents = priceInputToCents(params.maxPrice);
+  if (maxPriceCents) apiParams.maxPrice = maxPriceCents;
+  else delete apiParams.maxPrice;
   const query = new URLSearchParams(
-    Object.fromEntries(Object.entries(params).filter(([, v]) => v)) as Record<
-      string,
-      string
-    >,
+    Object.fromEntries(
+      Object.entries(apiParams).filter(([, v]) => v),
+    ) as Record<string, string>,
   ).toString();
   const [result, categories] = await Promise.all([
     getCatalog(`?${query}`),
@@ -81,12 +93,13 @@ export default async function Explore({ searchParams }: Props) {
               <input
                 className="input"
                 name="maxPrice"
-                type="number"
-                min="0"
-                step="100"
+                inputMode="decimal"
                 defaultValue={params.maxPrice}
-                placeholder="Em centavos"
+                placeholder="Ex: 49,90"
               />
+              <span className="muted">
+                Ex.: 49,90 para filtrar até R$ 49,90.
+              </span>
             </label>
             <label className="label">
               Ordenar
@@ -114,11 +127,11 @@ export default async function Explore({ searchParams }: Props) {
             <label style={{ display: 'flex', gap: 8 }}>
               <input
                 type="checkbox"
-                name="brazilian"
+                name="adult"
                 value="true"
-                defaultChecked={params.brazilian === 'true'}
+                defaultChecked={params.adult === 'true'}
               />{' '}
-              Feito no Brasil
+              Somente +18
             </label>
             {params.search && (
               <input type="hidden" name="search" value={params.search} />

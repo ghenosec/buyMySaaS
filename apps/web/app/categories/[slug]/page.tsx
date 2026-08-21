@@ -7,8 +7,9 @@ export default async function CategoryPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const adultQuery = slug === 'adulto-18' ? '&adult=true' : '';
   const [catalog, categories] = await Promise.all([
-    getCatalog(`?category=${slug}`),
+    getCatalog(`?category=${slug}${adultQuery}`),
     getCategories(),
   ]);
   const category = categories.find((c) => c.slug === slug);

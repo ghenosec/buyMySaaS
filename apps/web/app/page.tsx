@@ -5,13 +5,13 @@ import { EmptyState } from '@/components/empty-state';
 import { SaasCard } from '@/components/saas-card';
 import { SearchBar } from '@/components/search-bar';
 import { SectionHeading } from '@/components/section-heading';
+import { PublishSaasLink } from '@/components/publish-saas-link';
 import { getCatalog, getCategories } from '@/lib/api';
 
 export default async function Home() {
-  const [trending, recent, brazil, affordable, categories] = await Promise.all([
+  const [trending, recent, affordable, categories] = await Promise.all([
     getCatalog('?sort=trending&pageSize=8'),
     getCatalog('?sort=recent&pageSize=4'),
-    getCatalog('?brazilian=true&pageSize=4'),
     getCatalog('?maxPrice=2000&pageSize=4'),
     getCategories(),
   ]);
@@ -38,9 +38,7 @@ export default async function Home() {
             <Link className="btn btn-primary" href="/explore">
               Explorar SaaS <ArrowRight size={17} />
             </Link>
-            <Link className="btn" href="/dashboard/saas/new">
-              Publicar meu SaaS
-            </Link>
+            <PublishSaasLink />
           </div>
         </div>
       </section>
@@ -70,20 +68,6 @@ export default async function Home() {
           />
           <div className="grid-cards">
             {recent.data.map((s) => (
-              <SaasCard saas={s} key={s.id} />
-            ))}
-          </div>
-        </div>
-      </section>
-      <section className="section">
-        <div className="container">
-          <SectionHeading
-            title="Feitos no Brasil"
-            subtitle="Software independente com sotaque local."
-            href="/explore?brazilian=true"
-          />
-          <div className="grid-cards">
-            {brazil.data.map((s) => (
               <SaasCard saas={s} key={s.id} />
             ))}
           </div>

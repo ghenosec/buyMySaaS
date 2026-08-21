@@ -6,8 +6,11 @@ export default function Login() {
     <div className="container" style={{ maxWidth: 500 }}>
       <header className="page-head">
         <span className="eyebrow">Sua conta</span>
-        <h1>Bem-vindo de volta.</h1>
-        <p className="muted">Gerencie seus produtos e acompanhe resultados.</p>
+        <h1>Entre com Google.</h1>
+        <p className="muted">
+          Gerencie seus produtos e acompanhe resultados com login seguro via
+          Google.
+        </p>
       </header>
       <AuthForm mode="login" />
     </div>
