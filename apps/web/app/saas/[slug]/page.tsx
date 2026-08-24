@@ -4,6 +4,7 @@ import {
   CalendarDays,
   Check,
   Globe2,
+  Megaphone,
   ShieldAlert,
   Star,
   UserRound,
@@ -108,6 +109,12 @@ export default async function SaasDetail({ params }: Props) {
               <span className="pill" style={{ color: 'var(--danger)' }}>
                 <ShieldAlert size={13} />
                 +18
+              </span>
+            )}
+            {saas.isSponsored && (
+              <span className="pill pill-sponsored">
+                <Megaphone size={13} />
+                Patrocinado
               </span>
             )}
           </div>

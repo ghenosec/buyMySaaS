@@ -1,7 +1,6 @@
 'use client';
 import {
   CheckCircle2,
-  CreditCard,
   ShieldCheck,
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
@@ -101,15 +100,15 @@ export function PublicationReview({ id }: { id: string }) {
         </section>
       </div>
       <aside className="card detail-aside">
-        <span className="eyebrow">Taxa de publicação</span>
+        <span className="eyebrow">Publicação</span>
         <div style={{ fontSize: 32, fontWeight: 900, margin: '8px 0' }}>
           {config?.publicationFeeEnabled
             ? money(config.publicationFeeCents, config.publicationFeeCurrency)
-            : 'Grátis no lançamento'}
+            : 'Grátis'}
         </div>
         <p className="muted">
-          Pagamento único por anúncio. O Buy My SaaS não cobra comissão sobre
-          suas vendas.
+          Seu anúncio passa por moderação antes de aparecer no catálogo. Depois
+          de publicado, você pode comprar destaque patrocinado no dashboard.
         </p>
         {order ? (
           <button
@@ -128,7 +127,7 @@ export function PublicationReview({ id }: { id: string }) {
             onClick={submit}
             disabled={loading}
           >
-            <CreditCard size={17} />
+            <CheckCircle2 size={17} />
             {loading
               ? 'Enviando...'
               : config?.publicationFeeEnabled

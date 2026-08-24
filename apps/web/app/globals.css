@@ -209,6 +209,11 @@ textarea.input {
   font-weight: 750;
   color: var(--muted);
 }
+.pill-sponsored {
+  background: color-mix(in srgb, var(--accent) 42%, var(--surface));
+  color: var(--brand-2);
+  border: 1px solid color-mix(in srgb, var(--brand) 22%, transparent);
+}
 .price {
   font-size: 17px;
   font-weight: 850;
