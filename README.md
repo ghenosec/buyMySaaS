@@ -95,9 +95,11 @@ Com isso, o maker consegue entender melhor o interesse gerado pelo produto, e a 
 
 ### Pagamentos e publicação
 
-O Buy My SaaS já possui fluxo preparado para publicação gratuita ou paga.
+O Buy My SaaS usa publicação gratuita e monetização por destaque patrocinado.
 
-O sistema pode operar com pagamento mock em ambiente local e com Mercado Pago em produção, permitindo cobrar uma taxa de publicação quando essa regra de negócio estiver ativa.
+O maker pode cadastrar e enviar um SaaS para análise sem pagar. Depois que o produto é publicado, ele pode comprar um destaque patrocinado por período fixo. O destaque aparece identificado no catálogo, ganha prioridade na listagem e não substitui a moderação.
+
+O sistema pode operar com pagamento mock em ambiente local e com Mercado Pago em produção. Quando `SPONSORED_PLACEMENT_ENABLED=true` em produção, configure `PAYMENT_PROVIDER=mercado_pago`, `MERCADO_PAGO_ACCESS_TOKEN` e `MERCADO_PAGO_WEBHOOK_SECRET`.
 
 ## Segurança e qualidade
 
@@ -141,6 +143,7 @@ O maker tem uma jornada guiada:
 5. Revisa o anúncio
 6. Envia para análise
 7. Acompanha métricas após a publicação
+8. Compra ou renova destaque patrocinado para produtos publicados
 
 Esse fluxo ajuda a manter o catálogo organizado e evita publicações incompletas.
 

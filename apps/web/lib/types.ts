@@ -51,10 +51,12 @@ export type Saas = {
     | 'ARCHIVED';
   rejectionReason?: string | null;
   publishedAt?: string | null;
+  sponsoredUntil?: string | null;
   createdAt: string;
   updatedAt: string;
   averageRating?: number;
   score?: number;
+  isSponsored?: boolean;
   owner?: { id: string; name: string; avatarUrl?: string | null };
   categories?: { category: Category }[];
   screenshots?: { id: string; url: string; alt: string; position: number }[];

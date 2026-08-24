@@ -5,7 +5,7 @@ import {
   NotFoundException,
   ServiceUnavailableException,
 } from '@nestjs/common';
-import { Prisma } from '../../generated/prisma/client';
+import { Prisma, PublicationOrderType } from '../../generated/prisma/client';
 import { assertOwnership } from '../../common/ownership';
 import { PrismaService } from '../prisma/prisma.service';
 import { ModerationService } from '../moderation/moderation.service';
@@ -71,6 +71,7 @@ export class PaymentsService {
       data: {
         userId,
         saasId,
+        type: 'PUBLICATION_FEE',
         provider: provider.name,
         amountCents,
         currency,
@@ -80,7 +81,7 @@ export class PaymentsService {
     const checkout = await provider.createCheckout({
       orderId: order.id,
       saasId,
-      title: saas.name,
+      title: `Publicação: ${saas.name}`,
       amountCents,
       currency,
     });
@@ -103,6 +104,87 @@ export class PaymentsService {
       checkoutUrl: checkout.checkoutUrl,
       amountCents,
       currency,
+      provider: provider.name,
+    };
+  }
+  async createSponsorshipCheckout(userId: string, saasId: string) {
+    if (process.env.SPONSORED_PLACEMENT_ENABLED === 'false')
+      throw new BadRequestException('Destaque patrocinado não está disponível');
+    const saas = await this.prisma.saas.findUnique({
+      where: { id: saasId },
+      select: {
+        id: true,
+        ownerId: true,
+        name: true,
+        status: true,
+      },
+    });
+    assertOwnership(saas, userId);
+    if (saas.status !== 'PUBLISHED')
+      throw new BadRequestException(
+        'O destaque só pode ser comprado para SaaS publicado',
+      );
+    const provider = this.provider();
+    const amountCents = Number(
+      process.env.SPONSORED_PLACEMENT_PRICE_CENTS ?? 2990,
+    );
+    const currency =
+      process.env.SPONSORED_PLACEMENT_CURRENCY ??
+      process.env.PUBLICATION_FEE_CURRENCY ??
+      'BRL';
+    const entitlementDays = Number(
+      process.env.SPONSORED_PLACEMENT_DURATION_DAYS ?? 7,
+    );
+    let order = await this.prisma.publicationOrder.findFirst({
+      where: {
+        userId,
+        saasId,
+        type: 'SPONSORED_PLACEMENT',
+        provider: provider.name,
+        status: 'PENDING',
+        amountCents,
+        currency,
+        entitlementDays,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+    if (!order) {
+      order = await this.prisma.publicationOrder.create({
+        data: {
+          userId,
+          saasId,
+          type: 'SPONSORED_PLACEMENT',
+          provider: provider.name,
+          amountCents,
+          currency,
+          entitlementDays,
+          status: 'PENDING',
+        },
+      });
+    }
+    if (!order.checkoutUrl) {
+      const checkout = await provider.createCheckout({
+        orderId: order.id,
+        saasId,
+        title: `Destaque patrocinado: ${saas.name}`,
+        amountCents,
+        currency,
+      });
+      order = await this.prisma.publicationOrder.update({
+        where: { id: order.id },
+        data: {
+          providerPaymentId: checkout.providerPaymentId,
+          checkoutUrl: checkout.checkoutUrl,
+        },
+      });
+    }
+    return {
+      requiresPayment: true,
+      orderId: order.id,
+      checkoutUrl: order.checkoutUrl,
+      amountCents,
+      currency,
+      entitlementDays,
       provider: provider.name,
     };
   }
@@ -182,14 +264,44 @@ export class PaymentsService {
           providerPaymentId: paymentId,
         },
       });
-      await tx.saas.update({
-        where: { id: saasId },
-        data: { status: 'PENDING_REVIEW' },
-      });
+      if (order.type === PublicationOrderType.SPONSORED_PLACEMENT) {
+        const saas = await tx.saas.findUniqueOrThrow({
+          where: { id: saasId },
+          select: { sponsoredUntil: true },
+        });
+        const now = new Date();
+        const startsAt =
+          saas.sponsoredUntil && saas.sponsoredUntil > now
+            ? saas.sponsoredUntil
+            : now;
+        const endsAt = new Date(startsAt);
+        endsAt.setDate(endsAt.getDate() + (order.entitlementDays ?? 7));
+        await tx.saas.update({
+          where: { id: saasId },
+          data: { sponsoredUntil: endsAt },
+        });
+        await tx.saasSponsorship.create({
+          data: {
+            userId: order.userId,
+            saasId,
+            orderId,
+            startsAt,
+            endsAt,
+          },
+        });
+      } else {
+        await tx.saas.update({
+          where: { id: saasId },
+          data: { status: 'PENDING_REVIEW' },
+        });
+      }
       await tx.auditLog.create({
         data: {
           actorUserId,
-          action: 'PUBLICATION_PAYMENT_CONFIRMED',
+          action:
+            order.type === PublicationOrderType.SPONSORED_PLACEMENT
+              ? 'SPONSORED_PLACEMENT_PAYMENT_CONFIRMED'
+              : 'PUBLICATION_PAYMENT_CONFIRMED',
           entityType: 'PublicationOrder',
           entityId: orderId,
           metadata: { provider: order.provider },

@@ -29,8 +29,21 @@ const envSchema = z
     GOOGLE_CLIENT_SECRET: z.string().min(1).optional(),
     GOOGLE_REDIRECT_URI: z.string().url().optional(),
     MODERATION_BLOCKED_TERMS: z.string().optional(),
-    PUBLICATION_FEE_ENABLED: z.enum(['true', 'false']).default('true'),
+    PUBLICATION_FEE_ENABLED: z.enum(['true', 'false']).default('false'),
     PUBLICATION_FEE_CENTS: z.coerce.number().int().nonnegative().default(990),
+    PUBLICATION_FEE_CURRENCY: z.string().min(3).max(3).default('BRL'),
+    SPONSORED_PLACEMENT_ENABLED: z.enum(['true', 'false']).default('true'),
+    SPONSORED_PLACEMENT_PRICE_CENTS: z.coerce
+      .number()
+      .int()
+      .nonnegative()
+      .default(2990),
+    SPONSORED_PLACEMENT_CURRENCY: z.string().min(3).max(3).default('BRL'),
+    SPONSORED_PLACEMENT_DURATION_DAYS: z.coerce
+      .number()
+      .int()
+      .positive()
+      .default(7),
     PAYMENT_PROVIDER: z.enum(['mock', 'mercado_pago']).default('mock'),
     MERCADO_PAGO_ACCESS_TOKEN: z.string().min(1).optional(),
     MERCADO_PAGO_WEBHOOK_SECRET: z.string().min(16).optional(),
@@ -80,13 +93,14 @@ const envSchema = z
           message: 'FORCE_HTTPS deve estar ativo em produção',
         });
       if (
-        config.PUBLICATION_FEE_ENABLED === 'true' &&
+        (config.PUBLICATION_FEE_ENABLED === 'true' ||
+          config.SPONSORED_PLACEMENT_ENABLED === 'true') &&
         config.PAYMENT_PROVIDER !== 'mercado_pago'
       )
         context.addIssue({
           code: 'custom',
           path: ['PAYMENT_PROVIDER'],
-          message: 'Produção com taxa ativa exige Mercado Pago',
+          message: 'Produção com pagamento ativo exige Mercado Pago',
         });
     }
     if (config.PAYMENT_PROVIDER === 'mercado_pago') {
