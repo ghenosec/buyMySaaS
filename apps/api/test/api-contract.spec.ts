@@ -103,6 +103,10 @@ describe('API contracts', () => {
               requiresPayment: false,
               status: 'PENDING_REVIEW',
             }),
+            createSponsorshipCheckout: jest.fn().mockResolvedValue({
+              requiresPayment: true,
+              checkoutUrl: 'https://checkout.example.com',
+            }),
             confirmMock: jest.fn(),
             webhook: jest.fn(),
           },
@@ -196,6 +200,9 @@ describe('API contracts', () => {
       .expect(201);
     await request(app.getHttpServer())
       .post('/api/v1/me/saas/saas-1/submit')
+      .expect(201);
+    await request(app.getHttpServer())
+      .post('/api/v1/me/saas/saas-1/sponsorship-checkout')
       .expect(201);
     await request(app.getHttpServer())
       .post('/api/v1/admin/submissions/saas-1/approve')
