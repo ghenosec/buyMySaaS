@@ -16,10 +16,40 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     bufferLogs: true,
   });
+  const trustProxyHops = Number(process.env.TRUST_PROXY_HOPS ?? 0);
+  if (trustProxyHops > 0) app.set('trust proxy', trustProxyHops);
   app.useLogger(new Logger());
   app.setGlobalPrefix('api/v1');
-  app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
+  app.use(
+    helmet({
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
+      hsts:
+        process.env.NODE_ENV === 'production'
+          ? { maxAge: 31_536_000, includeSubDomains: false }
+          : false,
+    }),
+  );
   app.use(cookieParser());
+  app.use((request: Request, response: Response, next: NextFunction) => {
+    if (
+      process.env.FORCE_HTTPS !== 'true' ||
+      request.secure ||
+      isLocalHostname(request.hostname)
+    )
+      return next();
+    if (request.method === 'GET' || request.method === 'HEAD') {
+      response.redirect(
+        308,
+        new URL(request.originalUrl, process.env.API_URL).toString(),
+      );
+      return;
+    }
+    response.status(426).json({
+      statusCode: 426,
+      code: 'HTTPS_REQUIRED',
+      message: 'Use HTTPS para acessar a API',
+    });
+  });
   const requestLogger = new Logger('HTTP');
   app.use((request: Request, response: Response, next: NextFunction) => {
     const requestId = request.get('x-request-id') ?? randomUUID();
@@ -30,7 +60,7 @@ async function bootstrap() {
         JSON.stringify({
           requestId,
           method: request.method,
-          path: request.originalUrl,
+          path: request.path,
           statusCode: response.statusCode,
           durationMs: Date.now() - startedAt,
         }),
@@ -80,15 +110,20 @@ async function bootstrap() {
     },
   });
 
-  const document = SwaggerModule.createDocument(
-    app,
-    new DocumentBuilder()
-      .setTitle('Buy My SaaS API')
-      .setVersion('1.0')
-      .addCookieAuth('bms_session')
-      .build(),
-  );
-  SwaggerModule.setup('api/docs', app, document);
+  if (
+    process.env.NODE_ENV !== 'production' ||
+    process.env.ENABLE_API_DOCS === 'true'
+  ) {
+    const document = SwaggerModule.createDocument(
+      app,
+      new DocumentBuilder()
+        .setTitle('Buy My SaaS API')
+        .setVersion('1.0')
+        .addCookieAuth('bms_session')
+        .build(),
+    );
+    SwaggerModule.setup('api/docs', app, document);
+  }
 
   const port = Number(process.env.PORT ?? 3001);
   await app.listen(port);
@@ -103,4 +138,10 @@ function safeOrigin(value: string) {
   } catch {
     return undefined;
   }
+}
+
+function isLocalHostname(hostname: string) {
+  return (
+    hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1'
+  );
 }
