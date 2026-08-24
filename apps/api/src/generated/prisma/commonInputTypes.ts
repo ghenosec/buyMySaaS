@@ -287,6 +287,13 @@ export type EnumAnalyticsEventTypeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumAnalyticsEventTypeFilter<$PrismaModel>
 }
 
+export type EnumPublicationOrderTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.PublicationOrderType | Prisma.EnumPublicationOrderTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.PublicationOrderType[] | Prisma.ListEnumPublicationOrderTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PublicationOrderType[] | Prisma.ListEnumPublicationOrderTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPublicationOrderTypeFilter<$PrismaModel> | $Enums.PublicationOrderType
+}
+
 export type EnumPaymentProviderNameFilter<$PrismaModel = never> = {
   equals?: $Enums.PaymentProviderName | Prisma.EnumPaymentProviderNameFieldRefInput<$PrismaModel>
   in?: $Enums.PaymentProviderName[] | Prisma.ListEnumPaymentProviderNameFieldRefInput<$PrismaModel>
@@ -299,6 +306,16 @@ export type EnumPublicationOrderStatusFilter<$PrismaModel = never> = {
   in?: $Enums.PublicationOrderStatus[] | Prisma.ListEnumPublicationOrderStatusFieldRefInput<$PrismaModel>
   notIn?: $Enums.PublicationOrderStatus[] | Prisma.ListEnumPublicationOrderStatusFieldRefInput<$PrismaModel>
   not?: Prisma.NestedEnumPublicationOrderStatusFilter<$PrismaModel> | $Enums.PublicationOrderStatus
+}
+
+export type EnumPublicationOrderTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PublicationOrderType | Prisma.EnumPublicationOrderTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.PublicationOrderType[] | Prisma.ListEnumPublicationOrderTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PublicationOrderType[] | Prisma.ListEnumPublicationOrderTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPublicationOrderTypeWithAggregatesFilter<$PrismaModel> | $Enums.PublicationOrderType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPublicationOrderTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPublicationOrderTypeFilter<$PrismaModel>
 }
 
 export type EnumPaymentProviderNameWithAggregatesFilter<$PrismaModel = never> = {
@@ -658,6 +675,13 @@ export type NestedEnumAnalyticsEventTypeWithAggregatesFilter<$PrismaModel = neve
   _max?: Prisma.NestedEnumAnalyticsEventTypeFilter<$PrismaModel>
 }
 
+export type NestedEnumPublicationOrderTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.PublicationOrderType | Prisma.EnumPublicationOrderTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.PublicationOrderType[] | Prisma.ListEnumPublicationOrderTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PublicationOrderType[] | Prisma.ListEnumPublicationOrderTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPublicationOrderTypeFilter<$PrismaModel> | $Enums.PublicationOrderType
+}
+
 export type NestedEnumPaymentProviderNameFilter<$PrismaModel = never> = {
   equals?: $Enums.PaymentProviderName | Prisma.EnumPaymentProviderNameFieldRefInput<$PrismaModel>
   in?: $Enums.PaymentProviderName[] | Prisma.ListEnumPaymentProviderNameFieldRefInput<$PrismaModel>
@@ -670,6 +694,16 @@ export type NestedEnumPublicationOrderStatusFilter<$PrismaModel = never> = {
   in?: $Enums.PublicationOrderStatus[] | Prisma.ListEnumPublicationOrderStatusFieldRefInput<$PrismaModel>
   notIn?: $Enums.PublicationOrderStatus[] | Prisma.ListEnumPublicationOrderStatusFieldRefInput<$PrismaModel>
   not?: Prisma.NestedEnumPublicationOrderStatusFilter<$PrismaModel> | $Enums.PublicationOrderStatus
+}
+
+export type NestedEnumPublicationOrderTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PublicationOrderType | Prisma.EnumPublicationOrderTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.PublicationOrderType[] | Prisma.ListEnumPublicationOrderTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PublicationOrderType[] | Prisma.ListEnumPublicationOrderTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPublicationOrderTypeWithAggregatesFilter<$PrismaModel> | $Enums.PublicationOrderType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPublicationOrderTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPublicationOrderTypeFilter<$PrismaModel>
 }
 
 export type NestedEnumPaymentProviderNameWithAggregatesFilter<$PrismaModel = never> = {

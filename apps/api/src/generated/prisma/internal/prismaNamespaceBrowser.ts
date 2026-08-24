@@ -59,6 +59,7 @@ export const ModelName = {
   Review: 'Review',
   Favorite: 'Favorite',
   SaasBoost: 'SaasBoost',
+  SaasSponsorship: 'SaasSponsorship',
   AnalyticsEvent: 'AnalyticsEvent',
   PublicationOrder: 'PublicationOrder',
   AuditLog: 'AuditLog',
@@ -127,6 +128,7 @@ export const SaasScalarFieldEnum = {
   rejectionReason: 'rejectionReason',
   launchDate: 'launchDate',
   publishedAt: 'publishedAt',
+  sponsoredUntil: 'sponsoredUntil',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -198,6 +200,19 @@ export const SaasBoostScalarFieldEnum = {
 export type SaasBoostScalarFieldEnum = (typeof SaasBoostScalarFieldEnum)[keyof typeof SaasBoostScalarFieldEnum]
 
 
+export const SaasSponsorshipScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  saasId: 'saasId',
+  orderId: 'orderId',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  createdAt: 'createdAt'
+} as const
+
+export type SaasSponsorshipScalarFieldEnum = (typeof SaasSponsorshipScalarFieldEnum)[keyof typeof SaasSponsorshipScalarFieldEnum]
+
+
 export const AnalyticsEventScalarFieldEnum = {
   id: 'id',
   saasId: 'saasId',
@@ -214,10 +229,12 @@ export const PublicationOrderScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   saasId: 'saasId',
+  type: 'type',
   provider: 'provider',
   providerPaymentId: 'providerPaymentId',
   amountCents: 'amountCents',
   currency: 'currency',
+  entitlementDays: 'entitlementDays',
   status: 'status',
   checkoutUrl: 'checkoutUrl',
   paidAt: 'paidAt',

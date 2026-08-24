@@ -28,20 +28,24 @@ export type AggregatePublicationOrder = {
 
 export type PublicationOrderAvgAggregateOutputType = {
   amountCents: number | null
+  entitlementDays: number | null
 }
 
 export type PublicationOrderSumAggregateOutputType = {
   amountCents: number | null
+  entitlementDays: number | null
 }
 
 export type PublicationOrderMinAggregateOutputType = {
   id: string | null
   userId: string | null
   saasId: string | null
+  type: $Enums.PublicationOrderType | null
   provider: $Enums.PaymentProviderName | null
   providerPaymentId: string | null
   amountCents: number | null
   currency: string | null
+  entitlementDays: number | null
   status: $Enums.PublicationOrderStatus | null
   checkoutUrl: string | null
   paidAt: Date | null
@@ -53,10 +57,12 @@ export type PublicationOrderMaxAggregateOutputType = {
   id: string | null
   userId: string | null
   saasId: string | null
+  type: $Enums.PublicationOrderType | null
   provider: $Enums.PaymentProviderName | null
   providerPaymentId: string | null
   amountCents: number | null
   currency: string | null
+  entitlementDays: number | null
   status: $Enums.PublicationOrderStatus | null
   checkoutUrl: string | null
   paidAt: Date | null
@@ -68,10 +74,12 @@ export type PublicationOrderCountAggregateOutputType = {
   id: number
   userId: number
   saasId: number
+  type: number
   provider: number
   providerPaymentId: number
   amountCents: number
   currency: number
+  entitlementDays: number
   status: number
   checkoutUrl: number
   paidAt: number
@@ -83,20 +91,24 @@ export type PublicationOrderCountAggregateOutputType = {
 
 export type PublicationOrderAvgAggregateInputType = {
   amountCents?: true
+  entitlementDays?: true
 }
 
 export type PublicationOrderSumAggregateInputType = {
   amountCents?: true
+  entitlementDays?: true
 }
 
 export type PublicationOrderMinAggregateInputType = {
   id?: true
   userId?: true
   saasId?: true
+  type?: true
   provider?: true
   providerPaymentId?: true
   amountCents?: true
   currency?: true
+  entitlementDays?: true
   status?: true
   checkoutUrl?: true
   paidAt?: true
@@ -108,10 +120,12 @@ export type PublicationOrderMaxAggregateInputType = {
   id?: true
   userId?: true
   saasId?: true
+  type?: true
   provider?: true
   providerPaymentId?: true
   amountCents?: true
   currency?: true
+  entitlementDays?: true
   status?: true
   checkoutUrl?: true
   paidAt?: true
@@ -123,10 +137,12 @@ export type PublicationOrderCountAggregateInputType = {
   id?: true
   userId?: true
   saasId?: true
+  type?: true
   provider?: true
   providerPaymentId?: true
   amountCents?: true
   currency?: true
+  entitlementDays?: true
   status?: true
   checkoutUrl?: true
   paidAt?: true
@@ -225,10 +241,12 @@ export type PublicationOrderGroupByOutputType = {
   id: string
   userId: string
   saasId: string
+  type: $Enums.PublicationOrderType
   provider: $Enums.PaymentProviderName
   providerPaymentId: string | null
   amountCents: number
   currency: string
+  entitlementDays: number | null
   status: $Enums.PublicationOrderStatus
   checkoutUrl: string | null
   paidAt: Date | null
@@ -263,10 +281,12 @@ export type PublicationOrderWhereInput = {
   id?: Prisma.StringFilter<"PublicationOrder"> | string
   userId?: Prisma.StringFilter<"PublicationOrder"> | string
   saasId?: Prisma.StringFilter<"PublicationOrder"> | string
+  type?: Prisma.EnumPublicationOrderTypeFilter<"PublicationOrder"> | $Enums.PublicationOrderType
   provider?: Prisma.EnumPaymentProviderNameFilter<"PublicationOrder"> | $Enums.PaymentProviderName
   providerPaymentId?: Prisma.StringNullableFilter<"PublicationOrder"> | string | null
   amountCents?: Prisma.IntFilter<"PublicationOrder"> | number
   currency?: Prisma.StringFilter<"PublicationOrder"> | string
+  entitlementDays?: Prisma.IntNullableFilter<"PublicationOrder"> | number | null
   status?: Prisma.EnumPublicationOrderStatusFilter<"PublicationOrder"> | $Enums.PublicationOrderStatus
   checkoutUrl?: Prisma.StringNullableFilter<"PublicationOrder"> | string | null
   paidAt?: Prisma.DateTimeNullableFilter<"PublicationOrder"> | Date | string | null
@@ -274,16 +294,19 @@ export type PublicationOrderWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"PublicationOrder"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   saas?: Prisma.XOR<Prisma.SaasScalarRelationFilter, Prisma.SaasWhereInput>
+  sponsorship?: Prisma.XOR<Prisma.SaasSponsorshipNullableScalarRelationFilter, Prisma.SaasSponsorshipWhereInput> | null
 }
 
 export type PublicationOrderOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   saasId?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   providerPaymentId?: Prisma.SortOrderInput | Prisma.SortOrder
   amountCents?: Prisma.SortOrder
   currency?: Prisma.SortOrder
+  entitlementDays?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   checkoutUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -291,6 +314,7 @@ export type PublicationOrderOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   saas?: Prisma.SaasOrderByWithRelationInput
+  sponsorship?: Prisma.SaasSponsorshipOrderByWithRelationInput
 }
 
 export type PublicationOrderWhereUniqueInput = Prisma.AtLeast<{
@@ -301,9 +325,11 @@ export type PublicationOrderWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.PublicationOrderWhereInput | Prisma.PublicationOrderWhereInput[]
   userId?: Prisma.StringFilter<"PublicationOrder"> | string
   saasId?: Prisma.StringFilter<"PublicationOrder"> | string
+  type?: Prisma.EnumPublicationOrderTypeFilter<"PublicationOrder"> | $Enums.PublicationOrderType
   provider?: Prisma.EnumPaymentProviderNameFilter<"PublicationOrder"> | $Enums.PaymentProviderName
   amountCents?: Prisma.IntFilter<"PublicationOrder"> | number
   currency?: Prisma.StringFilter<"PublicationOrder"> | string
+  entitlementDays?: Prisma.IntNullableFilter<"PublicationOrder"> | number | null
   status?: Prisma.EnumPublicationOrderStatusFilter<"PublicationOrder"> | $Enums.PublicationOrderStatus
   checkoutUrl?: Prisma.StringNullableFilter<"PublicationOrder"> | string | null
   paidAt?: Prisma.DateTimeNullableFilter<"PublicationOrder"> | Date | string | null
@@ -311,16 +337,19 @@ export type PublicationOrderWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"PublicationOrder"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   saas?: Prisma.XOR<Prisma.SaasScalarRelationFilter, Prisma.SaasWhereInput>
+  sponsorship?: Prisma.XOR<Prisma.SaasSponsorshipNullableScalarRelationFilter, Prisma.SaasSponsorshipWhereInput> | null
 }, "id" | "providerPaymentId">
 
 export type PublicationOrderOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   saasId?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   providerPaymentId?: Prisma.SortOrderInput | Prisma.SortOrder
   amountCents?: Prisma.SortOrder
   currency?: Prisma.SortOrder
+  entitlementDays?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   checkoutUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -340,10 +369,12 @@ export type PublicationOrderScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"PublicationOrder"> | string
   userId?: Prisma.StringWithAggregatesFilter<"PublicationOrder"> | string
   saasId?: Prisma.StringWithAggregatesFilter<"PublicationOrder"> | string
+  type?: Prisma.EnumPublicationOrderTypeWithAggregatesFilter<"PublicationOrder"> | $Enums.PublicationOrderType
   provider?: Prisma.EnumPaymentProviderNameWithAggregatesFilter<"PublicationOrder"> | $Enums.PaymentProviderName
   providerPaymentId?: Prisma.StringNullableWithAggregatesFilter<"PublicationOrder"> | string | null
   amountCents?: Prisma.IntWithAggregatesFilter<"PublicationOrder"> | number
   currency?: Prisma.StringWithAggregatesFilter<"PublicationOrder"> | string
+  entitlementDays?: Prisma.IntNullableWithAggregatesFilter<"PublicationOrder"> | number | null
   status?: Prisma.EnumPublicationOrderStatusWithAggregatesFilter<"PublicationOrder"> | $Enums.PublicationOrderStatus
   checkoutUrl?: Prisma.StringNullableWithAggregatesFilter<"PublicationOrder"> | string | null
   paidAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PublicationOrder"> | Date | string | null
@@ -353,10 +384,12 @@ export type PublicationOrderScalarWhereWithAggregatesInput = {
 
 export type PublicationOrderCreateInput = {
   id?: string
+  type?: $Enums.PublicationOrderType
   provider: $Enums.PaymentProviderName
   providerPaymentId?: string | null
   amountCents: number
   currency: string
+  entitlementDays?: number | null
   status?: $Enums.PublicationOrderStatus
   checkoutUrl?: string | null
   paidAt?: Date | string | null
@@ -364,29 +397,35 @@ export type PublicationOrderCreateInput = {
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutOrdersInput
   saas: Prisma.SaasCreateNestedOneWithoutOrdersInput
+  sponsorship?: Prisma.SaasSponsorshipCreateNestedOneWithoutOrderInput
 }
 
 export type PublicationOrderUncheckedCreateInput = {
   id?: string
   userId: string
   saasId: string
+  type?: $Enums.PublicationOrderType
   provider: $Enums.PaymentProviderName
   providerPaymentId?: string | null
   amountCents: number
   currency: string
+  entitlementDays?: number | null
   status?: $Enums.PublicationOrderStatus
   checkoutUrl?: string | null
   paidAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sponsorship?: Prisma.SaasSponsorshipUncheckedCreateNestedOneWithoutOrderInput
 }
 
 export type PublicationOrderUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumPublicationOrderTypeFieldUpdateOperationsInput | $Enums.PublicationOrderType
   provider?: Prisma.EnumPaymentProviderNameFieldUpdateOperationsInput | $Enums.PaymentProviderName
   providerPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amountCents?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
+  entitlementDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumPublicationOrderStatusFieldUpdateOperationsInput | $Enums.PublicationOrderStatus
   checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -394,31 +433,37 @@ export type PublicationOrderUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutOrdersNestedInput
   saas?: Prisma.SaasUpdateOneRequiredWithoutOrdersNestedInput
+  sponsorship?: Prisma.SaasSponsorshipUpdateOneWithoutOrderNestedInput
 }
 
 export type PublicationOrderUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   saasId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumPublicationOrderTypeFieldUpdateOperationsInput | $Enums.PublicationOrderType
   provider?: Prisma.EnumPaymentProviderNameFieldUpdateOperationsInput | $Enums.PaymentProviderName
   providerPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amountCents?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
+  entitlementDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumPublicationOrderStatusFieldUpdateOperationsInput | $Enums.PublicationOrderStatus
   checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sponsorship?: Prisma.SaasSponsorshipUncheckedUpdateOneWithoutOrderNestedInput
 }
 
 export type PublicationOrderCreateManyInput = {
   id?: string
   userId: string
   saasId: string
+  type?: $Enums.PublicationOrderType
   provider: $Enums.PaymentProviderName
   providerPaymentId?: string | null
   amountCents: number
   currency: string
+  entitlementDays?: number | null
   status?: $Enums.PublicationOrderStatus
   checkoutUrl?: string | null
   paidAt?: Date | string | null
@@ -428,10 +473,12 @@ export type PublicationOrderCreateManyInput = {
 
 export type PublicationOrderUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumPublicationOrderTypeFieldUpdateOperationsInput | $Enums.PublicationOrderType
   provider?: Prisma.EnumPaymentProviderNameFieldUpdateOperationsInput | $Enums.PaymentProviderName
   providerPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amountCents?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
+  entitlementDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumPublicationOrderStatusFieldUpdateOperationsInput | $Enums.PublicationOrderStatus
   checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -443,10 +490,12 @@ export type PublicationOrderUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   saasId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumPublicationOrderTypeFieldUpdateOperationsInput | $Enums.PublicationOrderType
   provider?: Prisma.EnumPaymentProviderNameFieldUpdateOperationsInput | $Enums.PaymentProviderName
   providerPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amountCents?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
+  entitlementDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumPublicationOrderStatusFieldUpdateOperationsInput | $Enums.PublicationOrderStatus
   checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -464,14 +513,21 @@ export type PublicationOrderOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type PublicationOrderScalarRelationFilter = {
+  is?: Prisma.PublicationOrderWhereInput
+  isNot?: Prisma.PublicationOrderWhereInput
+}
+
 export type PublicationOrderCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   saasId?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   providerPaymentId?: Prisma.SortOrder
   amountCents?: Prisma.SortOrder
   currency?: Prisma.SortOrder
+  entitlementDays?: Prisma.SortOrder
   status?: Prisma.SortOrder
   checkoutUrl?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
@@ -481,16 +537,19 @@ export type PublicationOrderCountOrderByAggregateInput = {
 
 export type PublicationOrderAvgOrderByAggregateInput = {
   amountCents?: Prisma.SortOrder
+  entitlementDays?: Prisma.SortOrder
 }
 
 export type PublicationOrderMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   saasId?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   providerPaymentId?: Prisma.SortOrder
   amountCents?: Prisma.SortOrder
   currency?: Prisma.SortOrder
+  entitlementDays?: Prisma.SortOrder
   status?: Prisma.SortOrder
   checkoutUrl?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
@@ -502,10 +561,12 @@ export type PublicationOrderMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   saasId?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   providerPaymentId?: Prisma.SortOrder
   amountCents?: Prisma.SortOrder
   currency?: Prisma.SortOrder
+  entitlementDays?: Prisma.SortOrder
   status?: Prisma.SortOrder
   checkoutUrl?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
@@ -515,6 +576,7 @@ export type PublicationOrderMinOrderByAggregateInput = {
 
 export type PublicationOrderSumOrderByAggregateInput = {
   amountCents?: Prisma.SortOrder
+  entitlementDays?: Prisma.SortOrder
 }
 
 export type PublicationOrderCreateNestedManyWithoutUserInput = {
@@ -601,6 +663,24 @@ export type PublicationOrderUncheckedUpdateManyWithoutSaasNestedInput = {
   deleteMany?: Prisma.PublicationOrderScalarWhereInput | Prisma.PublicationOrderScalarWhereInput[]
 }
 
+export type PublicationOrderCreateNestedOneWithoutSponsorshipInput = {
+  create?: Prisma.XOR<Prisma.PublicationOrderCreateWithoutSponsorshipInput, Prisma.PublicationOrderUncheckedCreateWithoutSponsorshipInput>
+  connectOrCreate?: Prisma.PublicationOrderCreateOrConnectWithoutSponsorshipInput
+  connect?: Prisma.PublicationOrderWhereUniqueInput
+}
+
+export type PublicationOrderUpdateOneRequiredWithoutSponsorshipNestedInput = {
+  create?: Prisma.XOR<Prisma.PublicationOrderCreateWithoutSponsorshipInput, Prisma.PublicationOrderUncheckedCreateWithoutSponsorshipInput>
+  connectOrCreate?: Prisma.PublicationOrderCreateOrConnectWithoutSponsorshipInput
+  upsert?: Prisma.PublicationOrderUpsertWithoutSponsorshipInput
+  connect?: Prisma.PublicationOrderWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PublicationOrderUpdateToOneWithWhereWithoutSponsorshipInput, Prisma.PublicationOrderUpdateWithoutSponsorshipInput>, Prisma.PublicationOrderUncheckedUpdateWithoutSponsorshipInput>
+}
+
+export type EnumPublicationOrderTypeFieldUpdateOperationsInput = {
+  set?: $Enums.PublicationOrderType
+}
+
 export type EnumPaymentProviderNameFieldUpdateOperationsInput = {
   set?: $Enums.PaymentProviderName
 }
@@ -611,30 +691,36 @@ export type EnumPublicationOrderStatusFieldUpdateOperationsInput = {
 
 export type PublicationOrderCreateWithoutUserInput = {
   id?: string
+  type?: $Enums.PublicationOrderType
   provider: $Enums.PaymentProviderName
   providerPaymentId?: string | null
   amountCents: number
   currency: string
+  entitlementDays?: number | null
   status?: $Enums.PublicationOrderStatus
   checkoutUrl?: string | null
   paidAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   saas: Prisma.SaasCreateNestedOneWithoutOrdersInput
+  sponsorship?: Prisma.SaasSponsorshipCreateNestedOneWithoutOrderInput
 }
 
 export type PublicationOrderUncheckedCreateWithoutUserInput = {
   id?: string
   saasId: string
+  type?: $Enums.PublicationOrderType
   provider: $Enums.PaymentProviderName
   providerPaymentId?: string | null
   amountCents: number
   currency: string
+  entitlementDays?: number | null
   status?: $Enums.PublicationOrderStatus
   checkoutUrl?: string | null
   paidAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sponsorship?: Prisma.SaasSponsorshipUncheckedCreateNestedOneWithoutOrderInput
 }
 
 export type PublicationOrderCreateOrConnectWithoutUserInput = {
@@ -670,10 +756,12 @@ export type PublicationOrderScalarWhereInput = {
   id?: Prisma.StringFilter<"PublicationOrder"> | string
   userId?: Prisma.StringFilter<"PublicationOrder"> | string
   saasId?: Prisma.StringFilter<"PublicationOrder"> | string
+  type?: Prisma.EnumPublicationOrderTypeFilter<"PublicationOrder"> | $Enums.PublicationOrderType
   provider?: Prisma.EnumPaymentProviderNameFilter<"PublicationOrder"> | $Enums.PaymentProviderName
   providerPaymentId?: Prisma.StringNullableFilter<"PublicationOrder"> | string | null
   amountCents?: Prisma.IntFilter<"PublicationOrder"> | number
   currency?: Prisma.StringFilter<"PublicationOrder"> | string
+  entitlementDays?: Prisma.IntNullableFilter<"PublicationOrder"> | number | null
   status?: Prisma.EnumPublicationOrderStatusFilter<"PublicationOrder"> | $Enums.PublicationOrderStatus
   checkoutUrl?: Prisma.StringNullableFilter<"PublicationOrder"> | string | null
   paidAt?: Prisma.DateTimeNullableFilter<"PublicationOrder"> | Date | string | null
@@ -683,30 +771,36 @@ export type PublicationOrderScalarWhereInput = {
 
 export type PublicationOrderCreateWithoutSaasInput = {
   id?: string
+  type?: $Enums.PublicationOrderType
   provider: $Enums.PaymentProviderName
   providerPaymentId?: string | null
   amountCents: number
   currency: string
+  entitlementDays?: number | null
   status?: $Enums.PublicationOrderStatus
   checkoutUrl?: string | null
   paidAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutOrdersInput
+  sponsorship?: Prisma.SaasSponsorshipCreateNestedOneWithoutOrderInput
 }
 
 export type PublicationOrderUncheckedCreateWithoutSaasInput = {
   id?: string
   userId: string
+  type?: $Enums.PublicationOrderType
   provider: $Enums.PaymentProviderName
   providerPaymentId?: string | null
   amountCents: number
   currency: string
+  entitlementDays?: number | null
   status?: $Enums.PublicationOrderStatus
   checkoutUrl?: string | null
   paidAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sponsorship?: Prisma.SaasSponsorshipUncheckedCreateNestedOneWithoutOrderInput
 }
 
 export type PublicationOrderCreateOrConnectWithoutSaasInput = {
@@ -735,13 +829,99 @@ export type PublicationOrderUpdateManyWithWhereWithoutSaasInput = {
   data: Prisma.XOR<Prisma.PublicationOrderUpdateManyMutationInput, Prisma.PublicationOrderUncheckedUpdateManyWithoutSaasInput>
 }
 
-export type PublicationOrderCreateManyUserInput = {
+export type PublicationOrderCreateWithoutSponsorshipInput = {
   id?: string
-  saasId: string
+  type?: $Enums.PublicationOrderType
   provider: $Enums.PaymentProviderName
   providerPaymentId?: string | null
   amountCents: number
   currency: string
+  entitlementDays?: number | null
+  status?: $Enums.PublicationOrderStatus
+  checkoutUrl?: string | null
+  paidAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutOrdersInput
+  saas: Prisma.SaasCreateNestedOneWithoutOrdersInput
+}
+
+export type PublicationOrderUncheckedCreateWithoutSponsorshipInput = {
+  id?: string
+  userId: string
+  saasId: string
+  type?: $Enums.PublicationOrderType
+  provider: $Enums.PaymentProviderName
+  providerPaymentId?: string | null
+  amountCents: number
+  currency: string
+  entitlementDays?: number | null
+  status?: $Enums.PublicationOrderStatus
+  checkoutUrl?: string | null
+  paidAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PublicationOrderCreateOrConnectWithoutSponsorshipInput = {
+  where: Prisma.PublicationOrderWhereUniqueInput
+  create: Prisma.XOR<Prisma.PublicationOrderCreateWithoutSponsorshipInput, Prisma.PublicationOrderUncheckedCreateWithoutSponsorshipInput>
+}
+
+export type PublicationOrderUpsertWithoutSponsorshipInput = {
+  update: Prisma.XOR<Prisma.PublicationOrderUpdateWithoutSponsorshipInput, Prisma.PublicationOrderUncheckedUpdateWithoutSponsorshipInput>
+  create: Prisma.XOR<Prisma.PublicationOrderCreateWithoutSponsorshipInput, Prisma.PublicationOrderUncheckedCreateWithoutSponsorshipInput>
+  where?: Prisma.PublicationOrderWhereInput
+}
+
+export type PublicationOrderUpdateToOneWithWhereWithoutSponsorshipInput = {
+  where?: Prisma.PublicationOrderWhereInput
+  data: Prisma.XOR<Prisma.PublicationOrderUpdateWithoutSponsorshipInput, Prisma.PublicationOrderUncheckedUpdateWithoutSponsorshipInput>
+}
+
+export type PublicationOrderUpdateWithoutSponsorshipInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumPublicationOrderTypeFieldUpdateOperationsInput | $Enums.PublicationOrderType
+  provider?: Prisma.EnumPaymentProviderNameFieldUpdateOperationsInput | $Enums.PaymentProviderName
+  providerPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amountCents?: Prisma.IntFieldUpdateOperationsInput | number
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  entitlementDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumPublicationOrderStatusFieldUpdateOperationsInput | $Enums.PublicationOrderStatus
+  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutOrdersNestedInput
+  saas?: Prisma.SaasUpdateOneRequiredWithoutOrdersNestedInput
+}
+
+export type PublicationOrderUncheckedUpdateWithoutSponsorshipInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  saasId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumPublicationOrderTypeFieldUpdateOperationsInput | $Enums.PublicationOrderType
+  provider?: Prisma.EnumPaymentProviderNameFieldUpdateOperationsInput | $Enums.PaymentProviderName
+  providerPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amountCents?: Prisma.IntFieldUpdateOperationsInput | number
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  entitlementDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumPublicationOrderStatusFieldUpdateOperationsInput | $Enums.PublicationOrderStatus
+  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PublicationOrderCreateManyUserInput = {
+  id?: string
+  saasId: string
+  type?: $Enums.PublicationOrderType
+  provider: $Enums.PaymentProviderName
+  providerPaymentId?: string | null
+  amountCents: number
+  currency: string
+  entitlementDays?: number | null
   status?: $Enums.PublicationOrderStatus
   checkoutUrl?: string | null
   paidAt?: Date | string | null
@@ -751,39 +931,47 @@ export type PublicationOrderCreateManyUserInput = {
 
 export type PublicationOrderUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumPublicationOrderTypeFieldUpdateOperationsInput | $Enums.PublicationOrderType
   provider?: Prisma.EnumPaymentProviderNameFieldUpdateOperationsInput | $Enums.PaymentProviderName
   providerPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amountCents?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
+  entitlementDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumPublicationOrderStatusFieldUpdateOperationsInput | $Enums.PublicationOrderStatus
   checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   saas?: Prisma.SaasUpdateOneRequiredWithoutOrdersNestedInput
+  sponsorship?: Prisma.SaasSponsorshipUpdateOneWithoutOrderNestedInput
 }
 
 export type PublicationOrderUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   saasId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumPublicationOrderTypeFieldUpdateOperationsInput | $Enums.PublicationOrderType
   provider?: Prisma.EnumPaymentProviderNameFieldUpdateOperationsInput | $Enums.PaymentProviderName
   providerPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amountCents?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
+  entitlementDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumPublicationOrderStatusFieldUpdateOperationsInput | $Enums.PublicationOrderStatus
   checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sponsorship?: Prisma.SaasSponsorshipUncheckedUpdateOneWithoutOrderNestedInput
 }
 
 export type PublicationOrderUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   saasId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumPublicationOrderTypeFieldUpdateOperationsInput | $Enums.PublicationOrderType
   provider?: Prisma.EnumPaymentProviderNameFieldUpdateOperationsInput | $Enums.PaymentProviderName
   providerPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amountCents?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
+  entitlementDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumPublicationOrderStatusFieldUpdateOperationsInput | $Enums.PublicationOrderStatus
   checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -794,10 +982,12 @@ export type PublicationOrderUncheckedUpdateManyWithoutUserInput = {
 export type PublicationOrderCreateManySaasInput = {
   id?: string
   userId: string
+  type?: $Enums.PublicationOrderType
   provider: $Enums.PaymentProviderName
   providerPaymentId?: string | null
   amountCents: number
   currency: string
+  entitlementDays?: number | null
   status?: $Enums.PublicationOrderStatus
   checkoutUrl?: string | null
   paidAt?: Date | string | null
@@ -807,39 +997,47 @@ export type PublicationOrderCreateManySaasInput = {
 
 export type PublicationOrderUpdateWithoutSaasInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumPublicationOrderTypeFieldUpdateOperationsInput | $Enums.PublicationOrderType
   provider?: Prisma.EnumPaymentProviderNameFieldUpdateOperationsInput | $Enums.PaymentProviderName
   providerPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amountCents?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
+  entitlementDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumPublicationOrderStatusFieldUpdateOperationsInput | $Enums.PublicationOrderStatus
   checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutOrdersNestedInput
+  sponsorship?: Prisma.SaasSponsorshipUpdateOneWithoutOrderNestedInput
 }
 
 export type PublicationOrderUncheckedUpdateWithoutSaasInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumPublicationOrderTypeFieldUpdateOperationsInput | $Enums.PublicationOrderType
   provider?: Prisma.EnumPaymentProviderNameFieldUpdateOperationsInput | $Enums.PaymentProviderName
   providerPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amountCents?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
+  entitlementDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumPublicationOrderStatusFieldUpdateOperationsInput | $Enums.PublicationOrderStatus
   checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sponsorship?: Prisma.SaasSponsorshipUncheckedUpdateOneWithoutOrderNestedInput
 }
 
 export type PublicationOrderUncheckedUpdateManyWithoutSaasInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumPublicationOrderTypeFieldUpdateOperationsInput | $Enums.PublicationOrderType
   provider?: Prisma.EnumPaymentProviderNameFieldUpdateOperationsInput | $Enums.PaymentProviderName
   providerPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amountCents?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
+  entitlementDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumPublicationOrderStatusFieldUpdateOperationsInput | $Enums.PublicationOrderStatus
   checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -853,10 +1051,12 @@ export type PublicationOrderSelect<ExtArgs extends runtime.Types.Extensions.Inte
   id?: boolean
   userId?: boolean
   saasId?: boolean
+  type?: boolean
   provider?: boolean
   providerPaymentId?: boolean
   amountCents?: boolean
   currency?: boolean
+  entitlementDays?: boolean
   status?: boolean
   checkoutUrl?: boolean
   paidAt?: boolean
@@ -864,16 +1064,19 @@ export type PublicationOrderSelect<ExtArgs extends runtime.Types.Extensions.Inte
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   saas?: boolean | Prisma.SaasDefaultArgs<ExtArgs>
+  sponsorship?: boolean | Prisma.PublicationOrder$sponsorshipArgs<ExtArgs>
 }, ExtArgs["result"]["publicationOrder"]>
 
 export type PublicationOrderSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
   saasId?: boolean
+  type?: boolean
   provider?: boolean
   providerPaymentId?: boolean
   amountCents?: boolean
   currency?: boolean
+  entitlementDays?: boolean
   status?: boolean
   checkoutUrl?: boolean
   paidAt?: boolean
@@ -887,10 +1090,12 @@ export type PublicationOrderSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   id?: boolean
   userId?: boolean
   saasId?: boolean
+  type?: boolean
   provider?: boolean
   providerPaymentId?: boolean
   amountCents?: boolean
   currency?: boolean
+  entitlementDays?: boolean
   status?: boolean
   checkoutUrl?: boolean
   paidAt?: boolean
@@ -904,10 +1109,12 @@ export type PublicationOrderSelectScalar = {
   id?: boolean
   userId?: boolean
   saasId?: boolean
+  type?: boolean
   provider?: boolean
   providerPaymentId?: boolean
   amountCents?: boolean
   currency?: boolean
+  entitlementDays?: boolean
   status?: boolean
   checkoutUrl?: boolean
   paidAt?: boolean
@@ -915,10 +1122,11 @@ export type PublicationOrderSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PublicationOrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "saasId" | "provider" | "providerPaymentId" | "amountCents" | "currency" | "status" | "checkoutUrl" | "paidAt" | "createdAt" | "updatedAt", ExtArgs["result"]["publicationOrder"]>
+export type PublicationOrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "saasId" | "type" | "provider" | "providerPaymentId" | "amountCents" | "currency" | "entitlementDays" | "status" | "checkoutUrl" | "paidAt" | "createdAt" | "updatedAt", ExtArgs["result"]["publicationOrder"]>
 export type PublicationOrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   saas?: boolean | Prisma.SaasDefaultArgs<ExtArgs>
+  sponsorship?: boolean | Prisma.PublicationOrder$sponsorshipArgs<ExtArgs>
 }
 export type PublicationOrderIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -934,15 +1142,18 @@ export type $PublicationOrderPayload<ExtArgs extends runtime.Types.Extensions.In
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
     saas: Prisma.$SaasPayload<ExtArgs>
+    sponsorship: Prisma.$SaasSponsorshipPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
     saasId: string
+    type: $Enums.PublicationOrderType
     provider: $Enums.PaymentProviderName
     providerPaymentId: string | null
     amountCents: number
     currency: string
+    entitlementDays: number | null
     status: $Enums.PublicationOrderStatus
     checkoutUrl: string | null
     paidAt: Date | null
@@ -1344,6 +1555,7 @@ export interface Prisma__PublicationOrderClient<T, Null = never, ExtArgs extends
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   saas<T extends Prisma.SaasDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SaasDefaultArgs<ExtArgs>>): Prisma.Prisma__SaasClient<runtime.Types.Result.GetResult<Prisma.$SaasPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  sponsorship<T extends Prisma.PublicationOrder$sponsorshipArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PublicationOrder$sponsorshipArgs<ExtArgs>>): Prisma.Prisma__SaasSponsorshipClient<runtime.Types.Result.GetResult<Prisma.$SaasSponsorshipPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1376,10 +1588,12 @@ export interface PublicationOrderFieldRefs {
   readonly id: Prisma.FieldRef<"PublicationOrder", 'String'>
   readonly userId: Prisma.FieldRef<"PublicationOrder", 'String'>
   readonly saasId: Prisma.FieldRef<"PublicationOrder", 'String'>
+  readonly type: Prisma.FieldRef<"PublicationOrder", 'PublicationOrderType'>
   readonly provider: Prisma.FieldRef<"PublicationOrder", 'PaymentProviderName'>
   readonly providerPaymentId: Prisma.FieldRef<"PublicationOrder", 'String'>
   readonly amountCents: Prisma.FieldRef<"PublicationOrder", 'Int'>
   readonly currency: Prisma.FieldRef<"PublicationOrder", 'String'>
+  readonly entitlementDays: Prisma.FieldRef<"PublicationOrder", 'Int'>
   readonly status: Prisma.FieldRef<"PublicationOrder", 'PublicationOrderStatus'>
   readonly checkoutUrl: Prisma.FieldRef<"PublicationOrder", 'String'>
   readonly paidAt: Prisma.FieldRef<"PublicationOrder", 'DateTime'>
@@ -1783,6 +1997,25 @@ export type PublicationOrderDeleteManyArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many PublicationOrders to delete.
    */
   limit?: number
+}
+
+/**
+ * PublicationOrder.sponsorship
+ */
+export type PublicationOrder$sponsorshipArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SaasSponsorship
+   */
+  select?: Prisma.SaasSponsorshipSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SaasSponsorship
+   */
+  omit?: Prisma.SaasSponsorshipOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SaasSponsorshipInclude<ExtArgs> | null
+  where?: Prisma.SaasSponsorshipWhereInput
 }
 
 /**

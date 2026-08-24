@@ -25,7 +25,7 @@ export class MercadoPagoPaymentProvider implements PaymentProvider {
           items: [
             {
               id: input.saasId,
-              title: `Publicação: ${input.title}`,
+              title: input.title,
               quantity: 1,
               currency_id: input.currency,
               unit_price: input.amountCents / 100,

@@ -72,6 +72,14 @@ export const PublicationOrderStatus = {
 export type PublicationOrderStatus = (typeof PublicationOrderStatus)[keyof typeof PublicationOrderStatus]
 
 
+export const PublicationOrderType = {
+  PUBLICATION_FEE: 'PUBLICATION_FEE',
+  SPONSORED_PLACEMENT: 'SPONSORED_PLACEMENT'
+} as const
+
+export type PublicationOrderType = (typeof PublicationOrderType)[keyof typeof PublicationOrderType]
+
+
 export const PaymentProviderName = {
   MOCK: 'MOCK',
   MERCADO_PAGO: 'MERCADO_PAGO'
