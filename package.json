@@ -16,16 +16,23 @@
     "db:migrate": "npm run prisma:migrate --workspace=@bms/api",
     "db:seed": "npm run prisma:seed --workspace=@bms/api",
     "db:studio": "npm run prisma:studio --workspace=@bms/api",
+    "security:audit": "npm audit --audit-level=high",
     "format": "prettier --write ."
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
     "prettier": "^3.6.2",
+    "prisma": "^7.9.1",
     "wait-on": "^9.1.0"
   },
   "dependencies": {
     "next": "16.3.1",
     "react": "19.2.8",
     "react-dom": "19.2.8"
+  },
+  "overrides": {
+    "@prisma/config": {
+      "deepmerge-ts": "8.0.2"
+    }
   }
 }
