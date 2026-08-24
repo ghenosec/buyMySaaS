@@ -1,5 +1,5 @@
 'use client';
-import { Heart, Send, Star } from 'lucide-react';
+import { Heart, Rocket, Send, Star } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { clientApi } from '@/lib/api';
@@ -35,9 +35,71 @@ export function FavoriteButton({ saasId }: { saasId: string }) {
     }
   }
   return (
-    <button className="btn" onClick={toggle} aria-pressed={active}>
+    <button
+      className="btn"
+      style={{ width: '100%' }}
+      type="button"
+      onClick={toggle}
+      aria-pressed={active}
+    >
       <Heart size={17} fill={active ? 'currentColor' : 'none'} />
       {active ? 'Favoritado' : 'Favoritar'}
+    </button>
+  );
+}
+export function BoostButton({
+  saasId,
+  initialBoosts = 0,
+}: {
+  saasId: string;
+  initialBoosts?: number;
+}) {
+  const [boosted, setBoosted] = useState(false);
+  const [boosts, setBoosts] = useState(initialBoosts);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    void clientApi<{ boosted: boolean; boosts: number }>(
+      `/saas/${saasId}/boost`,
+    )
+      .then((result) => {
+        setBoosted(result.boosted);
+        setBoosts(result.boosts);
+      })
+      .catch(() => undefined);
+  }, [saasId]);
+  async function boost() {
+    setLoading(true);
+    try {
+      const result = await clientApi<{ boosted: boolean; boosts: number }>(
+        `/saas/${saasId}/boost`,
+        { method: 'POST' },
+      );
+      setBoosted(result.boosted);
+      setBoosts(result.boosts);
+      toast.success('Boost registrado. Esse SaaS ganhou força no Em alta.');
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : 'Faça login para impulsionar',
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+  return (
+    <button
+      className="btn"
+      style={{ width: '100%' }}
+      type="button"
+      onClick={boost}
+      disabled={boosted || loading}
+      aria-pressed={boosted}
+    >
+      <Rocket size={17} fill={boosted ? 'currentColor' : 'none'} />
+      {loading
+        ? 'Impulsionando...'
+        : boosted
+          ? `Impulsionado (${boosts})`
+          : `Impulsionar (${boosts})`}
     </button>
   );
 }
@@ -49,11 +111,18 @@ export function ReviewForm({ saasId }: { saasId: string }) {
     event.preventDefault();
     setLoading(true);
     try {
-      await clientApi(`/saas/${saasId}/reviews`, {
-        method: 'POST',
-        body: JSON.stringify({ rating, comment }),
-      });
-      toast.success('Avaliação publicada');
+      const result = await clientApi<{ spam?: boolean }>(
+        `/saas/${saasId}/reviews`,
+        {
+          method: 'POST',
+          body: JSON.stringify({ rating, comment }),
+        },
+      );
+      toast.success(
+        result.spam
+          ? 'Avaliação recebida e enviada para moderação'
+          : 'Avaliação publicada',
+      );
       setComment('');
       location.reload();
     } catch (error) {
