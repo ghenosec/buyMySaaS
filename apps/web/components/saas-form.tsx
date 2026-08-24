@@ -1,6 +1,6 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Save, Send } from 'lucide-react';
+import { ImageIcon, Save, Send, Trash2 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -28,7 +28,12 @@ const schema = z.object({
     'LIFETIME',
     'CUSTOM',
   ]),
-  priceCents: z.number().min(0).optional(),
+  priceInput: z
+    .string()
+    .max(20)
+    .refine((value) => isValidPriceInput(value), {
+      message: 'Use um valor válido, ex: 6,90',
+    }),
   currency: z.string().length(3),
   billingInterval: z.enum(['MONTH', 'YEAR', 'ONE_TIME']).optional(),
   pricingLabel: z.string().max(60).optional(),
@@ -36,8 +41,36 @@ const schema = z.object({
   technologiesText: z.string(),
   categoryIds: z.array(z.string()).min(1).max(3),
   logoUrl: z.string().optional(),
+  screenshotUrls: z.array(z.url()).max(6),
+  isAdult: z.boolean(),
 });
 type Values = z.infer<typeof schema>;
+const logoMaxSizeBytes = 5 * 1024 * 1024;
+const allowedLogoTypes = ['image/png', 'image/jpeg', 'image/webp'];
+
+function normalizePriceInput(value: string) {
+  return value.trim().replace(/\./g, '').replace(',', '.');
+}
+
+function isValidPriceInput(value: string) {
+  if (!value.trim()) return true;
+  const price = Number(normalizePriceInput(value));
+  return Number.isFinite(price) && price >= 0;
+}
+
+function priceInputToCents(value: string) {
+  if (!value.trim()) return undefined;
+  return Math.round(Number(normalizePriceInput(value)) * 100);
+}
+
+function centsToPriceInput(cents?: number | null) {
+  if (cents === null || cents === undefined) return '';
+  return (cents / 100).toLocaleString('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
 const defaults: Values = {
   name: '',
   tagline: '',
@@ -45,11 +78,11 @@ const defaults: Values = {
   description: '',
   countryCode: 'BR',
   language: 'pt-BR',
-  websiteUrl: 'https://',
+  websiteUrl: '',
   trialUrl: '',
   checkoutUrl: '',
   pricingType: 'FREEMIUM',
-  priceCents: 0,
+  priceInput: '',
   currency: 'BRL',
   billingInterval: 'MONTH',
   pricingLabel: '',
@@ -57,10 +90,13 @@ const defaults: Values = {
   technologiesText: '',
   categoryIds: [],
   logoUrl: '',
+  screenshotUrls: [],
+  isAdult: false,
 };
 export function SaasForm({ id }: { id?: string }) {
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
+  const [uploadingScreenshots, setUploadingScreenshots] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { data: categories = [] } = useQuery({
     queryKey: ['categories'],
@@ -82,6 +118,8 @@ export function SaasForm({ id }: { id?: string }) {
     resolver: zodResolver(schema),
     defaultValues: defaults,
   });
+  const logoUrl = watch('logoUrl');
+  const screenshotUrls = watch('screenshotUrls');
   useEffect(() => setMounted(true), []);
   useEffect(() => {
     if (item)
@@ -97,9 +135,11 @@ export function SaasForm({ id }: { id?: string }) {
         pricingType: item.pricingType,
         currency: item.currency,
         logoUrl: item.logoUrl ?? '',
+        screenshotUrls: item.screenshots?.map((s) => s.url) ?? [],
+        isAdult: item.isAdult ?? false,
         trialUrl: item.trialUrl ?? '',
         checkoutUrl: item.checkoutUrl ?? '',
-        priceCents: item.priceCents ?? 0,
+        priceInput: centsToPriceInput(item.priceCents),
         billingInterval: item.billingInterval ?? undefined,
         pricingLabel: item.pricingLabel ?? '',
         tagsText: item.tags.join(', '),
@@ -108,22 +148,23 @@ export function SaasForm({ id }: { id?: string }) {
       });
   }, [item, reset]);
   async function submit(values: Values) {
+    const { tagsText, technologiesText, priceInput, ...rest } = values;
     const payload = {
-      ...values,
-      tags: values.tagsText
+      ...rest,
+      priceCents: priceInputToCents(priceInput),
+      tags: tagsText
         .split(',')
         .map((v) => v.trim())
         .filter(Boolean),
-      technologies: values.technologiesText
+      technologies: technologiesText
         .split(',')
         .map((v) => v.trim())
         .filter(Boolean),
       trialUrl: values.trialUrl || undefined,
       checkoutUrl: values.checkoutUrl || undefined,
       logoUrl: values.logoUrl || undefined,
+      screenshotUrls: values.screenshotUrls,
     };
-    delete (payload as Partial<typeof payload>).tagsText;
-    delete (payload as Partial<typeof payload>).technologiesText;
     try {
       const saved = await clientApi<Saas>(id ? `/me/saas/${id}` : '/me/saas', {
         method: id ? 'PATCH' : 'POST',
@@ -137,23 +178,77 @@ export function SaasForm({ id }: { id?: string }) {
       );
     }
   }
-  async function upload(file?: File) {
-    if (!file) return;
-    setUploading(true);
+  async function uploadImage(file: File, label: string) {
+    if (!allowedLogoTypes.includes(file.type))
+      throw new Error(`Envie ${label} em PNG, JPEG ou WebP`);
+    if (file.size > logoMaxSizeBytes)
+      throw new Error(`${label} precisa ter até 5 MB`);
     const data = new FormData();
     data.append('file', file);
+    return clientApi<{ url: string }>('/uploads', {
+      method: 'POST',
+      body: data,
+    });
+  }
+  async function uploadLogo(file?: File) {
+    if (!file) return;
+    setUploading(true);
     try {
-      const result = await clientApi<{ url: string }>('/uploads', {
-        method: 'POST',
-        body: data,
+      const result = await uploadImage(file, 'uma logo');
+      setValue('logoUrl', result.url, {
+        shouldDirty: true,
+        shouldValidate: true,
       });
-      setValue('logoUrl', result.url);
       toast.success('Logo enviado');
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Falha no upload');
     } finally {
       setUploading(false);
     }
+  }
+  async function uploadScreenshots(files: File[]) {
+    if (!files.length) return;
+    const remainingSlots = 6 - screenshotUrls.length;
+    if (remainingSlots <= 0) {
+      toast.error('Você pode enviar até 6 imagens de exemplo');
+      return;
+    }
+    const selected = files.slice(0, remainingSlots);
+    if (files.length > remainingSlots)
+      toast.error(`Só mais ${remainingSlots} imagem(ns) serão enviadas`);
+    setUploadingScreenshots(true);
+    try {
+      const uploaded = [];
+      for (const file of selected) {
+        const result = await uploadImage(file, 'imagens de exemplo');
+        uploaded.push(result.url);
+      }
+      setValue('screenshotUrls', [...screenshotUrls, ...uploaded], {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+      toast.success(
+        uploaded.length === 1
+          ? 'Imagem de exemplo enviada'
+          : 'Imagens de exemplo enviadas',
+      );
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Falha no upload');
+    } finally {
+      setUploadingScreenshots(false);
+    }
+  }
+  function removeLogo() {
+    setValue('logoUrl', '', { shouldDirty: true, shouldValidate: true });
+    toast.success('Logo removida');
+  }
+  function removeScreenshot(url: string) {
+    setValue(
+      'screenshotUrls',
+      screenshotUrls.filter((item) => item !== url),
+      { shouldDirty: true, shouldValidate: true },
+    );
+    toast.success('Imagem removida');
   }
   return (
     <form className="stack" onSubmit={handleSubmit(submit)}>
@@ -170,7 +265,11 @@ export function SaasForm({ id }: { id?: string }) {
           <div className="two-col">
             <label className="label">
               Nome
-              <input className="input" {...register('name')} />
+              <input
+                className="input"
+                {...register('name')}
+                placeholder="Ex: TravelDesk"
+              />
               <small className="error">{errors.name?.message}</small>
             </label>
             <label className="label">
@@ -189,12 +288,19 @@ export function SaasForm({ id }: { id?: string }) {
               className="input"
               style={{ minHeight: 80 }}
               {...register('shortDescription')}
+              placeholder="Ex: Plataforma para agências organizarem clientes, viagens e pagamentos em um só lugar."
             />
             <small className="error">{errors.shortDescription?.message}</small>
           </label>
           <label className="label">
             Descrição completa
-            <textarea className="input" {...register('description')} />
+            <textarea
+              className="input"
+              {...register('description')}
+              placeholder={`Ex: O TravelDesk ajuda agências de turismo a controlar reservas, clientes, roteiros e pagamentos em uma única tela.
+
+Ideal para equipes que querem reduzir planilhas, evitar retrabalho e acompanhar cada viagem do orçamento ao pós-venda.`}
+            />
             <small className="error">{errors.description?.message}</small>
           </label>
           <div className="two-col">
@@ -217,22 +323,121 @@ export function SaasForm({ id }: { id?: string }) {
             <span className="eyebrow">2. Branding e categoria</span>
             <h2>Ajude as pessoas a reconhecer</h2>
           </div>
-          <label className="label">
-            Logo
-            <input
-              className="input"
-              type="file"
-              accept="image/png,image/jpeg,image/webp"
-              onChange={(e) => void upload(e.target.files?.[0])}
-            />
-            <span className="muted">
-              {uploading
-                ? 'Enviando...'
-                : watch('logoUrl')
-                  ? 'Logo pronto'
-                  : 'PNG, JPEG ou WebP, até 5 MB'}
-            </span>
-          </label>
+          <div
+            className="card"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '82px minmax(0, 1fr)',
+              gap: 16,
+              alignItems: 'center',
+              padding: 14,
+            }}
+          >
+            <div
+              aria-label={logoUrl ? 'Prévia da logo enviada' : 'Sem logo'}
+              role="img"
+              style={{
+                width: 82,
+                height: 82,
+                display: 'grid',
+                placeItems: 'center',
+                overflow: 'hidden',
+                borderRadius: 18,
+                border: '1px solid var(--line)',
+                background: logoUrl
+                  ? `center / cover no-repeat url("${logoUrl.replace(/"/g, '%22')}")`
+                  : 'linear-gradient(135deg, var(--surface-2), var(--surface))',
+                color: 'var(--muted)',
+              }}
+            >
+              {!logoUrl && <ImageIcon size={28} />}
+            </div>
+            <div className="stack" style={{ gap: 10 }}>
+              <label className="label">
+                Logo do SaaS/produto
+                <input
+                  className="input"
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  onChange={(e) => {
+                    void uploadLogo(e.currentTarget.files?.[0]);
+                    e.currentTarget.value = '';
+                  }}
+                />
+                <span className="muted">
+                  {uploading
+                    ? 'Enviando logo...'
+                    : logoUrl
+                      ? 'Logo pronta. Ela aparecerá no card e na página do produto.'
+                      : 'PNG, JPEG ou WebP, até 5 MB.'}
+                </span>
+              </label>
+              {logoUrl ? (
+                <div>
+                  <button
+                    className="btn btn-ghost btn-sm"
+                    type="button"
+                    onClick={removeLogo}
+                  >
+                    <Trash2 size={15} /> Remover logo
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          </div>
+          <div className="card stack" style={{ padding: 14 }}>
+            <label className="label">
+              Imagens de exemplo do produto
+              <input
+                className="input"
+                type="file"
+                multiple
+                accept="image/png,image/jpeg,image/webp"
+                onChange={(e) => {
+                  void uploadScreenshots(
+                    Array.from(e.currentTarget.files ?? []),
+                  );
+                  e.currentTarget.value = '';
+                }}
+              />
+              <span className="muted">
+                {uploadingScreenshots
+                  ? 'Enviando imagens...'
+                  : `${screenshotUrls.length}/6 imagens enviadas. Use prints reais do produto em PNG, JPEG ou WebP.`}
+              </span>
+            </label>
+            {screenshotUrls.length ? (
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+                  gap: 12,
+                }}
+              >
+                {screenshotUrls.map((url, index) => (
+                  <div className="card stack" style={{ padding: 10 }} key={url}>
+                    <div
+                      aria-label={`Imagem de exemplo ${index + 1}`}
+                      role="img"
+                      style={{
+                        aspectRatio: '16 / 10',
+                        borderRadius: 12,
+                        border: '1px solid var(--line)',
+                        background: `center / cover no-repeat url("${url.replace(/"/g, '%22')}")`,
+                      }}
+                    />
+                    <button
+                      className="btn btn-ghost btn-sm"
+                      type="button"
+                      onClick={() => removeScreenshot(url)}
+                    >
+                      <Trash2 size={15} /> Remover
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+          </div>
           <fieldset style={{ border: 0, padding: 0 }}>
             <legend className="label">Categorias (até 3)</legend>
             <div
@@ -256,6 +461,26 @@ export function SaasForm({ id }: { id?: string }) {
             </div>
             <small className="error">{errors.categoryIds?.message}</small>
           </fieldset>
+          <label
+            className="notice"
+            style={{
+              display: 'flex',
+              gap: 10,
+              alignItems: 'flex-start',
+              fontWeight: 700,
+            }}
+          >
+            <input type="checkbox" {...register('isAdult')} />
+            <span>
+              Produto +18
+              <br />
+              <small className="muted">
+                Marque se o SaaS, suas imagens ou sua proposta forem destinadas
+                somente a maiores de 18 anos. Se fizer sentido, selecione também
+                a categoria Adulto +18.
+              </small>
+            </span>
+          </label>
           <div className="two-col">
             <label className="label">
               Tags
@@ -282,17 +507,29 @@ export function SaasForm({ id }: { id?: string }) {
           </div>
           <label className="label">
             Website HTTPS
-            <input className="input" {...register('websiteUrl')} />
+            <input
+              className="input"
+              {...register('websiteUrl')}
+              placeholder="Ex: https://seudominio.com"
+            />
             <small className="error">{errors.websiteUrl?.message}</small>
           </label>
           <div className="two-col">
             <label className="label">
               URL de trial
-              <input className="input" {...register('trialUrl')} />
+              <input
+                className="input"
+                {...register('trialUrl')}
+                placeholder="Ex: https://seudominio.com/testar"
+              />
             </label>
             <label className="label">
               URL de checkout
-              <input className="input" {...register('checkoutUrl')} />
+              <input
+                className="input"
+                {...register('checkoutUrl')}
+                placeholder="Ex: https://pay.seudominio.com/produto"
+              />
             </label>
           </div>
           <div className="two-col">
@@ -308,13 +545,17 @@ export function SaasForm({ id }: { id?: string }) {
               </select>
             </label>
             <label className="label">
-              Preço inicial em centavos
+              Preço inicial
               <input
                 className="input"
-                type="number"
-                min="0"
-                {...register('priceCents', { valueAsNumber: true })}
+                inputMode="decimal"
+                placeholder="Ex: 6,90"
+                {...register('priceInput')}
               />
+              <span className="muted">
+                Digite em reais. Ex.: 6,90 para R$ 6,90. Use 0 para grátis.
+              </span>
+              <small className="error">{errors.priceInput?.message}</small>
             </label>
           </div>
           <div className="two-col">

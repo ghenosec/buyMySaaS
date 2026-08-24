@@ -1,4 +1,4 @@
-import { ArrowUpRight, MapPin, Star } from 'lucide-react';
+import { ArrowUpRight, Flame, ShieldAlert, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { money } from '@/lib/api';
@@ -10,10 +10,7 @@ export function SaasCard({ saas }: { saas: Saas }) {
       ? 'Grátis'
       : saas.pricingType === 'FREEMIUM'
         ? 'Freemium'
-        : money(
-            saas.priceCents,
-            saas.currency,
-          );
+        : money(saas.priceCents, saas.currency);
   return (
     <Link className="card saas-card" href={`/saas/${saas.slug}`}>
       <div
@@ -58,16 +55,22 @@ export function SaasCard({ saas }: { saas: Saas }) {
       <div
         style={{ display: 'flex', gap: 7, flexWrap: 'wrap', marginTop: 'auto' }}
       >
-        {saas.isBrazilian && (
-          <span className="pill">
-            <MapPin size={13} />
-            Brasil
-          </span>
-        )}
         {(saas.averageRating ?? 0) > 0 && (
           <span className="pill">
             <Star size={13} fill="currentColor" />
             {saas.averageRating}
+          </span>
+        )}
+        {saas.isAdult && (
+          <span className="pill" style={{ color: 'var(--danger)' }}>
+            <ShieldAlert size={13} />
+            +18
+          </span>
+        )}
+        {(saas.score ?? 0) > 0 && (
+          <span className="pill">
+            <Flame size={13} />
+            Em alta
           </span>
         )}
       </div>
