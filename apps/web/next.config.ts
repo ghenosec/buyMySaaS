@@ -54,7 +54,57 @@ const storageImageUrls = [
     Boolean(pattern),
   );
 
+const connectSources = [process.env.NEXT_PUBLIC_API_URL]
+  .filter((url): url is string => Boolean(url))
+  .map((url) => {
+    try {
+      return new URL(url).origin;
+    } catch {
+      return null;
+    }
+  })
+  .filter((origin): origin is string => Boolean(origin));
+
+const securityHeaders = [
+  { key: 'X-Content-Type-Options', value: 'nosniff' },
+  { key: 'X-Frame-Options', value: 'DENY' },
+  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+  {
+    key: 'Permissions-Policy',
+    value: 'camera=(), microphone=(), geolocation=(), payment=()',
+  },
+  { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
+  { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
+  ...(process.env.NODE_ENV === 'production'
+    ? [
+        {
+          key: 'Strict-Transport-Security',
+          value: 'max-age=31536000',
+        },
+        {
+          key: 'Content-Security-Policy',
+          value: [
+            "default-src 'self'",
+            "base-uri 'self'",
+            "object-src 'none'",
+            "frame-ancestors 'none'",
+            "form-action 'self'",
+            "script-src 'self' 'unsafe-inline'",
+            "style-src 'self' 'unsafe-inline'",
+            "font-src 'self' data:",
+            "img-src 'self' data: blob: https:",
+            `connect-src 'self' ${connectSources.join(' ')}`.trim(),
+            'upgrade-insecure-requests',
+          ].join('; '),
+        },
+      ]
+    : []),
+];
+
 const nextConfig: NextConfig = {
+  async headers() {
+    return [{ source: '/:path*', headers: securityHeaders }];
+  },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'api.dicebear.com' },
