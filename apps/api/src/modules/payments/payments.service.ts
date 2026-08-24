@@ -1,7 +1,9 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
+  ServiceUnavailableException,
 } from '@nestjs/common';
 import { Prisma } from '../../generated/prisma/client';
 import { assertOwnership } from '../../common/ownership';
@@ -22,10 +24,18 @@ export class PaymentsService {
     private readonly mercadoPago: MercadoPagoPaymentProvider,
   ) {}
   private provider(): PaymentProvider {
-    return process.env.PAYMENT_PROVIDER === 'mercado_pago' &&
-      process.env.MERCADO_PAGO_ACCESS_TOKEN
-      ? this.mercadoPago
-      : this.mock;
+    if (process.env.PAYMENT_PROVIDER === 'mercado_pago') {
+      if (!process.env.MERCADO_PAGO_ACCESS_TOKEN)
+        throw new ServiceUnavailableException(
+          'Provedor de pagamento não configurado',
+        );
+      return this.mercadoPago;
+    }
+    if (process.env.NODE_ENV === 'production')
+      throw new ServiceUnavailableException(
+        'Pagamento mock não é permitido em produção',
+      );
+    return this.mock;
   }
   async submit(userId: string, saasId: string) {
     const saas = await this.prisma.saas.findUnique({ where: { id: saasId } });
@@ -97,6 +107,11 @@ export class PaymentsService {
     };
   }
   async confirmMock(userId: string, orderId: string) {
+    if (
+      process.env.NODE_ENV === 'production' ||
+      (process.env.PAYMENT_PROVIDER ?? 'mock') !== 'mock'
+    )
+      throw new ForbiddenException('Pagamento mock não está disponível');
     const order = await this.prisma.publicationOrder.findUnique({
       where: { id: orderId },
       include: { saas: true },

@@ -8,6 +8,14 @@ import { PrismaService } from '../prisma/prisma.service';
 import { ModerationService } from '../moderation/moderation.service';
 import { ReviewDto } from './engagements.dto';
 
+const reviewResponseSelect = {
+  id: true,
+  rating: true,
+  comment: true,
+  createdAt: true,
+  updatedAt: true,
+} as const;
+
 @Injectable()
 export class EngagementsService {
   constructor(
@@ -17,7 +25,10 @@ export class EngagementsService {
   listReviews(saasId: string) {
     return this.prisma.review.findMany({
       where: { saasId, hidden: false },
-      include: { user: { select: { id: true, name: true, avatarUrl: true } } },
+      select: {
+        ...reviewResponseSelect,
+        user: { select: { id: true, name: true, avatarUrl: true } },
+      },
       orderBy: { createdAt: 'desc' },
     });
   }
@@ -41,6 +52,7 @@ export class EngagementsService {
       where: { userId_saasId: { userId, saasId } },
       create: { userId, saasId, ...reviewData },
       update: reviewData,
+      select: reviewResponseSelect,
     });
   }
   async updateReview(userId: string, id: string, dto: ReviewDto) {
@@ -57,6 +69,7 @@ export class EngagementsService {
         spam: moderation.blocked,
         spamTerms: moderation.terms,
       },
+      select: reviewResponseSelect,
     });
   }
   async deleteReview(userId: string, id: string) {
@@ -112,11 +125,19 @@ export class EngagementsService {
   favorites(userId: string) {
     return this.prisma.favorite.findMany({
       where: { userId },
-      include: {
+      select: {
         saas: {
-          include: {
-            categories: { include: { category: true } },
-            reviews: { select: { rating: true } },
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            tagline: true,
+            logoUrl: true,
+            pricingType: true,
+            priceCents: true,
+            currency: true,
+            billingInterval: true,
+            isAdult: true,
           },
         },
       },

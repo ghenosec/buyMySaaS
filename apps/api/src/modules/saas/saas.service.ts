@@ -7,7 +7,7 @@ import { ModerationService } from '../moderation/moderation.service';
 import { CreateSaasDto, ExploreQueryDto, UpdateSaasDto } from './saas.dto';
 import { TrendingService, type TrendSignals } from './trending.service';
 
-const publicInclude = {
+const privateInclude = {
   owner: { select: { id: true, name: true, avatarUrl: true } },
   categories: { include: { category: true } },
   screenshots: { orderBy: { position: 'asc' as const } },
@@ -21,6 +21,92 @@ const publicInclude = {
     },
   },
 };
+
+const publicSaasFields = {
+  id: true,
+  name: true,
+  slug: true,
+  tagline: true,
+  shortDescription: true,
+  description: true,
+  logoUrl: true,
+  accentColor: true,
+  countryCode: true,
+  language: true,
+  websiteUrl: true,
+  trialUrl: true,
+  checkoutUrl: true,
+  docsUrl: true,
+  demoUrl: true,
+  pricingType: true,
+  priceCents: true,
+  currency: true,
+  billingInterval: true,
+  pricingLabel: true,
+  isBrazilian: true,
+  isAdult: true,
+  tags: true,
+  technologies: true,
+  status: true,
+  publishedAt: true,
+  updatedAt: true,
+} as const;
+
+const publicRelations = {
+  owner: { select: { id: true, name: true, avatarUrl: true } },
+  categories: {
+    select: {
+      category: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          description: true,
+          icon: true,
+        },
+      },
+    },
+  },
+  screenshots: {
+    select: { id: true, url: true, alt: true, position: true },
+    orderBy: { position: 'asc' as const },
+  },
+} as const;
+
+const publicListSelect = {
+  ...publicSaasFields,
+  ...publicRelations,
+  reviews: { where: { hidden: false }, select: { rating: true } },
+  _count: {
+    select: {
+      favorites: true,
+      boosts: true,
+      analyticsEvents: true,
+      reviews: { where: { hidden: false } },
+    },
+  },
+} satisfies Prisma.SaasSelect;
+
+const publicDetailSelect = {
+  ...publicSaasFields,
+  ...publicRelations,
+  reviews: {
+    where: { hidden: false },
+    select: {
+      id: true,
+      rating: true,
+      comment: true,
+      createdAt: true,
+      user: { select: { id: true, name: true, avatarUrl: true } },
+    },
+    orderBy: { createdAt: 'desc' as const },
+  },
+  _count: { select: { boosts: true } },
+} satisfies Prisma.SaasSelect;
+
+type PublicListSaas = Prisma.SaasGetPayload<{
+  select: typeof publicListSelect;
+}>;
 
 @Injectable()
 export class SaasService {
@@ -68,7 +154,7 @@ export class SaasService {
           })),
         },
       },
-      include: publicInclude,
+      include: privateInclude,
     });
   }
 
@@ -133,7 +219,7 @@ export class SaasService {
           })),
         };
       }
-      return tx.saas.update({ where: { id }, data, include: publicInclude });
+      return tx.saas.update({ where: { id }, data, include: privateInclude });
     });
   }
 
@@ -165,25 +251,26 @@ export class SaasService {
     const [data, total] = await this.prisma.$transaction([
       this.prisma.saas.findMany({
         where,
-        include: publicInclude,
+        select: publicListSelect,
         orderBy,
         skip: (query.page - 1) * query.pageSize,
         take: query.pageSize,
       }),
       this.prisma.saas.count({ where }),
     ]);
-    const enriched = data.map((saas) => ({
-      ...saas,
-      averageRating: this.average(saas.reviews),
-      score: this.trending.score({
-        views: saas._count.analyticsEvents,
-        clicks: 0,
-        favorites: saas._count.favorites,
-        boosts: saas._count.boosts,
-        reviews: saas._count.reviews,
-        newestEventAt: saas.publishedAt,
-      }),
-    }));
+    const enriched = data.map((saas) =>
+      this.toPublicListItem(
+        saas,
+        this.trending.score({
+          views: saas._count.analyticsEvents,
+          clicks: 0,
+          favorites: saas._count.favorites,
+          boosts: saas._count.boosts,
+          reviews: saas._count.reviews,
+          newestEventAt: saas.publishedAt,
+        }),
+      ),
+    );
     if (query.sort === 'rating')
       enriched.sort((a, b) => b.averageRating - a.averageRating);
     return {
@@ -200,19 +287,15 @@ export class SaasService {
   async getPublic(slug: string) {
     const saas = await this.prisma.saas.findFirst({
       where: { slug, status: 'PUBLISHED' },
-      include: {
-        ...publicInclude,
-        reviews: {
-          where: { hidden: false },
-          include: {
-            user: { select: { id: true, name: true, avatarUrl: true } },
-          },
-          orderBy: { createdAt: 'desc' },
-        },
-      },
+      select: publicDetailSelect,
     });
     if (!saas) throw new NotFoundException('SaaS não encontrado');
-    return { ...saas, averageRating: this.average(saas.reviews) };
+    const { _count, ...item } = saas;
+    return {
+      ...item,
+      averageRating: this.average(saas.reviews),
+      _count: { boosts: _count.boosts },
+    };
   }
 
   async mine(ownerId: string) {
@@ -228,7 +311,7 @@ export class SaasService {
   async mineOne(ownerId: string, id: string) {
     const item = await this.prisma.saas.findUnique({
       where: { id },
-      include: publicInclude,
+      include: privateInclude,
     });
     assertOwnership(item, ownerId);
     return item;
@@ -287,6 +370,16 @@ export class SaasService {
       : 0;
   }
 
+  private toPublicListItem(saas: PublicListSaas, score: number) {
+    const { reviews, _count, ...item } = saas;
+    return {
+      ...item,
+      averageRating: this.average(reviews),
+      score,
+      _count: { boosts: _count.boosts },
+    };
+  }
+
   private async listTrendingPublic(
     where: Prisma.SaasWhereInput,
     query: ExploreQueryDto,
@@ -310,7 +403,7 @@ export class SaasService {
     };
     const data = await this.prisma.saas.findMany({
       where: scopedWhere,
-      include: publicInclude,
+      select: publicListSelect,
       orderBy: { publishedAt: 'desc' },
     });
     const signals = await this.recentTrendSignals(
@@ -318,16 +411,17 @@ export class SaasService {
       since,
     );
     const enriched = data
-      .map((saas) => ({
-        ...saas,
-        averageRating: this.average(saas.reviews),
-        score: this.trending.score({
-          ...this.emptySignals(saas.publishedAt),
-          ...signals.get(saas.id),
-          newestEventAt:
-            signals.get(saas.id)?.newestEventAt ?? saas.publishedAt,
-        }),
-      }))
+      .map((saas) =>
+        this.toPublicListItem(
+          saas,
+          this.trending.score({
+            ...this.emptySignals(saas.publishedAt),
+            ...signals.get(saas.id),
+            newestEventAt:
+              signals.get(saas.id)?.newestEventAt ?? saas.publishedAt,
+          }),
+        ),
+      )
       .sort((a, b) => b.score - a.score || a.name.localeCompare(b.name));
     const start = (query.page - 1) * query.pageSize;
     return {
