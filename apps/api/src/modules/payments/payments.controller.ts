@@ -27,6 +27,12 @@ export class PaymentsController {
   ) {
     return this.payments.submit(user.id, id);
   }
+  @Post('me/saas/:id/sponsorship-checkout') @UseGuards(AuthGuard) sponsorship(
+    @CurrentUser() user: AuthUser,
+    @Param('id') id: string,
+  ) {
+    return this.payments.createSponsorshipCheckout(user.id, id);
+  }
   @Post('payments/mock/:orderId/confirm') @UseGuards(AuthGuard) confirm(
     @CurrentUser() user: AuthUser,
     @Param('orderId') orderId: string,
