@@ -34,6 +34,11 @@ export function SubmissionsList() {
               <td>{s.owner.name}</td>
               <td>
                 <StatusBadge status={s.status} />
+                {s.status === 'PENDING_REVIEW' && s.publishedAt ? (
+                  <span className="pill" style={{ marginLeft: 6 }}>
+                    Reaprovação
+                  </span>
+                ) : null}
               </td>
               <td>{new Date(s.updatedAt).toLocaleDateString('pt-BR')}</td>
               <td>

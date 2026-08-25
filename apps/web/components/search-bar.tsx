@@ -12,6 +12,7 @@ export function SearchBar({
       className={compact ? '' : 'hero-search'}
       style={compact ? { display: 'flex', gap: 8 } : undefined}
     >
+      <input type="hidden" name="sort" value="relevance" />
       <label style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1 }}>
         <Search size={19} className="muted" />
         <span className="sr-only">Buscar</span>

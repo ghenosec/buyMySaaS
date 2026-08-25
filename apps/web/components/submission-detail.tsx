@@ -87,7 +87,11 @@ export function SubmissionDetail({ id }: { id: string }) {
       <article className="card stack" style={{ padding: 26 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
-            <span className="eyebrow">Submissão</span>
+            <span className="eyebrow">
+              {item.status === 'PENDING_REVIEW' && item.publishedAt
+                ? 'Reaprovação'
+                : 'Submissão'}
+            </span>
             <h2>{item.name}</h2>
             {item.isAdult ? (
               <span className="pill" style={{ color: 'var(--danger)' }}>

@@ -170,8 +170,16 @@ export function SaasForm({ id }: { id?: string }) {
         method: id ? 'PATCH' : 'POST',
         body: JSON.stringify(payload),
       });
-      toast.success(id ? 'Alterações salvas' : 'Rascunho criado');
-      router.push(`/dashboard/saas/${saved.id}/review`);
+      if (id && saved.requiresReapproval) {
+        toast.success('Alterações enviadas para reaprovação');
+        router.push('/dashboard/saas');
+      } else if (id && saved.status === 'PUBLISHED') {
+        toast.success('Alterações salvas');
+        router.push('/dashboard/saas');
+      } else {
+        toast.success(id ? 'Alterações salvas' : 'Rascunho criado');
+        router.push(`/dashboard/saas/${saved.id}/review`);
+      }
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : 'Não foi possível salvar',
@@ -252,6 +260,13 @@ export function SaasForm({ id }: { id?: string }) {
   }
   return (
     <form className="stack" onSubmit={handleSubmit(submit)}>
+      {item?.status === 'PUBLISHED' ? (
+        <div className="notice">
+          <strong>Edições sensíveis exigem reaprovação.</strong> Alterações em
+          nome, textos públicos, links, logo, imagens, categorias, tags ou
+          classificação +18 retiram o anúncio temporariamente do catálogo.
+        </div>
+      ) : null}
       <fieldset
         disabled={!mounted || Boolean(id && !item) || isSubmitting}
         aria-busy={!mounted || Boolean(id && !item)}
