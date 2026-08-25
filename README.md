@@ -95,11 +95,9 @@ Com isso, o maker consegue entender melhor o interesse gerado pelo produto, e a 
 
 ### Pagamentos e publicação
 
-O Buy My SaaS usa publicação gratuita e monetização por destaque patrocinado.
+O Buy My SaaS usa a primeira publicação gratuita e após o primeiro produto, cobra um valor simbólico de R$ 9,90. Sendo possível também a monetização por destaque patrocinado.
 
 O maker pode cadastrar e enviar um SaaS para análise sem pagar. Depois que o produto é publicado, ele pode comprar um destaque patrocinado por período fixo. O destaque aparece identificado no catálogo, ganha prioridade na listagem e não substitui a moderação.
-
-O sistema pode operar com pagamento mock em ambiente local e com Mercado Pago em produção. Quando `SPONSORED_PLACEMENT_ENABLED=true` em produção, configure `PAYMENT_PROVIDER=mercado_pago`, `MERCADO_PAGO_ACCESS_TOKEN` e `MERCADO_PAGO_WEBHOOK_SECRET`.
 
 ## Segurança e qualidade
 
@@ -198,7 +196,6 @@ O produto já cobre a jornada principal: descoberta pública, cadastro de produt
 
 Próximas evoluções naturais incluem:
 
-- Autenticação obrigatória via Google OAuth
 - Moderação dedicada de avaliações
 - Busca full-text mais avançada
 - Reaprovação para edições sensíveis
