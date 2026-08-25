@@ -111,18 +111,14 @@ export function ReviewForm({ saasId }: { saasId: string }) {
     event.preventDefault();
     setLoading(true);
     try {
-      const result = await clientApi<{ spam?: boolean }>(
+      await clientApi<{ moderationStatus: 'PENDING' }>(
         `/saas/${saasId}/reviews`,
         {
           method: 'POST',
           body: JSON.stringify({ rating, comment }),
         },
       );
-      toast.success(
-        result.spam
-          ? 'Avaliação recebida e enviada para moderação'
-          : 'Avaliação publicada',
-      );
+      toast.success('Avaliação recebida e enviada para moderação');
       setComment('');
       location.reload();
     } catch (error) {
@@ -165,7 +161,7 @@ export function ReviewForm({ saasId }: { saasId: string }) {
       />
       <button className="btn btn-primary" disabled={loading}>
         <Send size={16} />
-        {loading ? 'Publicando...' : 'Publicar avaliação'}
+        {loading ? 'Enviando...' : 'Enviar avaliação'}
       </button>
     </form>
   );

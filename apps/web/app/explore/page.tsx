@@ -23,6 +23,7 @@ function priceInputToCents(value?: string) {
 export default async function Explore({ searchParams }: Props) {
   const params = await searchParams;
   const apiParams = { ...params };
+  if (params.search && !params.sort) apiParams.sort = 'relevance';
   const maxPriceCents = priceInputToCents(params.maxPrice);
   if (maxPriceCents) apiParams.maxPrice = maxPriceCents;
   else delete apiParams.maxPrice;
@@ -106,8 +107,13 @@ export default async function Explore({ searchParams }: Props) {
               <select
                 className="input"
                 name="sort"
-                defaultValue={params.sort ?? 'trending'}
+                defaultValue={
+                  params.sort ?? (params.search ? 'relevance' : 'trending')
+                }
               >
+                {params.search ? (
+                  <option value="relevance">Mais relevantes</option>
+                ) : null}
                 <option value="trending">Em alta</option>
                 <option value="recent">Mais recentes</option>
                 <option value="rating">Mais bem avaliados</option>
@@ -143,6 +149,9 @@ export default async function Explore({ searchParams }: Props) {
           <SearchBar compact defaultValue={params.search} />
           <p className="muted" style={{ fontSize: 14 }}>
             {result.meta.total} produtos encontrados
+            {params.search
+              ? ' · use aspas para frases e -palavra para excluir termos'
+              : ''}
           </p>
           {result.data.length ? (
             <div

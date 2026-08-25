@@ -1,6 +1,12 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
-import { CheckCircle2, Clock3, Package, Users } from 'lucide-react';
+import {
+  CheckCircle2,
+  Clock3,
+  MessageSquareText,
+  Package,
+  Users,
+} from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import { clientApi } from '@/lib/api';
@@ -8,6 +14,7 @@ import { Saas } from '@/lib/types';
 import { StatusBadge } from './status-badge';
 type Data = {
   pending: number;
+  pendingReviews: number;
   published: number;
   users: number;
   recentSubmissions: (Saas & { owner: { name: string; email: string } })[];
@@ -25,6 +32,11 @@ export function AdminDashboard() {
     );
   const cards: { Icon: LucideIcon; label: string; value?: number }[] = [
     { Icon: Clock3, label: 'Em análise', value: data?.pending },
+    {
+      Icon: MessageSquareText,
+      label: 'Avaliações pendentes',
+      value: data?.pendingReviews,
+    },
     { Icon: CheckCircle2, label: 'Publicados', value: data?.published },
     { Icon: Users, label: 'Usuários', value: data?.users },
     {
@@ -54,6 +66,9 @@ export function AdminDashboard() {
             <Link className="btn btn-sm" href="/admin/submissions">
               Ver fila
             </Link>
+            <Link className="btn btn-sm" href="/admin/reviews">
+              Moderar avaliações
+            </Link>
           </div>
         </div>
         <div className="card table-wrap">
@@ -79,6 +94,11 @@ export function AdminDashboard() {
                   </td>
                   <td>
                     <StatusBadge status={s.status} />
+                    {s.status === 'PENDING_REVIEW' && s.publishedAt ? (
+                      <span className="pill" style={{ marginLeft: 6 }}>
+                        Reaprovação
+                      </span>
+                    ) : null}
                   </td>
                   <td>
                     <Link
