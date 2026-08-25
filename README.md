@@ -30,6 +30,7 @@ Visitantes podem explorar produtos por categoria, preço, origem, avaliação e 
 - Página inicial com chamada clara para descoberta e publicação
 - Exploração por categorias
 - Busca e filtros
+- Busca full-text em português com relevância, operadores e tolerância a erros de digitação
 - Página individual para cada produto
 - Informações de preço, país, tecnologias, categorias e descrição completa
 - Links rastreados para site, trial ou checkout do SaaS
@@ -75,6 +76,8 @@ Administradores podem:
 - Rejeitar produtos com motivo
 - Remover produtos publicados quando necessário
 - Remover avaliações indevidas de produtos publicados
+- Moderar avaliações em uma fila dedicada antes da publicação
+- Reaprovar edições sensíveis de anúncios já publicados
 - Gerenciar permissões de usuários
 - Promover usuários comuns para administradores
 - Rebaixar administradores quando necessário
@@ -162,6 +165,9 @@ O painel permite revisar produtos enviados, aprovar o que está pronto, rejeitar
 - Moderação de publicações
 - Exclusão administrativa de produtos
 - Gestão de permissões de administradores
+- Moderação dedicada de avaliações com aprovação, rejeição e auditoria
+- Busca full-text ranqueada com índice GIN e fallback por similaridade
+- Reaprovação automática após edições sensíveis
 - Categorias com contagem apenas de produtos publicados
 - Favoritos
 - Avaliações
@@ -194,12 +200,8 @@ Buy My SaaS está em fase de MVP funcional.
 
 O produto já cobre a jornada principal: descoberta pública, cadastro de produto, envio para análise, aprovação administrativa e publicação no catálogo.
 
-Próximas evoluções naturais incluem:
-
-- Moderação dedicada de avaliações
-- Busca full-text mais avançada
-- Reaprovação para edições sensíveis
-- Deploy final com domínio público, storage externo e Mercado Pago em produção
+Próximas evoluções naturais incluem o deploy final com domínio público,
+storage externo e Mercado Pago em produção.
 
 ## Desenvolvido por
 
