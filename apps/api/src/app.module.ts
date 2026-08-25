@@ -15,6 +15,11 @@ import { PrismaModule } from './modules/prisma/prisma.module';
 import { SaasModule } from './modules/saas/saas.module';
 import { StorageModule } from './modules/storage/storage.module';
 
+const emptyToUndefined = (value: unknown) => (value === '' ? undefined : value);
+const optionalNonEmptyString = (min = 1) =>
+  z.preprocess(emptyToUndefined, z.string().min(min).optional());
+const optionalUrl = z.preprocess(emptyToUndefined, z.string().url().optional());
+
 const envSchema = z
   .object({
     NODE_ENV: z
@@ -25,9 +30,9 @@ const envSchema = z
     AUTH_COOKIE_NAME: z.string().min(1).default('bms_session'),
     WEB_URL: z.string().url().default('http://localhost:3000'),
     API_URL: z.string().url().default('http://localhost:3001'),
-    GOOGLE_CLIENT_ID: z.string().min(1).optional(),
-    GOOGLE_CLIENT_SECRET: z.string().min(1).optional(),
-    GOOGLE_REDIRECT_URI: z.string().url().optional(),
+    GOOGLE_CLIENT_ID: optionalNonEmptyString(),
+    GOOGLE_CLIENT_SECRET: optionalNonEmptyString(),
+    GOOGLE_REDIRECT_URI: optionalUrl,
     MODERATION_BLOCKED_TERMS: z.string().optional(),
     PUBLICATION_FEE_ENABLED: z.enum(['true', 'false']).default('false'),
     PUBLICATION_FEE_CENTS: z.coerce.number().int().nonnegative().default(990),
@@ -45,10 +50,10 @@ const envSchema = z
       .positive()
       .default(7),
     PAYMENT_PROVIDER: z.enum(['mock', 'mercado_pago']).default('mock'),
-    MERCADO_PAGO_ACCESS_TOKEN: z.string().min(1).optional(),
-    MERCADO_PAGO_WEBHOOK_SECRET: z.string().min(16).optional(),
+    MERCADO_PAGO_ACCESS_TOKEN: optionalNonEmptyString(),
+    MERCADO_PAGO_WEBHOOK_SECRET: optionalNonEmptyString(16),
     STORAGE_PROVIDER: z.enum(['local', 's3']).default('local'),
-    S3_BUCKET: z.string().min(1).optional(),
+    S3_BUCKET: optionalNonEmptyString(),
     FORCE_HTTPS: z.enum(['true', 'false']).default('false'),
     TRUST_PROXY_HOPS: z.coerce.number().int().min(0).max(10).default(0),
     ENABLE_API_DOCS: z.enum(['true', 'false']).default('false'),
@@ -103,7 +108,10 @@ const envSchema = z
           message: 'Produção com pagamento ativo exige Mercado Pago',
         });
     }
-    if (config.PAYMENT_PROVIDER === 'mercado_pago') {
+    if (
+      config.NODE_ENV === 'production' &&
+      config.PAYMENT_PROVIDER === 'mercado_pago'
+    ) {
       if (!config.MERCADO_PAGO_ACCESS_TOKEN)
         context.addIssue({
           code: 'custom',
