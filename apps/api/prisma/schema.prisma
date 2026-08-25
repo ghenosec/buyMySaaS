@@ -21,6 +21,12 @@ enum SaasStatus {
   ARCHIVED
 }
 
+enum ReviewModerationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 enum PricingType {
   FREE
   FREEMIUM
@@ -108,6 +114,7 @@ model Saas {
   isAdult          Boolean            @default(false)
   tags             String[]
   technologies     String[]
+  searchVector     Unsupported("tsvector") @default(dbgenerated())
   status           SaasStatus         @default(DRAFT)
   rejectionReason  String?
   launchDate       DateTime?
@@ -161,22 +168,27 @@ model SaasCategory {
 }
 
 model Review {
-  id        String   @id @default(uuid())
-  userId    String
-  saasId    String
-  rating    Int
-  comment   String
-  hidden    Boolean  @default(false)
-  spam      Boolean  @default(false)
-  spamTerms String[] @default([])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  saas      Saas     @relation(fields: [saasId], references: [id], onDelete: Cascade)
+  id               String                 @id @default(uuid())
+  userId           String
+  saasId           String
+  rating           Int
+  comment          String
+  hidden           Boolean                @default(true)
+  spam             Boolean                @default(false)
+  spamTerms        String[]               @default([])
+  moderationStatus ReviewModerationStatus @default(PENDING)
+  moderationReason String?
+  moderatedAt      DateTime?
+  moderatedById    String?
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+  user             User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  saas             Saas                   @relation(fields: [saasId], references: [id], onDelete: Cascade)
 
   @@unique([userId, saasId])
   @@index([saasId, createdAt])
   @@index([saasId, spam, createdAt])
+  @@index([moderationStatus, createdAt])
 }
 
 model Favorite {
