@@ -4,9 +4,14 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Prisma, UserRole } from '../../generated/prisma/client';
+import {
+  Prisma,
+  ReviewModerationStatus,
+  UserRole,
+} from '../../generated/prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { PublicationStateService } from '../saas/publication-state.service';
+import { ReviewModerationQueryDto } from './admin.dto';
 
 @Injectable()
 export class AdminService {
@@ -15,29 +20,45 @@ export class AdminService {
     private readonly states: PublicationStateService,
   ) {}
   async dashboard() {
-    const [pending, published, users, recentSubmissions, recentPayments] =
-      await this.prisma.$transaction([
-        this.prisma.saas.count({ where: { status: 'PENDING_REVIEW' } }),
-        this.prisma.saas.count({ where: { status: 'PUBLISHED' } }),
-        this.prisma.user.count(),
-        this.prisma.saas.findMany({
-          where: {
-            status: { in: ['PENDING_REVIEW', 'PUBLISHED', 'REJECTED'] },
-          },
-          take: 6,
-          orderBy: { updatedAt: 'desc' },
-          include: { owner: { select: { name: true, email: true } } },
-        }),
-        this.prisma.publicationOrder.findMany({
-          take: 6,
-          orderBy: { updatedAt: 'desc' },
-          include: {
-            saas: { select: { name: true } },
-            user: { select: { email: true } },
-          },
-        }),
-      ]);
-    return { pending, published, users, recentSubmissions, recentPayments };
+    const [
+      pending,
+      pendingReviews,
+      published,
+      users,
+      recentSubmissions,
+      recentPayments,
+    ] = await this.prisma.$transaction([
+      this.prisma.saas.count({ where: { status: 'PENDING_REVIEW' } }),
+      this.prisma.review.count({
+        where: { moderationStatus: 'PENDING' },
+      }),
+      this.prisma.saas.count({ where: { status: 'PUBLISHED' } }),
+      this.prisma.user.count(),
+      this.prisma.saas.findMany({
+        where: {
+          status: { in: ['PENDING_REVIEW', 'PUBLISHED', 'REJECTED'] },
+        },
+        take: 6,
+        orderBy: { updatedAt: 'desc' },
+        include: { owner: { select: { name: true, email: true } } },
+      }),
+      this.prisma.publicationOrder.findMany({
+        take: 6,
+        orderBy: { updatedAt: 'desc' },
+        include: {
+          saas: { select: { name: true } },
+          user: { select: { email: true } },
+        },
+      }),
+    ]);
+    return {
+      pending,
+      pendingReviews,
+      published,
+      users,
+      recentSubmissions,
+      recentPayments,
+    };
   }
   submissions(page = 1) {
     return this.prisma.saas.findMany({
@@ -214,6 +235,117 @@ export class AdminService {
       await tx.saas.delete({ where: { id } });
     });
   }
+
+  async reviews(query: ReviewModerationQueryDto) {
+    const term = query.search?.trim();
+    const where: Prisma.ReviewWhereInput = {
+      moderationStatus: query.status ?? ReviewModerationStatus.PENDING,
+      ...(term
+        ? {
+            OR: [
+              { comment: { contains: term, mode: 'insensitive' as const } },
+              {
+                user: {
+                  is: {
+                    OR: [
+                      {
+                        name: { contains: term, mode: 'insensitive' as const },
+                      },
+                      {
+                        email: {
+                          contains: term,
+                          mode: 'insensitive' as const,
+                        },
+                      },
+                    ],
+                  },
+                },
+              },
+              {
+                saas: {
+                  is: {
+                    name: { contains: term, mode: 'insensitive' as const },
+                  },
+                },
+              },
+            ],
+          }
+        : {}),
+    };
+    const [data, total] = await this.prisma.$transaction([
+      this.prisma.review.findMany({
+        where,
+        skip: (query.page - 1) * query.pageSize,
+        take: query.pageSize,
+        orderBy: { createdAt: 'asc' },
+        include: {
+          user: { select: { id: true, name: true, email: true } },
+          saas: { select: { id: true, name: true, slug: true } },
+        },
+      }),
+      this.prisma.review.count({ where }),
+    ]);
+    return {
+      data,
+      meta: {
+        page: query.page,
+        pageSize: query.pageSize,
+        total,
+        totalPages: Math.ceil(total / query.pageSize),
+      },
+    };
+  }
+
+  async approveReview(actorUserId: string, id: string) {
+    return this.moderateReview(actorUserId, id, 'APPROVED');
+  }
+
+  async rejectReview(actorUserId: string, id: string, reason: string) {
+    return this.moderateReview(actorUserId, id, 'REJECTED', reason);
+  }
+
+  private async moderateReview(
+    actorUserId: string,
+    id: string,
+    status: 'APPROVED' | 'REJECTED',
+    reason?: string,
+  ) {
+    const review = await this.prisma.review.findUnique({
+      where: { id },
+      select: { id: true, moderationStatus: true, saasId: true, userId: true },
+    });
+    if (!review) throw new NotFoundException('Avaliação não encontrada');
+    if (review.moderationStatus !== 'PENDING')
+      throw new BadRequestException('Esta avaliação já foi moderada');
+    return this.prisma.$transaction(async (tx) => {
+      const updated = await tx.review.update({
+        where: { id },
+        data: {
+          moderationStatus: status,
+          hidden: status !== 'APPROVED',
+          spam: status === 'APPROVED' ? false : undefined,
+          moderationReason: reason ?? null,
+          moderatedAt: new Date(),
+          moderatedById: actorUserId,
+        },
+      });
+      await tx.auditLog.create({
+        data: {
+          actorUserId,
+          action: `REVIEW_${status}`,
+          entityType: 'Review',
+          entityId: id,
+          metadata: {
+            saasId: review.saasId,
+            userId: review.userId,
+            reason,
+          },
+        },
+      });
+      return updated;
+    });
+  }
+
   async removeReview(actorUserId: string, id: string) {
     const review = await this.prisma.review.findUnique({
       where: { id },
@@ -222,8 +354,7 @@ export class AdminService {
         user: { select: { id: true, email: true } },
       },
     });
-    if (!review || review.saas.status !== 'PUBLISHED' || !review.spam)
-      throw new NotFoundException('Avaliação não encontrada');
+    if (!review) throw new NotFoundException('Avaliação não encontrada');
     await this.prisma.$transaction(async (tx) => {
       await tx.auditLog.create({
         data: {

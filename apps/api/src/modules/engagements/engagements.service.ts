@@ -14,6 +14,7 @@ const reviewResponseSelect = {
   comment: true,
   createdAt: true,
   updatedAt: true,
+  moderationStatus: true,
 } as const;
 
 @Injectable()
@@ -24,7 +25,7 @@ export class EngagementsService {
   ) {}
   listReviews(saasId: string) {
     return this.prisma.review.findMany({
-      where: { saasId, hidden: false },
+      where: { saasId, hidden: false, moderationStatus: 'APPROVED' },
       select: {
         ...reviewResponseSelect,
         user: { select: { id: true, name: true, avatarUrl: true } },
@@ -43,10 +44,14 @@ export class EngagementsService {
     const moderation = this.moderation.scan([dto.comment]);
     const reviewData = {
       rating: dto.rating,
-      comment: dto.comment,
-      hidden: moderation.blocked,
+      comment: dto.comment.trim(),
+      hidden: true,
       spam: moderation.blocked,
       spamTerms: moderation.terms,
+      moderationStatus: 'PENDING' as const,
+      moderationReason: null,
+      moderatedAt: null,
+      moderatedById: null,
     };
     return this.prisma.review.upsert({
       where: { userId_saasId: { userId, saasId } },
@@ -64,10 +69,14 @@ export class EngagementsService {
       where: { id },
       data: {
         rating: dto.rating,
-        comment: dto.comment,
-        hidden: moderation.blocked,
+        comment: dto.comment.trim(),
+        hidden: true,
         spam: moderation.blocked,
         spamTerms: moderation.terms,
+        moderationStatus: 'PENDING',
+        moderationReason: null,
+        moderatedAt: null,
+        moderatedById: null,
       },
       select: reviewResponseSelect,
     });

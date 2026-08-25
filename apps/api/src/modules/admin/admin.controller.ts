@@ -14,7 +14,11 @@ import { AdminGuard } from '../../common/admin.guard';
 import { AuthGuard } from '../../common/auth.guard';
 import { AuthUser } from '../../common/auth-user';
 import { CurrentUser } from '../../common/current-user.decorator';
-import { RejectSubmissionDto, UpdateUserRoleDto } from './admin.dto';
+import {
+  RejectSubmissionDto,
+  ReviewModerationQueryDto,
+  UpdateUserRoleDto,
+} from './admin.dto';
 import { AdminService } from './admin.service';
 
 @Controller('admin')
@@ -32,6 +36,22 @@ export class AdminController {
   }
   @Get('users') users(@Query('search') search?: string) {
     return this.admin.users(search);
+  }
+  @Get('reviews') reviews(@Query() query: ReviewModerationQueryDto) {
+    return this.admin.reviews(query);
+  }
+  @Post('reviews/:id/approve') approveReview(
+    @CurrentUser() user: AuthUser,
+    @Param('id') id: string,
+  ) {
+    return this.admin.approveReview(user.id, id);
+  }
+  @Post('reviews/:id/reject') rejectReview(
+    @CurrentUser() user: AuthUser,
+    @Param('id') id: string,
+    @Body() dto: RejectSubmissionDto,
+  ) {
+    return this.admin.rejectReview(user.id, id, dto.reason);
   }
   @Patch('users/:id/role') updateUserRole(
     @CurrentUser() user: AuthUser,
