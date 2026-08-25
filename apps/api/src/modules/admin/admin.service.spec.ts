@@ -120,3 +120,48 @@ describe('AdminService permissions', () => {
     ).rejects.toThrow(BadRequestException);
   });
 });
+
+describe('AdminService review moderation', () => {
+  it('aprova uma avaliação pendente e registra auditoria', async () => {
+    const tx = {
+      review: {
+        update: jest.fn().mockResolvedValue({
+          id: 'review-1',
+          moderationStatus: 'APPROVED',
+        }),
+      },
+      auditLog: { create: jest.fn() },
+    };
+    const prisma = {
+      review: {
+        findUnique: jest.fn().mockResolvedValue({
+          id: 'review-1',
+          moderationStatus: 'PENDING',
+          saasId: 'saas-1',
+          userId: 'user-1',
+        }),
+      },
+      $transaction: jest.fn((callback: (client: typeof tx) => unknown) =>
+        callback(tx),
+      ),
+    } as unknown as PrismaService;
+    const service = new AdminService(prisma, {} as PublicationStateService);
+
+    await service.approveReview('admin-1', 'review-1');
+
+    expect(tx.review.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          moderationStatus: 'APPROVED',
+          hidden: false,
+          moderatedById: 'admin-1',
+        }),
+      }),
+    );
+    expect(tx.auditLog.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ action: 'REVIEW_APPROVED' }),
+      }),
+    );
+  });
+});

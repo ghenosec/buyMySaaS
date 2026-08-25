@@ -128,6 +128,12 @@ describe('API contracts', () => {
             reject: jest.fn(),
             remove: jest.fn(),
             removeReview: jest.fn(),
+            reviews: jest.fn().mockResolvedValue({
+              data: [],
+              meta: { page: 1, pageSize: 20, total: 0, totalPages: 0 },
+            }),
+            approveReview: jest.fn(),
+            rejectReview: jest.fn(),
           },
         },
         {
@@ -218,5 +224,15 @@ describe('API contracts', () => {
     await request(app.getHttpServer())
       .delete('/api/v1/admin/reviews/review-1')
       .expect(204);
+    await request(app.getHttpServer())
+      .get('/api/v1/admin/reviews?status=PENDING')
+      .expect(200);
+    await request(app.getHttpServer())
+      .post('/api/v1/admin/reviews/review-1/approve')
+      .expect(201);
+    await request(app.getHttpServer())
+      .post('/api/v1/admin/reviews/review-1/reject')
+      .send({ reason: 'Conteúdo ofensivo' })
+      .expect(201);
   });
 });
