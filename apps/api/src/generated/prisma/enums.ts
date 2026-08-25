@@ -29,6 +29,15 @@ export const SaasStatus = {
 export type SaasStatus = (typeof SaasStatus)[keyof typeof SaasStatus]
 
 
+export const ReviewModerationStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type ReviewModerationStatus = (typeof ReviewModerationStatus)[keyof typeof ReviewModerationStatus]
+
+
 export const PricingType = {
   FREE: 'FREE',
   FREEMIUM: 'FREEMIUM',

@@ -93,9 +93,21 @@ export class ExploreQueryDto {
   @IsOptional() @Type(() => Number) @IsInt() @Min(0) minPrice?: number;
   @IsOptional() @Type(() => Number) @IsInt() @Min(0) maxPrice?: number;
   @IsOptional()
-  @IsEnum(['trending', 'recent', 'rating', 'price_asc', 'price_desc'])
-  sort: 'trending' | 'recent' | 'rating' | 'price_asc' | 'price_desc' =
-    'trending';
+  @IsEnum([
+    'relevance',
+    'trending',
+    'recent',
+    'rating',
+    'price_asc',
+    'price_desc',
+  ])
+  sort:
+    | 'relevance'
+    | 'trending'
+    | 'recent'
+    | 'rating'
+    | 'price_asc'
+    | 'price_desc' = 'trending';
   @IsOptional() @Type(() => Number) @IsInt() @Min(1) page = 1;
   @IsOptional() @Type(() => Number) @IsInt() @Min(1) @Max(50) pageSize = 12;
 }

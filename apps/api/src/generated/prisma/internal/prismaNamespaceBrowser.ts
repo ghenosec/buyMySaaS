@@ -175,6 +175,10 @@ export const ReviewScalarFieldEnum = {
   hidden: 'hidden',
   spam: 'spam',
   spamTerms: 'spamTerms',
+  moderationStatus: 'moderationStatus',
+  moderationReason: 'moderationReason',
+  moderatedAt: 'moderatedAt',
+  moderatedById: 'moderatedById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

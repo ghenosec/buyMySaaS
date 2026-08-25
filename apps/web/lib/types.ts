@@ -12,6 +12,8 @@ export type Review = {
   comment: string;
   spam?: boolean;
   spamTerms?: string[];
+  moderationStatus?: 'PENDING' | 'APPROVED' | 'REJECTED';
+  moderationReason?: string | null;
   createdAt: string;
   user: { id: string; name: string; avatarUrl?: string | null };
 };
@@ -57,6 +59,7 @@ export type Saas = {
   averageRating?: number;
   score?: number;
   isSponsored?: boolean;
+  requiresReapproval?: boolean;
   owner?: { id: string; name: string; avatarUrl?: string | null };
   categories?: { category: Category }[];
   screenshots?: { id: string; url: string; alt: string; position: number }[];

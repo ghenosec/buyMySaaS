@@ -270,6 +270,23 @@ export type IntWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedIntFilter<$PrismaModel>
 }
 
+export type EnumReviewModerationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ReviewModerationStatus | Prisma.EnumReviewModerationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ReviewModerationStatus[] | Prisma.ListEnumReviewModerationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ReviewModerationStatus[] | Prisma.ListEnumReviewModerationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumReviewModerationStatusFilter<$PrismaModel> | $Enums.ReviewModerationStatus
+}
+
+export type EnumReviewModerationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ReviewModerationStatus | Prisma.EnumReviewModerationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ReviewModerationStatus[] | Prisma.ListEnumReviewModerationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ReviewModerationStatus[] | Prisma.ListEnumReviewModerationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumReviewModerationStatusWithAggregatesFilter<$PrismaModel> | $Enums.ReviewModerationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumReviewModerationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumReviewModerationStatusFilter<$PrismaModel>
+}
+
 export type EnumAnalyticsEventTypeFilter<$PrismaModel = never> = {
   equals?: $Enums.AnalyticsEventType | Prisma.EnumAnalyticsEventTypeFieldRefInput<$PrismaModel>
   in?: $Enums.AnalyticsEventType[] | Prisma.ListEnumAnalyticsEventTypeFieldRefInput<$PrismaModel>
@@ -656,6 +673,23 @@ export type NestedFloatFilter<$PrismaModel = never> = {
   gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   not?: Prisma.NestedFloatFilter<$PrismaModel> | number
+}
+
+export type NestedEnumReviewModerationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ReviewModerationStatus | Prisma.EnumReviewModerationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ReviewModerationStatus[] | Prisma.ListEnumReviewModerationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ReviewModerationStatus[] | Prisma.ListEnumReviewModerationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumReviewModerationStatusFilter<$PrismaModel> | $Enums.ReviewModerationStatus
+}
+
+export type NestedEnumReviewModerationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ReviewModerationStatus | Prisma.EnumReviewModerationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ReviewModerationStatus[] | Prisma.ListEnumReviewModerationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ReviewModerationStatus[] | Prisma.ListEnumReviewModerationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumReviewModerationStatusWithAggregatesFilter<$PrismaModel> | $Enums.ReviewModerationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumReviewModerationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumReviewModerationStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumAnalyticsEventTypeFilter<$PrismaModel = never> = {

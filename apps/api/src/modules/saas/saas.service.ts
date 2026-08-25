@@ -11,13 +11,18 @@ const privateInclude = {
   owner: { select: { id: true, name: true, avatarUrl: true } },
   categories: { include: { category: true } },
   screenshots: { orderBy: { position: 'asc' as const } },
-  reviews: { where: { hidden: false }, select: { rating: true } },
+  reviews: {
+    where: { hidden: false, moderationStatus: 'APPROVED' as const },
+    select: { rating: true },
+  },
   _count: {
     select: {
       favorites: true,
       boosts: true,
       analyticsEvents: true,
-      reviews: { where: { hidden: false } },
+      reviews: {
+        where: { hidden: false, moderationStatus: 'APPROVED' as const },
+      },
     },
   },
 };
@@ -77,13 +82,16 @@ const publicRelations = {
 const publicListSelect = {
   ...publicSaasFields,
   ...publicRelations,
-  reviews: { where: { hidden: false }, select: { rating: true } },
+  reviews: {
+    where: { hidden: false, moderationStatus: 'APPROVED' },
+    select: { rating: true },
+  },
   _count: {
     select: {
       favorites: true,
       boosts: true,
       analyticsEvents: true,
-      reviews: { where: { hidden: false } },
+      reviews: { where: { hidden: false, moderationStatus: 'APPROVED' } },
     },
   },
 } satisfies Prisma.SaasSelect;
@@ -92,7 +100,7 @@ const publicDetailSelect = {
   ...publicSaasFields,
   ...publicRelations,
   reviews: {
-    where: { hidden: false },
+    where: { hidden: false, moderationStatus: 'APPROVED' },
     select: {
       id: true,
       rating: true,
@@ -108,6 +116,8 @@ const publicDetailSelect = {
 type PublicListSaas = Prisma.SaasGetPayload<{
   select: typeof publicListSelect;
 }>;
+
+type SearchMatch = { id: string; rank: number };
 
 @Injectable()
 export class SaasService {
@@ -160,7 +170,16 @@ export class SaasService {
   }
 
   async update(ownerId: string, id: string, dto: UpdateSaasDto) {
-    const current = await this.prisma.saas.findUnique({ where: { id } });
+    const current = await this.prisma.saas.findUnique({
+      where: { id },
+      include: {
+        categories: { select: { categoryId: true } },
+        screenshots: {
+          select: { url: true },
+          orderBy: { position: 'asc' },
+        },
+      },
+    });
     assertOwnership(current, ownerId);
     this.assertSaasContentAllowed(dto);
     const urls = this.validatedUrls(dto);
@@ -193,16 +212,12 @@ export class SaasService {
       data.technologies = this.cleanList(dto.technologies);
     if (dto.slug !== undefined && dto.slug !== current.slug)
       data.slug = await this.uniqueSlug(dto.slug, id);
-    if (current.status === 'PUBLISHED')
-      await this.prisma.auditLog.create({
-        data: {
-          actorUserId: ownerId,
-          action: 'PUBLISHED_SAAS_UPDATED',
-          entityType: 'Saas',
-          entityId: id,
-          metadata: { fields: Object.keys(dto) },
-        },
-      });
+    const requiresReapproval =
+      current.status === 'PUBLISHED' && this.hasSensitiveChanges(current, dto);
+    if (requiresReapproval) {
+      data.status = 'PENDING_REVIEW';
+      data.rejectionReason = null;
+    }
     return this.prisma.$transaction(async (tx) => {
       if (dto.categoryIds) {
         await tx.saasCategory.deleteMany({ where: { saasId: id } });
@@ -220,19 +235,41 @@ export class SaasService {
           })),
         };
       }
-      return tx.saas.update({ where: { id }, data, include: privateInclude });
+      const updated = await tx.saas.update({
+        where: { id },
+        data,
+        include: privateInclude,
+      });
+      if (current.status === 'PUBLISHED')
+        await tx.auditLog.create({
+          data: {
+            actorUserId: ownerId,
+            action: requiresReapproval
+              ? 'SAAS_REAPPROVAL_REQUESTED'
+              : 'PUBLISHED_SAAS_UPDATED',
+            entityType: 'Saas',
+            entityId: id,
+            metadata: {
+              fields: Object.keys(dto),
+              sensitiveFields: requiresReapproval
+                ? this.changedSensitiveFields(current, dto)
+                : [],
+            },
+          },
+        });
+      return { ...updated, requiresReapproval };
     });
   }
 
   async listPublic(query: ExploreQueryDto) {
     const where: Prisma.SaasWhereInput = { status: 'PUBLISHED' };
-    if (query.search)
-      where.OR = [
-        { name: { contains: query.search, mode: 'insensitive' } },
-        { tagline: { contains: query.search, mode: 'insensitive' } },
-        { shortDescription: { contains: query.search, mode: 'insensitive' } },
-        { tags: { has: query.search.toLowerCase() } },
-      ];
+    const searchMatches = query.search
+      ? await this.fullTextMatches(query.search)
+      : null;
+    if (searchMatches) {
+      if (!searchMatches.length) return this.emptyPage(query);
+      where.id = { in: searchMatches.map((match) => match.id) };
+    }
     if (query.category)
       where.categories = { some: { category: { slug: query.category } } };
     if (query.pricingType) where.pricingType = query.pricingType;
@@ -242,6 +279,8 @@ export class SaasService {
       query.adult || query.category === 'adulto-18' ? true : false;
     if (query.minPrice !== undefined || query.maxPrice !== undefined)
       where.priceCents = { gte: query.minPrice, lte: query.maxPrice };
+    if (query.sort === 'relevance' && searchMatches)
+      return this.listByRelevance(where, query, searchMatches);
     if (query.sort === 'trending') return this.listTrendingPublic(where, query);
     const orderBy: Prisma.SaasOrderByWithRelationInput =
       query.sort === 'price_asc'
@@ -516,7 +555,11 @@ export class SaasService {
         }),
         this.prisma.review.groupBy({
           by: ['saasId'],
-          where: { createdAt: { gte: since }, hidden: false },
+          where: {
+            createdAt: { gte: since },
+            hidden: false,
+            moderationStatus: 'APPROVED',
+          },
           orderBy: { saasId: 'asc' },
         }),
       ]);
@@ -564,6 +607,7 @@ export class SaasService {
             saasId: { in: saasIds },
             createdAt: { gte: since },
             hidden: false,
+            moderationStatus: 'APPROVED',
           },
           orderBy: { saasId: 'asc' },
           _count: { _all: true },
@@ -633,6 +677,164 @@ export class SaasService {
 
   private countAll(value?: boolean | { _all?: number | null }) {
     return typeof value === 'object' ? (value._all ?? 0) : 0;
+  }
+
+  private async fullTextMatches(search: string): Promise<SearchMatch[]> {
+    const term = search.trim();
+    if (!term) return [];
+    return this.prisma.$queryRaw<SearchMatch[]>(Prisma.sql`
+      WITH query AS (
+        SELECT websearch_to_tsquery('portuguese', ${term}) AS value
+      )
+      SELECT s.id,
+        (
+          ts_rank_cd(s."searchVector", query.value, 32) * 10 +
+          GREATEST(
+            similarity(lower(s."name"), lower(${term})) * 3,
+            similarity(lower(s."tagline"), lower(${term}))
+          )
+        )::double precision AS rank
+      FROM "Saas" s
+      CROSS JOIN query
+      WHERE s.status = 'PUBLISHED'::"SaasStatus"
+        AND (
+          s."searchVector" @@ query.value
+          OR similarity(lower(s."name"), lower(${term})) > 0.2
+          OR similarity(lower(s."tagline"), lower(${term})) > 0.25
+          OR EXISTS (
+            SELECT 1
+            FROM "SaasCategory" sc
+            JOIN "Category" c ON c.id = sc."categoryId"
+            WHERE sc."saasId" = s.id
+              AND (
+                to_tsvector('portuguese', c.name || ' ' || c.description) @@ query.value
+                OR similarity(lower(c.name), lower(${term})) > 0.25
+              )
+          )
+        )
+      ORDER BY rank DESC, s."publishedAt" DESC NULLS LAST
+      LIMIT 2000
+    `);
+  }
+
+  private async listByRelevance(
+    where: Prisma.SaasWhereInput,
+    query: ExploreQueryDto,
+    matches: SearchMatch[],
+  ) {
+    const data = await this.prisma.saas.findMany({
+      where,
+      select: publicListSelect,
+    });
+    const ranks = new Map(matches.map((match) => [match.id, match.rank]));
+    const enriched = data
+      .map((saas) =>
+        this.toPublicListItem(saas, Number(ranks.get(saas.id) ?? 0)),
+      )
+      .sort(
+        (a, b) =>
+          Number(Boolean(b.isSponsored)) - Number(Boolean(a.isSponsored)) ||
+          b.score - a.score ||
+          a.name.localeCompare(b.name),
+      );
+    const start = (query.page - 1) * query.pageSize;
+    return {
+      data: enriched.slice(start, start + query.pageSize),
+      meta: {
+        page: query.page,
+        pageSize: query.pageSize,
+        total: enriched.length,
+        totalPages: Math.ceil(enriched.length / query.pageSize),
+      },
+    };
+  }
+
+  private emptyPage(query: ExploreQueryDto) {
+    return {
+      data: [],
+      meta: {
+        page: query.page,
+        pageSize: query.pageSize,
+        total: 0,
+        totalPages: 0,
+      },
+    };
+  }
+
+  private hasSensitiveChanges(
+    current: Prisma.SaasGetPayload<{
+      include: {
+        categories: { select: { categoryId: true } };
+        screenshots: { select: { url: true } };
+      };
+    }>,
+    dto: UpdateSaasDto,
+  ) {
+    return this.changedSensitiveFields(current, dto).length > 0;
+  }
+
+  private changedSensitiveFields(
+    current: Prisma.SaasGetPayload<{
+      include: {
+        categories: { select: { categoryId: true } };
+        screenshots: { select: { url: true } };
+      };
+    }>,
+    dto: UpdateSaasDto,
+  ) {
+    const changed: string[] = [];
+    const scalarFields = [
+      'name',
+      'slug',
+      'tagline',
+      'shortDescription',
+      'description',
+      'logoUrl',
+      'websiteUrl',
+      'trialUrl',
+      'checkoutUrl',
+      'docsUrl',
+      'demoUrl',
+      'isAdult',
+    ] as const;
+    for (const field of scalarFields) {
+      if (dto[field] === undefined) continue;
+      const next =
+        typeof dto[field] === 'string' ? dto[field].trim() : dto[field];
+      const before = current[field] ?? '';
+      if (next !== before) changed.push(field);
+    }
+    if (
+      dto.tags &&
+      !this.sameList(this.cleanList(dto.tags), this.cleanList(current.tags))
+    )
+      changed.push('tags');
+    if (
+      dto.categoryIds &&
+      !this.sameList(
+        dto.categoryIds,
+        current.categories.map((category) => category.categoryId),
+      )
+    )
+      changed.push('categoryIds');
+    if (
+      dto.screenshotUrls &&
+      !this.sameList(
+        dto.screenshotUrls,
+        current.screenshots.map((screenshot) => screenshot.url),
+        false,
+      )
+    )
+      changed.push('screenshotUrls');
+    return changed;
+  }
+
+  private sameList(left: string[], right: string[], sort = true) {
+    const a = sort ? [...left].sort() : left;
+    const b = sort ? [...right].sort() : right;
+    return (
+      a.length === b.length && a.every((value, index) => value === b[index])
+    );
   }
 
   private async uniqueSlug(input: string, ignoreId?: string) {
