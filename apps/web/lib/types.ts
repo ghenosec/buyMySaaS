@@ -31,7 +31,6 @@ export type Saas = {
   language: string;
   websiteUrl: string;
   trialUrl?: string | null;
-  checkoutUrl?: string | null;
   docsUrl?: string | null;
   demoUrl?: string | null;
   pricingType:
@@ -46,19 +45,16 @@ export type Saas = {
   technologies: string[];
   status:
     | 'DRAFT'
-    | 'PENDING_PAYMENT'
     | 'PENDING_REVIEW'
     | 'PUBLISHED'
     | 'REJECTED'
     | 'ARCHIVED';
   rejectionReason?: string | null;
   publishedAt?: string | null;
-  sponsoredUntil?: string | null;
   createdAt: string;
   updatedAt: string;
   averageRating?: number;
   score?: number;
-  isSponsored?: boolean;
   requiresReapproval?: boolean;
   owner?: { id: string; name: string; avatarUrl?: string | null };
   categories?: { category: Category }[];

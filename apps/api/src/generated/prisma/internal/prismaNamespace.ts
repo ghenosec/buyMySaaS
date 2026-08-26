@@ -405,11 +405,8 @@ export const ModelName = {
   Review: 'Review',
   Favorite: 'Favorite',
   SaasBoost: 'SaasBoost',
-  SaasSponsorship: 'SaasSponsorship',
   AnalyticsEvent: 'AnalyticsEvent',
-  PublicationOrder: 'PublicationOrder',
-  AuditLog: 'AuditLog',
-  WebhookEvent: 'WebhookEvent'
+  AuditLog: 'AuditLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -425,7 +422,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "saas" | "saasScreenshot" | "category" | "saasCategory" | "review" | "favorite" | "saasBoost" | "saasSponsorship" | "analyticsEvent" | "publicationOrder" | "auditLog" | "webhookEvent"
+    modelProps: "user" | "saas" | "saasScreenshot" | "category" | "saasCategory" | "review" | "favorite" | "saasBoost" | "analyticsEvent" | "auditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1021,80 +1018,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    SaasSponsorship: {
-      payload: Prisma.$SaasSponsorshipPayload<ExtArgs>
-      fields: Prisma.SaasSponsorshipFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.SaasSponsorshipFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasSponsorshipPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.SaasSponsorshipFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasSponsorshipPayload>
-        }
-        findFirst: {
-          args: Prisma.SaasSponsorshipFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasSponsorshipPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.SaasSponsorshipFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasSponsorshipPayload>
-        }
-        findMany: {
-          args: Prisma.SaasSponsorshipFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasSponsorshipPayload>[]
-        }
-        create: {
-          args: Prisma.SaasSponsorshipCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasSponsorshipPayload>
-        }
-        createMany: {
-          args: Prisma.SaasSponsorshipCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.SaasSponsorshipCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasSponsorshipPayload>[]
-        }
-        delete: {
-          args: Prisma.SaasSponsorshipDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasSponsorshipPayload>
-        }
-        update: {
-          args: Prisma.SaasSponsorshipUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasSponsorshipPayload>
-        }
-        deleteMany: {
-          args: Prisma.SaasSponsorshipDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.SaasSponsorshipUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.SaasSponsorshipUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasSponsorshipPayload>[]
-        }
-        upsert: {
-          args: Prisma.SaasSponsorshipUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SaasSponsorshipPayload>
-        }
-        aggregate: {
-          args: Prisma.SaasSponsorshipAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateSaasSponsorship>
-        }
-        groupBy: {
-          args: Prisma.SaasSponsorshipGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.SaasSponsorshipGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.SaasSponsorshipCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.SaasSponsorshipCountAggregateOutputType> | number
-        }
-      }
-    }
     AnalyticsEvent: {
       payload: Prisma.$AnalyticsEventPayload<ExtArgs>
       fields: Prisma.AnalyticsEventFieldRefs
@@ -1166,80 +1089,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.AnalyticsEventCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.AnalyticsEventCountAggregateOutputType> | number
-        }
-      }
-    }
-    PublicationOrder: {
-      payload: Prisma.$PublicationOrderPayload<ExtArgs>
-      fields: Prisma.PublicationOrderFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.PublicationOrderFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationOrderPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.PublicationOrderFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationOrderPayload>
-        }
-        findFirst: {
-          args: Prisma.PublicationOrderFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationOrderPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.PublicationOrderFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationOrderPayload>
-        }
-        findMany: {
-          args: Prisma.PublicationOrderFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationOrderPayload>[]
-        }
-        create: {
-          args: Prisma.PublicationOrderCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationOrderPayload>
-        }
-        createMany: {
-          args: Prisma.PublicationOrderCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.PublicationOrderCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationOrderPayload>[]
-        }
-        delete: {
-          args: Prisma.PublicationOrderDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationOrderPayload>
-        }
-        update: {
-          args: Prisma.PublicationOrderUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationOrderPayload>
-        }
-        deleteMany: {
-          args: Prisma.PublicationOrderDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.PublicationOrderUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.PublicationOrderUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationOrderPayload>[]
-        }
-        upsert: {
-          args: Prisma.PublicationOrderUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationOrderPayload>
-        }
-        aggregate: {
-          args: Prisma.PublicationOrderAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregatePublicationOrder>
-        }
-        groupBy: {
-          args: Prisma.PublicationOrderGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PublicationOrderGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.PublicationOrderCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PublicationOrderCountAggregateOutputType> | number
         }
       }
     }
@@ -1317,80 +1166,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    WebhookEvent: {
-      payload: Prisma.$WebhookEventPayload<ExtArgs>
-      fields: Prisma.WebhookEventFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.WebhookEventFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookEventPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.WebhookEventFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookEventPayload>
-        }
-        findFirst: {
-          args: Prisma.WebhookEventFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookEventPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.WebhookEventFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookEventPayload>
-        }
-        findMany: {
-          args: Prisma.WebhookEventFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookEventPayload>[]
-        }
-        create: {
-          args: Prisma.WebhookEventCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookEventPayload>
-        }
-        createMany: {
-          args: Prisma.WebhookEventCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.WebhookEventCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookEventPayload>[]
-        }
-        delete: {
-          args: Prisma.WebhookEventDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookEventPayload>
-        }
-        update: {
-          args: Prisma.WebhookEventUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookEventPayload>
-        }
-        deleteMany: {
-          args: Prisma.WebhookEventDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.WebhookEventUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.WebhookEventUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookEventPayload>[]
-        }
-        upsert: {
-          args: Prisma.WebhookEventUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookEventPayload>
-        }
-        aggregate: {
-          args: Prisma.WebhookEventAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateWebhookEvent>
-        }
-        groupBy: {
-          args: Prisma.WebhookEventGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.WebhookEventGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.WebhookEventCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.WebhookEventCountAggregateOutputType> | number
-        }
-      }
-    }
   }
 } & {
   other: {
@@ -1460,7 +1235,6 @@ export const SaasScalarFieldEnum = {
   language: 'language',
   websiteUrl: 'websiteUrl',
   trialUrl: 'trialUrl',
-  checkoutUrl: 'checkoutUrl',
   docsUrl: 'docsUrl',
   demoUrl: 'demoUrl',
   pricingType: 'pricingType',
@@ -1476,7 +1250,6 @@ export const SaasScalarFieldEnum = {
   rejectionReason: 'rejectionReason',
   launchDate: 'launchDate',
   publishedAt: 'publishedAt',
-  sponsoredUntil: 'sponsoredUntil',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1552,19 +1325,6 @@ export const SaasBoostScalarFieldEnum = {
 export type SaasBoostScalarFieldEnum = (typeof SaasBoostScalarFieldEnum)[keyof typeof SaasBoostScalarFieldEnum]
 
 
-export const SaasSponsorshipScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  saasId: 'saasId',
-  orderId: 'orderId',
-  startsAt: 'startsAt',
-  endsAt: 'endsAt',
-  createdAt: 'createdAt'
-} as const
-
-export type SaasSponsorshipScalarFieldEnum = (typeof SaasSponsorshipScalarFieldEnum)[keyof typeof SaasSponsorshipScalarFieldEnum]
-
-
 export const AnalyticsEventScalarFieldEnum = {
   id: 'id',
   saasId: 'saasId',
@@ -1575,26 +1335,6 @@ export const AnalyticsEventScalarFieldEnum = {
 } as const
 
 export type AnalyticsEventScalarFieldEnum = (typeof AnalyticsEventScalarFieldEnum)[keyof typeof AnalyticsEventScalarFieldEnum]
-
-
-export const PublicationOrderScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  saasId: 'saasId',
-  type: 'type',
-  provider: 'provider',
-  providerPaymentId: 'providerPaymentId',
-  amountCents: 'amountCents',
-  currency: 'currency',
-  entitlementDays: 'entitlementDays',
-  status: 'status',
-  checkoutUrl: 'checkoutUrl',
-  paidAt: 'paidAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type PublicationOrderScalarFieldEnum = (typeof PublicationOrderScalarFieldEnum)[keyof typeof PublicationOrderScalarFieldEnum]
 
 
 export const AuditLogScalarFieldEnum = {
@@ -1608,15 +1348,6 @@ export const AuditLogScalarFieldEnum = {
 } as const
 
 export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
-
-
-export const WebhookEventScalarFieldEnum = {
-  id: 'id',
-  provider: 'provider',
-  receivedAt: 'receivedAt'
-} as const
-
-export type WebhookEventScalarFieldEnum = (typeof WebhookEventScalarFieldEnum)[keyof typeof WebhookEventScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1796,48 +1527,6 @@ export type EnumAnalyticsEventTypeFieldRefInput<$PrismaModel> = FieldRefInputTyp
  * Reference to a field of type 'AnalyticsEventType[]'
  */
 export type ListEnumAnalyticsEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AnalyticsEventType[]'>
-    
-
-
-/**
- * Reference to a field of type 'PublicationOrderType'
- */
-export type EnumPublicationOrderTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PublicationOrderType'>
-    
-
-
-/**
- * Reference to a field of type 'PublicationOrderType[]'
- */
-export type ListEnumPublicationOrderTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PublicationOrderType[]'>
-    
-
-
-/**
- * Reference to a field of type 'PaymentProviderName'
- */
-export type EnumPaymentProviderNameFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentProviderName'>
-    
-
-
-/**
- * Reference to a field of type 'PaymentProviderName[]'
- */
-export type ListEnumPaymentProviderNameFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentProviderName[]'>
-    
-
-
-/**
- * Reference to a field of type 'PublicationOrderStatus'
- */
-export type EnumPublicationOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PublicationOrderStatus'>
-    
-
-
-/**
- * Reference to a field of type 'PublicationOrderStatus[]'
- */
-export type ListEnumPublicationOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PublicationOrderStatus[]'>
     
 
 
@@ -2027,11 +1716,8 @@ export type GlobalOmitConfig = {
   review?: Prisma.ReviewOmit
   favorite?: Prisma.FavoriteOmit
   saasBoost?: Prisma.SaasBoostOmit
-  saasSponsorship?: Prisma.SaasSponsorshipOmit
   analyticsEvent?: Prisma.AnalyticsEventOmit
-  publicationOrder?: Prisma.PublicationOrderOmit
   auditLog?: Prisma.AuditLogOmit
-  webhookEvent?: Prisma.WebhookEventOmit
 }
 
 /* Types for Logging */

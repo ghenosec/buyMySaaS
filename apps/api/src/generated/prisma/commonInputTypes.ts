@@ -304,57 +304,6 @@ export type EnumAnalyticsEventTypeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumAnalyticsEventTypeFilter<$PrismaModel>
 }
 
-export type EnumPublicationOrderTypeFilter<$PrismaModel = never> = {
-  equals?: $Enums.PublicationOrderType | Prisma.EnumPublicationOrderTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.PublicationOrderType[] | Prisma.ListEnumPublicationOrderTypeFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PublicationOrderType[] | Prisma.ListEnumPublicationOrderTypeFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPublicationOrderTypeFilter<$PrismaModel> | $Enums.PublicationOrderType
-}
-
-export type EnumPaymentProviderNameFilter<$PrismaModel = never> = {
-  equals?: $Enums.PaymentProviderName | Prisma.EnumPaymentProviderNameFieldRefInput<$PrismaModel>
-  in?: $Enums.PaymentProviderName[] | Prisma.ListEnumPaymentProviderNameFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PaymentProviderName[] | Prisma.ListEnumPaymentProviderNameFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPaymentProviderNameFilter<$PrismaModel> | $Enums.PaymentProviderName
-}
-
-export type EnumPublicationOrderStatusFilter<$PrismaModel = never> = {
-  equals?: $Enums.PublicationOrderStatus | Prisma.EnumPublicationOrderStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.PublicationOrderStatus[] | Prisma.ListEnumPublicationOrderStatusFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PublicationOrderStatus[] | Prisma.ListEnumPublicationOrderStatusFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPublicationOrderStatusFilter<$PrismaModel> | $Enums.PublicationOrderStatus
-}
-
-export type EnumPublicationOrderTypeWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.PublicationOrderType | Prisma.EnumPublicationOrderTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.PublicationOrderType[] | Prisma.ListEnumPublicationOrderTypeFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PublicationOrderType[] | Prisma.ListEnumPublicationOrderTypeFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPublicationOrderTypeWithAggregatesFilter<$PrismaModel> | $Enums.PublicationOrderType
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumPublicationOrderTypeFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumPublicationOrderTypeFilter<$PrismaModel>
-}
-
-export type EnumPaymentProviderNameWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.PaymentProviderName | Prisma.EnumPaymentProviderNameFieldRefInput<$PrismaModel>
-  in?: $Enums.PaymentProviderName[] | Prisma.ListEnumPaymentProviderNameFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PaymentProviderName[] | Prisma.ListEnumPaymentProviderNameFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPaymentProviderNameWithAggregatesFilter<$PrismaModel> | $Enums.PaymentProviderName
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumPaymentProviderNameFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumPaymentProviderNameFilter<$PrismaModel>
-}
-
-export type EnumPublicationOrderStatusWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.PublicationOrderStatus | Prisma.EnumPublicationOrderStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.PublicationOrderStatus[] | Prisma.ListEnumPublicationOrderStatusFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PublicationOrderStatus[] | Prisma.ListEnumPublicationOrderStatusFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPublicationOrderStatusWithAggregatesFilter<$PrismaModel> | $Enums.PublicationOrderStatus
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumPublicationOrderStatusFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumPublicationOrderStatusFilter<$PrismaModel>
-}
-
 export type JsonNullableFilter<$PrismaModel = never> =
 | Prisma.PatchUndefined<
     Prisma.Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -707,57 +656,6 @@ export type NestedEnumAnalyticsEventTypeWithAggregatesFilter<$PrismaModel = neve
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumAnalyticsEventTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumAnalyticsEventTypeFilter<$PrismaModel>
-}
-
-export type NestedEnumPublicationOrderTypeFilter<$PrismaModel = never> = {
-  equals?: $Enums.PublicationOrderType | Prisma.EnumPublicationOrderTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.PublicationOrderType[] | Prisma.ListEnumPublicationOrderTypeFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PublicationOrderType[] | Prisma.ListEnumPublicationOrderTypeFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPublicationOrderTypeFilter<$PrismaModel> | $Enums.PublicationOrderType
-}
-
-export type NestedEnumPaymentProviderNameFilter<$PrismaModel = never> = {
-  equals?: $Enums.PaymentProviderName | Prisma.EnumPaymentProviderNameFieldRefInput<$PrismaModel>
-  in?: $Enums.PaymentProviderName[] | Prisma.ListEnumPaymentProviderNameFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PaymentProviderName[] | Prisma.ListEnumPaymentProviderNameFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPaymentProviderNameFilter<$PrismaModel> | $Enums.PaymentProviderName
-}
-
-export type NestedEnumPublicationOrderStatusFilter<$PrismaModel = never> = {
-  equals?: $Enums.PublicationOrderStatus | Prisma.EnumPublicationOrderStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.PublicationOrderStatus[] | Prisma.ListEnumPublicationOrderStatusFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PublicationOrderStatus[] | Prisma.ListEnumPublicationOrderStatusFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPublicationOrderStatusFilter<$PrismaModel> | $Enums.PublicationOrderStatus
-}
-
-export type NestedEnumPublicationOrderTypeWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.PublicationOrderType | Prisma.EnumPublicationOrderTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.PublicationOrderType[] | Prisma.ListEnumPublicationOrderTypeFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PublicationOrderType[] | Prisma.ListEnumPublicationOrderTypeFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPublicationOrderTypeWithAggregatesFilter<$PrismaModel> | $Enums.PublicationOrderType
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumPublicationOrderTypeFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumPublicationOrderTypeFilter<$PrismaModel>
-}
-
-export type NestedEnumPaymentProviderNameWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.PaymentProviderName | Prisma.EnumPaymentProviderNameFieldRefInput<$PrismaModel>
-  in?: $Enums.PaymentProviderName[] | Prisma.ListEnumPaymentProviderNameFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PaymentProviderName[] | Prisma.ListEnumPaymentProviderNameFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPaymentProviderNameWithAggregatesFilter<$PrismaModel> | $Enums.PaymentProviderName
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumPaymentProviderNameFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumPaymentProviderNameFilter<$PrismaModel>
-}
-
-export type NestedEnumPublicationOrderStatusWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.PublicationOrderStatus | Prisma.EnumPublicationOrderStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.PublicationOrderStatus[] | Prisma.ListEnumPublicationOrderStatusFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PublicationOrderStatus[] | Prisma.ListEnumPublicationOrderStatusFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPublicationOrderStatusWithAggregatesFilter<$PrismaModel> | $Enums.PublicationOrderStatus
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumPublicationOrderStatusFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumPublicationOrderStatusFilter<$PrismaModel>
 }
 
 export type NestedJsonNullableFilter<$PrismaModel = never> =

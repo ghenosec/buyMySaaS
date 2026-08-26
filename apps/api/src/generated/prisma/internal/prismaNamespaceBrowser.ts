@@ -59,11 +59,8 @@ export const ModelName = {
   Review: 'Review',
   Favorite: 'Favorite',
   SaasBoost: 'SaasBoost',
-  SaasSponsorship: 'SaasSponsorship',
   AnalyticsEvent: 'AnalyticsEvent',
-  PublicationOrder: 'PublicationOrder',
-  AuditLog: 'AuditLog',
-  WebhookEvent: 'WebhookEvent'
+  AuditLog: 'AuditLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -112,7 +109,6 @@ export const SaasScalarFieldEnum = {
   language: 'language',
   websiteUrl: 'websiteUrl',
   trialUrl: 'trialUrl',
-  checkoutUrl: 'checkoutUrl',
   docsUrl: 'docsUrl',
   demoUrl: 'demoUrl',
   pricingType: 'pricingType',
@@ -128,7 +124,6 @@ export const SaasScalarFieldEnum = {
   rejectionReason: 'rejectionReason',
   launchDate: 'launchDate',
   publishedAt: 'publishedAt',
-  sponsoredUntil: 'sponsoredUntil',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -204,19 +199,6 @@ export const SaasBoostScalarFieldEnum = {
 export type SaasBoostScalarFieldEnum = (typeof SaasBoostScalarFieldEnum)[keyof typeof SaasBoostScalarFieldEnum]
 
 
-export const SaasSponsorshipScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  saasId: 'saasId',
-  orderId: 'orderId',
-  startsAt: 'startsAt',
-  endsAt: 'endsAt',
-  createdAt: 'createdAt'
-} as const
-
-export type SaasSponsorshipScalarFieldEnum = (typeof SaasSponsorshipScalarFieldEnum)[keyof typeof SaasSponsorshipScalarFieldEnum]
-
-
 export const AnalyticsEventScalarFieldEnum = {
   id: 'id',
   saasId: 'saasId',
@@ -227,26 +209,6 @@ export const AnalyticsEventScalarFieldEnum = {
 } as const
 
 export type AnalyticsEventScalarFieldEnum = (typeof AnalyticsEventScalarFieldEnum)[keyof typeof AnalyticsEventScalarFieldEnum]
-
-
-export const PublicationOrderScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  saasId: 'saasId',
-  type: 'type',
-  provider: 'provider',
-  providerPaymentId: 'providerPaymentId',
-  amountCents: 'amountCents',
-  currency: 'currency',
-  entitlementDays: 'entitlementDays',
-  status: 'status',
-  checkoutUrl: 'checkoutUrl',
-  paidAt: 'paidAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type PublicationOrderScalarFieldEnum = (typeof PublicationOrderScalarFieldEnum)[keyof typeof PublicationOrderScalarFieldEnum]
 
 
 export const AuditLogScalarFieldEnum = {
@@ -260,15 +222,6 @@ export const AuditLogScalarFieldEnum = {
 } as const
 
 export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
-
-
-export const WebhookEventScalarFieldEnum = {
-  id: 'id',
-  provider: 'provider',
-  receivedAt: 'receivedAt'
-} as const
-
-export type WebhookEventScalarFieldEnum = (typeof WebhookEventScalarFieldEnum)[keyof typeof WebhookEventScalarFieldEnum]
 
 
 export const SortOrder = {

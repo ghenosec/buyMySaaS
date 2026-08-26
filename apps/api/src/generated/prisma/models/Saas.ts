@@ -48,7 +48,6 @@ export type SaasMinAggregateOutputType = {
   language: string | null
   websiteUrl: string | null
   trialUrl: string | null
-  checkoutUrl: string | null
   docsUrl: string | null
   demoUrl: string | null
   pricingType: $Enums.PricingType | null
@@ -62,7 +61,6 @@ export type SaasMinAggregateOutputType = {
   rejectionReason: string | null
   launchDate: Date | null
   publishedAt: Date | null
-  sponsoredUntil: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -81,7 +79,6 @@ export type SaasMaxAggregateOutputType = {
   language: string | null
   websiteUrl: string | null
   trialUrl: string | null
-  checkoutUrl: string | null
   docsUrl: string | null
   demoUrl: string | null
   pricingType: $Enums.PricingType | null
@@ -95,7 +92,6 @@ export type SaasMaxAggregateOutputType = {
   rejectionReason: string | null
   launchDate: Date | null
   publishedAt: Date | null
-  sponsoredUntil: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -114,7 +110,6 @@ export type SaasCountAggregateOutputType = {
   language: number
   websiteUrl: number
   trialUrl: number
-  checkoutUrl: number
   docsUrl: number
   demoUrl: number
   pricingType: number
@@ -130,7 +125,6 @@ export type SaasCountAggregateOutputType = {
   rejectionReason: number
   launchDate: number
   publishedAt: number
-  sponsoredUntil: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -159,7 +153,6 @@ export type SaasMinAggregateInputType = {
   language?: true
   websiteUrl?: true
   trialUrl?: true
-  checkoutUrl?: true
   docsUrl?: true
   demoUrl?: true
   pricingType?: true
@@ -173,7 +166,6 @@ export type SaasMinAggregateInputType = {
   rejectionReason?: true
   launchDate?: true
   publishedAt?: true
-  sponsoredUntil?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -192,7 +184,6 @@ export type SaasMaxAggregateInputType = {
   language?: true
   websiteUrl?: true
   trialUrl?: true
-  checkoutUrl?: true
   docsUrl?: true
   demoUrl?: true
   pricingType?: true
@@ -206,7 +197,6 @@ export type SaasMaxAggregateInputType = {
   rejectionReason?: true
   launchDate?: true
   publishedAt?: true
-  sponsoredUntil?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -225,7 +215,6 @@ export type SaasCountAggregateInputType = {
   language?: true
   websiteUrl?: true
   trialUrl?: true
-  checkoutUrl?: true
   docsUrl?: true
   demoUrl?: true
   pricingType?: true
@@ -241,7 +230,6 @@ export type SaasCountAggregateInputType = {
   rejectionReason?: true
   launchDate?: true
   publishedAt?: true
-  sponsoredUntil?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -347,7 +335,6 @@ export type SaasGroupByOutputType = {
   language: string
   websiteUrl: string
   trialUrl: string | null
-  checkoutUrl: string | null
   docsUrl: string | null
   demoUrl: string | null
   pricingType: $Enums.PricingType
@@ -363,7 +350,6 @@ export type SaasGroupByOutputType = {
   rejectionReason: string | null
   launchDate: Date | null
   publishedAt: Date | null
-  sponsoredUntil: Date | null
   createdAt: Date
   updatedAt: Date
   _count: SaasCountAggregateOutputType | null
@@ -405,7 +391,6 @@ export type SaasWhereInput = {
   language?: Prisma.StringFilter<"Saas"> | string
   websiteUrl?: Prisma.StringFilter<"Saas"> | string
   trialUrl?: Prisma.StringNullableFilter<"Saas"> | string | null
-  checkoutUrl?: Prisma.StringNullableFilter<"Saas"> | string | null
   docsUrl?: Prisma.StringNullableFilter<"Saas"> | string | null
   demoUrl?: Prisma.StringNullableFilter<"Saas"> | string | null
   pricingType?: Prisma.EnumPricingTypeFilter<"Saas"> | $Enums.PricingType
@@ -421,7 +406,6 @@ export type SaasWhereInput = {
   rejectionReason?: Prisma.StringNullableFilter<"Saas"> | string | null
   launchDate?: Prisma.DateTimeNullableFilter<"Saas"> | Date | string | null
   publishedAt?: Prisma.DateTimeNullableFilter<"Saas"> | Date | string | null
-  sponsoredUntil?: Prisma.DateTimeNullableFilter<"Saas"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Saas"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Saas"> | Date | string
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -430,9 +414,7 @@ export type SaasWhereInput = {
   reviews?: Prisma.ReviewListRelationFilter
   favorites?: Prisma.FavoriteListRelationFilter
   boosts?: Prisma.SaasBoostListRelationFilter
-  sponsorships?: Prisma.SaasSponsorshipListRelationFilter
   analyticsEvents?: Prisma.AnalyticsEventListRelationFilter
-  orders?: Prisma.PublicationOrderListRelationFilter
 }
 
 export type SaasOrderByWithRelationInput = {
@@ -449,7 +431,6 @@ export type SaasOrderByWithRelationInput = {
   language?: Prisma.SortOrder
   websiteUrl?: Prisma.SortOrder
   trialUrl?: Prisma.SortOrderInput | Prisma.SortOrder
-  checkoutUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   docsUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   demoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   pricingType?: Prisma.SortOrder
@@ -465,7 +446,6 @@ export type SaasOrderByWithRelationInput = {
   rejectionReason?: Prisma.SortOrderInput | Prisma.SortOrder
   launchDate?: Prisma.SortOrderInput | Prisma.SortOrder
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  sponsoredUntil?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   owner?: Prisma.UserOrderByWithRelationInput
@@ -474,9 +454,7 @@ export type SaasOrderByWithRelationInput = {
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
   favorites?: Prisma.FavoriteOrderByRelationAggregateInput
   boosts?: Prisma.SaasBoostOrderByRelationAggregateInput
-  sponsorships?: Prisma.SaasSponsorshipOrderByRelationAggregateInput
   analyticsEvents?: Prisma.AnalyticsEventOrderByRelationAggregateInput
-  orders?: Prisma.PublicationOrderOrderByRelationAggregateInput
 }
 
 export type SaasWhereUniqueInput = Prisma.AtLeast<{
@@ -496,7 +474,6 @@ export type SaasWhereUniqueInput = Prisma.AtLeast<{
   language?: Prisma.StringFilter<"Saas"> | string
   websiteUrl?: Prisma.StringFilter<"Saas"> | string
   trialUrl?: Prisma.StringNullableFilter<"Saas"> | string | null
-  checkoutUrl?: Prisma.StringNullableFilter<"Saas"> | string | null
   docsUrl?: Prisma.StringNullableFilter<"Saas"> | string | null
   demoUrl?: Prisma.StringNullableFilter<"Saas"> | string | null
   pricingType?: Prisma.EnumPricingTypeFilter<"Saas"> | $Enums.PricingType
@@ -512,7 +489,6 @@ export type SaasWhereUniqueInput = Prisma.AtLeast<{
   rejectionReason?: Prisma.StringNullableFilter<"Saas"> | string | null
   launchDate?: Prisma.DateTimeNullableFilter<"Saas"> | Date | string | null
   publishedAt?: Prisma.DateTimeNullableFilter<"Saas"> | Date | string | null
-  sponsoredUntil?: Prisma.DateTimeNullableFilter<"Saas"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Saas"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Saas"> | Date | string
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -521,9 +497,7 @@ export type SaasWhereUniqueInput = Prisma.AtLeast<{
   reviews?: Prisma.ReviewListRelationFilter
   favorites?: Prisma.FavoriteListRelationFilter
   boosts?: Prisma.SaasBoostListRelationFilter
-  sponsorships?: Prisma.SaasSponsorshipListRelationFilter
   analyticsEvents?: Prisma.AnalyticsEventListRelationFilter
-  orders?: Prisma.PublicationOrderListRelationFilter
 }, "id" | "slug">
 
 export type SaasOrderByWithAggregationInput = {
@@ -540,7 +514,6 @@ export type SaasOrderByWithAggregationInput = {
   language?: Prisma.SortOrder
   websiteUrl?: Prisma.SortOrder
   trialUrl?: Prisma.SortOrderInput | Prisma.SortOrder
-  checkoutUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   docsUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   demoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   pricingType?: Prisma.SortOrder
@@ -556,7 +529,6 @@ export type SaasOrderByWithAggregationInput = {
   rejectionReason?: Prisma.SortOrderInput | Prisma.SortOrder
   launchDate?: Prisma.SortOrderInput | Prisma.SortOrder
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  sponsoredUntil?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.SaasCountOrderByAggregateInput
@@ -583,7 +555,6 @@ export type SaasScalarWhereWithAggregatesInput = {
   language?: Prisma.StringWithAggregatesFilter<"Saas"> | string
   websiteUrl?: Prisma.StringWithAggregatesFilter<"Saas"> | string
   trialUrl?: Prisma.StringNullableWithAggregatesFilter<"Saas"> | string | null
-  checkoutUrl?: Prisma.StringNullableWithAggregatesFilter<"Saas"> | string | null
   docsUrl?: Prisma.StringNullableWithAggregatesFilter<"Saas"> | string | null
   demoUrl?: Prisma.StringNullableWithAggregatesFilter<"Saas"> | string | null
   pricingType?: Prisma.EnumPricingTypeWithAggregatesFilter<"Saas"> | $Enums.PricingType
@@ -599,7 +570,6 @@ export type SaasScalarWhereWithAggregatesInput = {
   rejectionReason?: Prisma.StringNullableWithAggregatesFilter<"Saas"> | string | null
   launchDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Saas"> | Date | string | null
   publishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Saas"> | Date | string | null
-  sponsoredUntil?: Prisma.DateTimeNullableWithAggregatesFilter<"Saas"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Saas"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Saas"> | Date | string
 }
@@ -617,7 +587,6 @@ export type SaasCreateInput = {
   language?: string
   websiteUrl: string
   trialUrl?: string | null
-  checkoutUrl?: string | null
   docsUrl?: string | null
   demoUrl?: string | null
   pricingType: $Enums.PricingType
@@ -633,7 +602,6 @@ export type SaasCreateInput = {
   rejectionReason?: string | null
   launchDate?: Date | string | null
   publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutSaasInput
@@ -642,9 +610,7 @@ export type SaasCreateInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutSaasInput
   boosts?: Prisma.SaasBoostCreateNestedManyWithoutSaasInput
-  sponsorships?: Prisma.SaasSponsorshipCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventCreateNestedManyWithoutSaasInput
-  orders?: Prisma.PublicationOrderCreateNestedManyWithoutSaasInput
 }
 
 export type SaasUncheckedCreateInput = {
@@ -661,7 +627,6 @@ export type SaasUncheckedCreateInput = {
   language?: string
   websiteUrl: string
   trialUrl?: string | null
-  checkoutUrl?: string | null
   docsUrl?: string | null
   demoUrl?: string | null
   pricingType: $Enums.PricingType
@@ -677,7 +642,6 @@ export type SaasUncheckedCreateInput = {
   rejectionReason?: string | null
   launchDate?: Date | string | null
   publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   screenshots?: Prisma.SaasScreenshotUncheckedCreateNestedManyWithoutSaasInput
@@ -685,9 +649,7 @@ export type SaasUncheckedCreateInput = {
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutSaasInput
   boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutSaasInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedCreateNestedManyWithoutSaasInput
-  orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutSaasInput
 }
 
 export type SaasUpdateInput = {
@@ -703,7 +665,6 @@ export type SaasUpdateInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
@@ -719,7 +680,6 @@ export type SaasUpdateInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutSaasNestedInput
@@ -728,9 +688,7 @@ export type SaasUpdateInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutSaasNestedInput
   boosts?: Prisma.SaasBoostUpdateManyWithoutSaasNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUpdateManyWithoutSaasNestedInput
-  orders?: Prisma.PublicationOrderUpdateManyWithoutSaasNestedInput
 }
 
 export type SaasUncheckedUpdateInput = {
@@ -747,7 +705,6 @@ export type SaasUncheckedUpdateInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
@@ -763,7 +720,6 @@ export type SaasUncheckedUpdateInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   screenshots?: Prisma.SaasScreenshotUncheckedUpdateManyWithoutSaasNestedInput
@@ -771,9 +727,7 @@ export type SaasUncheckedUpdateInput = {
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutSaasNestedInput
   boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutSaasNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedUpdateManyWithoutSaasNestedInput
-  orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutSaasNestedInput
 }
 
 export type SaasCreateManyInput = {
@@ -790,7 +744,6 @@ export type SaasCreateManyInput = {
   language?: string
   websiteUrl: string
   trialUrl?: string | null
-  checkoutUrl?: string | null
   docsUrl?: string | null
   demoUrl?: string | null
   pricingType: $Enums.PricingType
@@ -806,7 +759,6 @@ export type SaasCreateManyInput = {
   rejectionReason?: string | null
   launchDate?: Date | string | null
   publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -824,7 +776,6 @@ export type SaasUpdateManyMutationInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
@@ -840,7 +791,6 @@ export type SaasUpdateManyMutationInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -859,7 +809,6 @@ export type SaasUncheckedUpdateManyInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
@@ -875,7 +824,6 @@ export type SaasUncheckedUpdateManyInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -912,7 +860,6 @@ export type SaasCountOrderByAggregateInput = {
   language?: Prisma.SortOrder
   websiteUrl?: Prisma.SortOrder
   trialUrl?: Prisma.SortOrder
-  checkoutUrl?: Prisma.SortOrder
   docsUrl?: Prisma.SortOrder
   demoUrl?: Prisma.SortOrder
   pricingType?: Prisma.SortOrder
@@ -928,7 +875,6 @@ export type SaasCountOrderByAggregateInput = {
   rejectionReason?: Prisma.SortOrder
   launchDate?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
-  sponsoredUntil?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -951,7 +897,6 @@ export type SaasMaxOrderByAggregateInput = {
   language?: Prisma.SortOrder
   websiteUrl?: Prisma.SortOrder
   trialUrl?: Prisma.SortOrder
-  checkoutUrl?: Prisma.SortOrder
   docsUrl?: Prisma.SortOrder
   demoUrl?: Prisma.SortOrder
   pricingType?: Prisma.SortOrder
@@ -965,7 +910,6 @@ export type SaasMaxOrderByAggregateInput = {
   rejectionReason?: Prisma.SortOrder
   launchDate?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
-  sponsoredUntil?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -984,7 +928,6 @@ export type SaasMinOrderByAggregateInput = {
   language?: Prisma.SortOrder
   websiteUrl?: Prisma.SortOrder
   trialUrl?: Prisma.SortOrder
-  checkoutUrl?: Prisma.SortOrder
   docsUrl?: Prisma.SortOrder
   demoUrl?: Prisma.SortOrder
   pricingType?: Prisma.SortOrder
@@ -998,7 +941,6 @@ export type SaasMinOrderByAggregateInput = {
   rejectionReason?: Prisma.SortOrder
   launchDate?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
-  sponsoredUntil?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -1166,20 +1108,6 @@ export type SaasUpdateOneRequiredWithoutBoostsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SaasUpdateToOneWithWhereWithoutBoostsInput, Prisma.SaasUpdateWithoutBoostsInput>, Prisma.SaasUncheckedUpdateWithoutBoostsInput>
 }
 
-export type SaasCreateNestedOneWithoutSponsorshipsInput = {
-  create?: Prisma.XOR<Prisma.SaasCreateWithoutSponsorshipsInput, Prisma.SaasUncheckedCreateWithoutSponsorshipsInput>
-  connectOrCreate?: Prisma.SaasCreateOrConnectWithoutSponsorshipsInput
-  connect?: Prisma.SaasWhereUniqueInput
-}
-
-export type SaasUpdateOneRequiredWithoutSponsorshipsNestedInput = {
-  create?: Prisma.XOR<Prisma.SaasCreateWithoutSponsorshipsInput, Prisma.SaasUncheckedCreateWithoutSponsorshipsInput>
-  connectOrCreate?: Prisma.SaasCreateOrConnectWithoutSponsorshipsInput
-  upsert?: Prisma.SaasUpsertWithoutSponsorshipsInput
-  connect?: Prisma.SaasWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.SaasUpdateToOneWithWhereWithoutSponsorshipsInput, Prisma.SaasUpdateWithoutSponsorshipsInput>, Prisma.SaasUncheckedUpdateWithoutSponsorshipsInput>
-}
-
 export type SaasCreateNestedOneWithoutAnalyticsEventsInput = {
   create?: Prisma.XOR<Prisma.SaasCreateWithoutAnalyticsEventsInput, Prisma.SaasUncheckedCreateWithoutAnalyticsEventsInput>
   connectOrCreate?: Prisma.SaasCreateOrConnectWithoutAnalyticsEventsInput
@@ -1192,20 +1120,6 @@ export type SaasUpdateOneRequiredWithoutAnalyticsEventsNestedInput = {
   upsert?: Prisma.SaasUpsertWithoutAnalyticsEventsInput
   connect?: Prisma.SaasWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.SaasUpdateToOneWithWhereWithoutAnalyticsEventsInput, Prisma.SaasUpdateWithoutAnalyticsEventsInput>, Prisma.SaasUncheckedUpdateWithoutAnalyticsEventsInput>
-}
-
-export type SaasCreateNestedOneWithoutOrdersInput = {
-  create?: Prisma.XOR<Prisma.SaasCreateWithoutOrdersInput, Prisma.SaasUncheckedCreateWithoutOrdersInput>
-  connectOrCreate?: Prisma.SaasCreateOrConnectWithoutOrdersInput
-  connect?: Prisma.SaasWhereUniqueInput
-}
-
-export type SaasUpdateOneRequiredWithoutOrdersNestedInput = {
-  create?: Prisma.XOR<Prisma.SaasCreateWithoutOrdersInput, Prisma.SaasUncheckedCreateWithoutOrdersInput>
-  connectOrCreate?: Prisma.SaasCreateOrConnectWithoutOrdersInput
-  upsert?: Prisma.SaasUpsertWithoutOrdersInput
-  connect?: Prisma.SaasWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.SaasUpdateToOneWithWhereWithoutOrdersInput, Prisma.SaasUpdateWithoutOrdersInput>, Prisma.SaasUncheckedUpdateWithoutOrdersInput>
 }
 
 export type SaasCreateWithoutOwnerInput = {
@@ -1221,7 +1135,6 @@ export type SaasCreateWithoutOwnerInput = {
   language?: string
   websiteUrl: string
   trialUrl?: string | null
-  checkoutUrl?: string | null
   docsUrl?: string | null
   demoUrl?: string | null
   pricingType: $Enums.PricingType
@@ -1237,7 +1150,6 @@ export type SaasCreateWithoutOwnerInput = {
   rejectionReason?: string | null
   launchDate?: Date | string | null
   publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   screenshots?: Prisma.SaasScreenshotCreateNestedManyWithoutSaasInput
@@ -1245,9 +1157,7 @@ export type SaasCreateWithoutOwnerInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutSaasInput
   boosts?: Prisma.SaasBoostCreateNestedManyWithoutSaasInput
-  sponsorships?: Prisma.SaasSponsorshipCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventCreateNestedManyWithoutSaasInput
-  orders?: Prisma.PublicationOrderCreateNestedManyWithoutSaasInput
 }
 
 export type SaasUncheckedCreateWithoutOwnerInput = {
@@ -1263,7 +1173,6 @@ export type SaasUncheckedCreateWithoutOwnerInput = {
   language?: string
   websiteUrl: string
   trialUrl?: string | null
-  checkoutUrl?: string | null
   docsUrl?: string | null
   demoUrl?: string | null
   pricingType: $Enums.PricingType
@@ -1279,7 +1188,6 @@ export type SaasUncheckedCreateWithoutOwnerInput = {
   rejectionReason?: string | null
   launchDate?: Date | string | null
   publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   screenshots?: Prisma.SaasScreenshotUncheckedCreateNestedManyWithoutSaasInput
@@ -1287,9 +1195,7 @@ export type SaasUncheckedCreateWithoutOwnerInput = {
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutSaasInput
   boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutSaasInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedCreateNestedManyWithoutSaasInput
-  orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutSaasInput
 }
 
 export type SaasCreateOrConnectWithoutOwnerInput = {
@@ -1335,7 +1241,6 @@ export type SaasScalarWhereInput = {
   language?: Prisma.StringFilter<"Saas"> | string
   websiteUrl?: Prisma.StringFilter<"Saas"> | string
   trialUrl?: Prisma.StringNullableFilter<"Saas"> | string | null
-  checkoutUrl?: Prisma.StringNullableFilter<"Saas"> | string | null
   docsUrl?: Prisma.StringNullableFilter<"Saas"> | string | null
   demoUrl?: Prisma.StringNullableFilter<"Saas"> | string | null
   pricingType?: Prisma.EnumPricingTypeFilter<"Saas"> | $Enums.PricingType
@@ -1351,7 +1256,6 @@ export type SaasScalarWhereInput = {
   rejectionReason?: Prisma.StringNullableFilter<"Saas"> | string | null
   launchDate?: Prisma.DateTimeNullableFilter<"Saas"> | Date | string | null
   publishedAt?: Prisma.DateTimeNullableFilter<"Saas"> | Date | string | null
-  sponsoredUntil?: Prisma.DateTimeNullableFilter<"Saas"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Saas"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Saas"> | Date | string
 }
@@ -1369,7 +1273,6 @@ export type SaasCreateWithoutScreenshotsInput = {
   language?: string
   websiteUrl: string
   trialUrl?: string | null
-  checkoutUrl?: string | null
   docsUrl?: string | null
   demoUrl?: string | null
   pricingType: $Enums.PricingType
@@ -1385,7 +1288,6 @@ export type SaasCreateWithoutScreenshotsInput = {
   rejectionReason?: string | null
   launchDate?: Date | string | null
   publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutSaasInput
@@ -1393,9 +1295,7 @@ export type SaasCreateWithoutScreenshotsInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutSaasInput
   boosts?: Prisma.SaasBoostCreateNestedManyWithoutSaasInput
-  sponsorships?: Prisma.SaasSponsorshipCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventCreateNestedManyWithoutSaasInput
-  orders?: Prisma.PublicationOrderCreateNestedManyWithoutSaasInput
 }
 
 export type SaasUncheckedCreateWithoutScreenshotsInput = {
@@ -1412,7 +1312,6 @@ export type SaasUncheckedCreateWithoutScreenshotsInput = {
   language?: string
   websiteUrl: string
   trialUrl?: string | null
-  checkoutUrl?: string | null
   docsUrl?: string | null
   demoUrl?: string | null
   pricingType: $Enums.PricingType
@@ -1428,16 +1327,13 @@ export type SaasUncheckedCreateWithoutScreenshotsInput = {
   rejectionReason?: string | null
   launchDate?: Date | string | null
   publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   categories?: Prisma.SaasCategoryUncheckedCreateNestedManyWithoutSaasInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutSaasInput
   boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutSaasInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedCreateNestedManyWithoutSaasInput
-  orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutSaasInput
 }
 
 export type SaasCreateOrConnectWithoutScreenshotsInput = {
@@ -1469,7 +1365,6 @@ export type SaasUpdateWithoutScreenshotsInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
@@ -1485,7 +1380,6 @@ export type SaasUpdateWithoutScreenshotsInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutSaasNestedInput
@@ -1493,9 +1387,7 @@ export type SaasUpdateWithoutScreenshotsInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutSaasNestedInput
   boosts?: Prisma.SaasBoostUpdateManyWithoutSaasNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUpdateManyWithoutSaasNestedInput
-  orders?: Prisma.PublicationOrderUpdateManyWithoutSaasNestedInput
 }
 
 export type SaasUncheckedUpdateWithoutScreenshotsInput = {
@@ -1512,7 +1404,6 @@ export type SaasUncheckedUpdateWithoutScreenshotsInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
@@ -1528,16 +1419,13 @@ export type SaasUncheckedUpdateWithoutScreenshotsInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categories?: Prisma.SaasCategoryUncheckedUpdateManyWithoutSaasNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutSaasNestedInput
   boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutSaasNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedUpdateManyWithoutSaasNestedInput
-  orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutSaasNestedInput
 }
 
 export type SaasCreateWithoutCategoriesInput = {
@@ -1553,7 +1441,6 @@ export type SaasCreateWithoutCategoriesInput = {
   language?: string
   websiteUrl: string
   trialUrl?: string | null
-  checkoutUrl?: string | null
   docsUrl?: string | null
   demoUrl?: string | null
   pricingType: $Enums.PricingType
@@ -1569,7 +1456,6 @@ export type SaasCreateWithoutCategoriesInput = {
   rejectionReason?: string | null
   launchDate?: Date | string | null
   publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutSaasInput
@@ -1577,9 +1463,7 @@ export type SaasCreateWithoutCategoriesInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutSaasInput
   boosts?: Prisma.SaasBoostCreateNestedManyWithoutSaasInput
-  sponsorships?: Prisma.SaasSponsorshipCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventCreateNestedManyWithoutSaasInput
-  orders?: Prisma.PublicationOrderCreateNestedManyWithoutSaasInput
 }
 
 export type SaasUncheckedCreateWithoutCategoriesInput = {
@@ -1596,7 +1480,6 @@ export type SaasUncheckedCreateWithoutCategoriesInput = {
   language?: string
   websiteUrl: string
   trialUrl?: string | null
-  checkoutUrl?: string | null
   docsUrl?: string | null
   demoUrl?: string | null
   pricingType: $Enums.PricingType
@@ -1612,16 +1495,13 @@ export type SaasUncheckedCreateWithoutCategoriesInput = {
   rejectionReason?: string | null
   launchDate?: Date | string | null
   publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   screenshots?: Prisma.SaasScreenshotUncheckedCreateNestedManyWithoutSaasInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutSaasInput
   boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutSaasInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedCreateNestedManyWithoutSaasInput
-  orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutSaasInput
 }
 
 export type SaasCreateOrConnectWithoutCategoriesInput = {
@@ -1653,7 +1533,6 @@ export type SaasUpdateWithoutCategoriesInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
@@ -1669,7 +1548,6 @@ export type SaasUpdateWithoutCategoriesInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutSaasNestedInput
@@ -1677,9 +1555,7 @@ export type SaasUpdateWithoutCategoriesInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutSaasNestedInput
   boosts?: Prisma.SaasBoostUpdateManyWithoutSaasNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUpdateManyWithoutSaasNestedInput
-  orders?: Prisma.PublicationOrderUpdateManyWithoutSaasNestedInput
 }
 
 export type SaasUncheckedUpdateWithoutCategoriesInput = {
@@ -1696,7 +1572,6 @@ export type SaasUncheckedUpdateWithoutCategoriesInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
@@ -1712,16 +1587,13 @@ export type SaasUncheckedUpdateWithoutCategoriesInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   screenshots?: Prisma.SaasScreenshotUncheckedUpdateManyWithoutSaasNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutSaasNestedInput
   boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutSaasNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedUpdateManyWithoutSaasNestedInput
-  orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutSaasNestedInput
 }
 
 export type SaasCreateWithoutReviewsInput = {
@@ -1737,7 +1609,6 @@ export type SaasCreateWithoutReviewsInput = {
   language?: string
   websiteUrl: string
   trialUrl?: string | null
-  checkoutUrl?: string | null
   docsUrl?: string | null
   demoUrl?: string | null
   pricingType: $Enums.PricingType
@@ -1753,7 +1624,6 @@ export type SaasCreateWithoutReviewsInput = {
   rejectionReason?: string | null
   launchDate?: Date | string | null
   publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutSaasInput
@@ -1761,9 +1631,7 @@ export type SaasCreateWithoutReviewsInput = {
   categories?: Prisma.SaasCategoryCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutSaasInput
   boosts?: Prisma.SaasBoostCreateNestedManyWithoutSaasInput
-  sponsorships?: Prisma.SaasSponsorshipCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventCreateNestedManyWithoutSaasInput
-  orders?: Prisma.PublicationOrderCreateNestedManyWithoutSaasInput
 }
 
 export type SaasUncheckedCreateWithoutReviewsInput = {
@@ -1780,7 +1648,6 @@ export type SaasUncheckedCreateWithoutReviewsInput = {
   language?: string
   websiteUrl: string
   trialUrl?: string | null
-  checkoutUrl?: string | null
   docsUrl?: string | null
   demoUrl?: string | null
   pricingType: $Enums.PricingType
@@ -1796,16 +1663,13 @@ export type SaasUncheckedCreateWithoutReviewsInput = {
   rejectionReason?: string | null
   launchDate?: Date | string | null
   publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   screenshots?: Prisma.SaasScreenshotUncheckedCreateNestedManyWithoutSaasInput
   categories?: Prisma.SaasCategoryUncheckedCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutSaasInput
   boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutSaasInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedCreateNestedManyWithoutSaasInput
-  orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutSaasInput
 }
 
 export type SaasCreateOrConnectWithoutReviewsInput = {
@@ -1837,7 +1701,6 @@ export type SaasUpdateWithoutReviewsInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
@@ -1853,7 +1716,6 @@ export type SaasUpdateWithoutReviewsInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutSaasNestedInput
@@ -1861,9 +1723,7 @@ export type SaasUpdateWithoutReviewsInput = {
   categories?: Prisma.SaasCategoryUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutSaasNestedInput
   boosts?: Prisma.SaasBoostUpdateManyWithoutSaasNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUpdateManyWithoutSaasNestedInput
-  orders?: Prisma.PublicationOrderUpdateManyWithoutSaasNestedInput
 }
 
 export type SaasUncheckedUpdateWithoutReviewsInput = {
@@ -1880,7 +1740,6 @@ export type SaasUncheckedUpdateWithoutReviewsInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
@@ -1896,16 +1755,13 @@ export type SaasUncheckedUpdateWithoutReviewsInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   screenshots?: Prisma.SaasScreenshotUncheckedUpdateManyWithoutSaasNestedInput
   categories?: Prisma.SaasCategoryUncheckedUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutSaasNestedInput
   boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutSaasNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedUpdateManyWithoutSaasNestedInput
-  orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutSaasNestedInput
 }
 
 export type SaasCreateWithoutFavoritesInput = {
@@ -1921,7 +1777,6 @@ export type SaasCreateWithoutFavoritesInput = {
   language?: string
   websiteUrl: string
   trialUrl?: string | null
-  checkoutUrl?: string | null
   docsUrl?: string | null
   demoUrl?: string | null
   pricingType: $Enums.PricingType
@@ -1937,7 +1792,6 @@ export type SaasCreateWithoutFavoritesInput = {
   rejectionReason?: string | null
   launchDate?: Date | string | null
   publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutSaasInput
@@ -1945,9 +1799,7 @@ export type SaasCreateWithoutFavoritesInput = {
   categories?: Prisma.SaasCategoryCreateNestedManyWithoutSaasInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutSaasInput
   boosts?: Prisma.SaasBoostCreateNestedManyWithoutSaasInput
-  sponsorships?: Prisma.SaasSponsorshipCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventCreateNestedManyWithoutSaasInput
-  orders?: Prisma.PublicationOrderCreateNestedManyWithoutSaasInput
 }
 
 export type SaasUncheckedCreateWithoutFavoritesInput = {
@@ -1964,7 +1816,6 @@ export type SaasUncheckedCreateWithoutFavoritesInput = {
   language?: string
   websiteUrl: string
   trialUrl?: string | null
-  checkoutUrl?: string | null
   docsUrl?: string | null
   demoUrl?: string | null
   pricingType: $Enums.PricingType
@@ -1980,16 +1831,13 @@ export type SaasUncheckedCreateWithoutFavoritesInput = {
   rejectionReason?: string | null
   launchDate?: Date | string | null
   publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   screenshots?: Prisma.SaasScreenshotUncheckedCreateNestedManyWithoutSaasInput
   categories?: Prisma.SaasCategoryUncheckedCreateNestedManyWithoutSaasInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutSaasInput
   boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutSaasInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedCreateNestedManyWithoutSaasInput
-  orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutSaasInput
 }
 
 export type SaasCreateOrConnectWithoutFavoritesInput = {
@@ -2021,7 +1869,6 @@ export type SaasUpdateWithoutFavoritesInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
@@ -2037,7 +1884,6 @@ export type SaasUpdateWithoutFavoritesInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutSaasNestedInput
@@ -2045,9 +1891,7 @@ export type SaasUpdateWithoutFavoritesInput = {
   categories?: Prisma.SaasCategoryUpdateManyWithoutSaasNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutSaasNestedInput
   boosts?: Prisma.SaasBoostUpdateManyWithoutSaasNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUpdateManyWithoutSaasNestedInput
-  orders?: Prisma.PublicationOrderUpdateManyWithoutSaasNestedInput
 }
 
 export type SaasUncheckedUpdateWithoutFavoritesInput = {
@@ -2064,7 +1908,6 @@ export type SaasUncheckedUpdateWithoutFavoritesInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
@@ -2080,16 +1923,13 @@ export type SaasUncheckedUpdateWithoutFavoritesInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   screenshots?: Prisma.SaasScreenshotUncheckedUpdateManyWithoutSaasNestedInput
   categories?: Prisma.SaasCategoryUncheckedUpdateManyWithoutSaasNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutSaasNestedInput
   boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutSaasNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedUpdateManyWithoutSaasNestedInput
-  orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutSaasNestedInput
 }
 
 export type SaasCreateWithoutBoostsInput = {
@@ -2105,7 +1945,6 @@ export type SaasCreateWithoutBoostsInput = {
   language?: string
   websiteUrl: string
   trialUrl?: string | null
-  checkoutUrl?: string | null
   docsUrl?: string | null
   demoUrl?: string | null
   pricingType: $Enums.PricingType
@@ -2121,7 +1960,6 @@ export type SaasCreateWithoutBoostsInput = {
   rejectionReason?: string | null
   launchDate?: Date | string | null
   publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutSaasInput
@@ -2129,9 +1967,7 @@ export type SaasCreateWithoutBoostsInput = {
   categories?: Prisma.SaasCategoryCreateNestedManyWithoutSaasInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutSaasInput
-  sponsorships?: Prisma.SaasSponsorshipCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventCreateNestedManyWithoutSaasInput
-  orders?: Prisma.PublicationOrderCreateNestedManyWithoutSaasInput
 }
 
 export type SaasUncheckedCreateWithoutBoostsInput = {
@@ -2148,7 +1984,6 @@ export type SaasUncheckedCreateWithoutBoostsInput = {
   language?: string
   websiteUrl: string
   trialUrl?: string | null
-  checkoutUrl?: string | null
   docsUrl?: string | null
   demoUrl?: string | null
   pricingType: $Enums.PricingType
@@ -2164,16 +1999,13 @@ export type SaasUncheckedCreateWithoutBoostsInput = {
   rejectionReason?: string | null
   launchDate?: Date | string | null
   publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   screenshots?: Prisma.SaasScreenshotUncheckedCreateNestedManyWithoutSaasInput
   categories?: Prisma.SaasCategoryUncheckedCreateNestedManyWithoutSaasInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutSaasInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedCreateNestedManyWithoutSaasInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedCreateNestedManyWithoutSaasInput
-  orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutSaasInput
 }
 
 export type SaasCreateOrConnectWithoutBoostsInput = {
@@ -2205,7 +2037,6 @@ export type SaasUpdateWithoutBoostsInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
@@ -2221,7 +2052,6 @@ export type SaasUpdateWithoutBoostsInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutSaasNestedInput
@@ -2229,9 +2059,7 @@ export type SaasUpdateWithoutBoostsInput = {
   categories?: Prisma.SaasCategoryUpdateManyWithoutSaasNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutSaasNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUpdateManyWithoutSaasNestedInput
-  orders?: Prisma.PublicationOrderUpdateManyWithoutSaasNestedInput
 }
 
 export type SaasUncheckedUpdateWithoutBoostsInput = {
@@ -2248,7 +2076,6 @@ export type SaasUncheckedUpdateWithoutBoostsInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
@@ -2264,200 +2091,13 @@ export type SaasUncheckedUpdateWithoutBoostsInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   screenshots?: Prisma.SaasScreenshotUncheckedUpdateManyWithoutSaasNestedInput
   categories?: Prisma.SaasCategoryUncheckedUpdateManyWithoutSaasNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutSaasNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedUpdateManyWithoutSaasNestedInput
-  orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutSaasNestedInput
-}
-
-export type SaasCreateWithoutSponsorshipsInput = {
-  id?: string
-  name: string
-  slug: string
-  tagline: string
-  shortDescription: string
-  description: string
-  logoUrl?: string | null
-  accentColor?: string | null
-  countryCode?: string
-  language?: string
-  websiteUrl: string
-  trialUrl?: string | null
-  checkoutUrl?: string | null
-  docsUrl?: string | null
-  demoUrl?: string | null
-  pricingType: $Enums.PricingType
-  priceCents?: number | null
-  currency?: string
-  billingInterval?: $Enums.BillingInterval | null
-  pricingLabel?: string | null
-  isBrazilian?: boolean
-  isAdult?: boolean
-  tags?: Prisma.SaasCreatetagsInput | string[]
-  technologies?: Prisma.SaasCreatetechnologiesInput | string[]
-  status?: $Enums.SaasStatus
-  rejectionReason?: string | null
-  launchDate?: Date | string | null
-  publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  owner: Prisma.UserCreateNestedOneWithoutSaasInput
-  screenshots?: Prisma.SaasScreenshotCreateNestedManyWithoutSaasInput
-  categories?: Prisma.SaasCategoryCreateNestedManyWithoutSaasInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutSaasInput
-  favorites?: Prisma.FavoriteCreateNestedManyWithoutSaasInput
-  boosts?: Prisma.SaasBoostCreateNestedManyWithoutSaasInput
-  analyticsEvents?: Prisma.AnalyticsEventCreateNestedManyWithoutSaasInput
-  orders?: Prisma.PublicationOrderCreateNestedManyWithoutSaasInput
-}
-
-export type SaasUncheckedCreateWithoutSponsorshipsInput = {
-  id?: string
-  ownerId: string
-  name: string
-  slug: string
-  tagline: string
-  shortDescription: string
-  description: string
-  logoUrl?: string | null
-  accentColor?: string | null
-  countryCode?: string
-  language?: string
-  websiteUrl: string
-  trialUrl?: string | null
-  checkoutUrl?: string | null
-  docsUrl?: string | null
-  demoUrl?: string | null
-  pricingType: $Enums.PricingType
-  priceCents?: number | null
-  currency?: string
-  billingInterval?: $Enums.BillingInterval | null
-  pricingLabel?: string | null
-  isBrazilian?: boolean
-  isAdult?: boolean
-  tags?: Prisma.SaasCreatetagsInput | string[]
-  technologies?: Prisma.SaasCreatetechnologiesInput | string[]
-  status?: $Enums.SaasStatus
-  rejectionReason?: string | null
-  launchDate?: Date | string | null
-  publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  screenshots?: Prisma.SaasScreenshotUncheckedCreateNestedManyWithoutSaasInput
-  categories?: Prisma.SaasCategoryUncheckedCreateNestedManyWithoutSaasInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutSaasInput
-  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutSaasInput
-  boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutSaasInput
-  analyticsEvents?: Prisma.AnalyticsEventUncheckedCreateNestedManyWithoutSaasInput
-  orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutSaasInput
-}
-
-export type SaasCreateOrConnectWithoutSponsorshipsInput = {
-  where: Prisma.SaasWhereUniqueInput
-  create: Prisma.XOR<Prisma.SaasCreateWithoutSponsorshipsInput, Prisma.SaasUncheckedCreateWithoutSponsorshipsInput>
-}
-
-export type SaasUpsertWithoutSponsorshipsInput = {
-  update: Prisma.XOR<Prisma.SaasUpdateWithoutSponsorshipsInput, Prisma.SaasUncheckedUpdateWithoutSponsorshipsInput>
-  create: Prisma.XOR<Prisma.SaasCreateWithoutSponsorshipsInput, Prisma.SaasUncheckedCreateWithoutSponsorshipsInput>
-  where?: Prisma.SaasWhereInput
-}
-
-export type SaasUpdateToOneWithWhereWithoutSponsorshipsInput = {
-  where?: Prisma.SaasWhereInput
-  data: Prisma.XOR<Prisma.SaasUpdateWithoutSponsorshipsInput, Prisma.SaasUncheckedUpdateWithoutSponsorshipsInput>
-}
-
-export type SaasUpdateWithoutSponsorshipsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  tagline?: Prisma.StringFieldUpdateOperationsInput | string
-  shortDescription?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
-  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accentColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  countryCode?: Prisma.StringFieldUpdateOperationsInput | string
-  language?: Prisma.StringFieldUpdateOperationsInput | string
-  websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-  priceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
-  pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  tags?: Prisma.SaasUpdatetagsInput | string[]
-  technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
-  status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
-  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  owner?: Prisma.UserUpdateOneRequiredWithoutSaasNestedInput
-  screenshots?: Prisma.SaasScreenshotUpdateManyWithoutSaasNestedInput
-  categories?: Prisma.SaasCategoryUpdateManyWithoutSaasNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutSaasNestedInput
-  favorites?: Prisma.FavoriteUpdateManyWithoutSaasNestedInput
-  boosts?: Prisma.SaasBoostUpdateManyWithoutSaasNestedInput
-  analyticsEvents?: Prisma.AnalyticsEventUpdateManyWithoutSaasNestedInput
-  orders?: Prisma.PublicationOrderUpdateManyWithoutSaasNestedInput
-}
-
-export type SaasUncheckedUpdateWithoutSponsorshipsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  tagline?: Prisma.StringFieldUpdateOperationsInput | string
-  shortDescription?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
-  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accentColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  countryCode?: Prisma.StringFieldUpdateOperationsInput | string
-  language?: Prisma.StringFieldUpdateOperationsInput | string
-  websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-  priceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
-  pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  tags?: Prisma.SaasUpdatetagsInput | string[]
-  technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
-  status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
-  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  screenshots?: Prisma.SaasScreenshotUncheckedUpdateManyWithoutSaasNestedInput
-  categories?: Prisma.SaasCategoryUncheckedUpdateManyWithoutSaasNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutSaasNestedInput
-  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutSaasNestedInput
-  boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutSaasNestedInput
-  analyticsEvents?: Prisma.AnalyticsEventUncheckedUpdateManyWithoutSaasNestedInput
-  orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutSaasNestedInput
 }
 
 export type SaasCreateWithoutAnalyticsEventsInput = {
@@ -2473,7 +2113,6 @@ export type SaasCreateWithoutAnalyticsEventsInput = {
   language?: string
   websiteUrl: string
   trialUrl?: string | null
-  checkoutUrl?: string | null
   docsUrl?: string | null
   demoUrl?: string | null
   pricingType: $Enums.PricingType
@@ -2489,7 +2128,6 @@ export type SaasCreateWithoutAnalyticsEventsInput = {
   rejectionReason?: string | null
   launchDate?: Date | string | null
   publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutSaasInput
@@ -2498,8 +2136,6 @@ export type SaasCreateWithoutAnalyticsEventsInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutSaasInput
   boosts?: Prisma.SaasBoostCreateNestedManyWithoutSaasInput
-  sponsorships?: Prisma.SaasSponsorshipCreateNestedManyWithoutSaasInput
-  orders?: Prisma.PublicationOrderCreateNestedManyWithoutSaasInput
 }
 
 export type SaasUncheckedCreateWithoutAnalyticsEventsInput = {
@@ -2516,7 +2152,6 @@ export type SaasUncheckedCreateWithoutAnalyticsEventsInput = {
   language?: string
   websiteUrl: string
   trialUrl?: string | null
-  checkoutUrl?: string | null
   docsUrl?: string | null
   demoUrl?: string | null
   pricingType: $Enums.PricingType
@@ -2532,7 +2167,6 @@ export type SaasUncheckedCreateWithoutAnalyticsEventsInput = {
   rejectionReason?: string | null
   launchDate?: Date | string | null
   publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   screenshots?: Prisma.SaasScreenshotUncheckedCreateNestedManyWithoutSaasInput
@@ -2540,8 +2174,6 @@ export type SaasUncheckedCreateWithoutAnalyticsEventsInput = {
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutSaasInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutSaasInput
   boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutSaasInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedCreateNestedManyWithoutSaasInput
-  orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutSaasInput
 }
 
 export type SaasCreateOrConnectWithoutAnalyticsEventsInput = {
@@ -2573,7 +2205,6 @@ export type SaasUpdateWithoutAnalyticsEventsInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
@@ -2589,7 +2220,6 @@ export type SaasUpdateWithoutAnalyticsEventsInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutSaasNestedInput
@@ -2598,8 +2228,6 @@ export type SaasUpdateWithoutAnalyticsEventsInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutSaasNestedInput
   boosts?: Prisma.SaasBoostUpdateManyWithoutSaasNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUpdateManyWithoutSaasNestedInput
-  orders?: Prisma.PublicationOrderUpdateManyWithoutSaasNestedInput
 }
 
 export type SaasUncheckedUpdateWithoutAnalyticsEventsInput = {
@@ -2616,7 +2244,6 @@ export type SaasUncheckedUpdateWithoutAnalyticsEventsInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
@@ -2632,7 +2259,6 @@ export type SaasUncheckedUpdateWithoutAnalyticsEventsInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   screenshots?: Prisma.SaasScreenshotUncheckedUpdateManyWithoutSaasNestedInput
@@ -2640,192 +2266,6 @@ export type SaasUncheckedUpdateWithoutAnalyticsEventsInput = {
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutSaasNestedInput
   boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutSaasNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedUpdateManyWithoutSaasNestedInput
-  orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutSaasNestedInput
-}
-
-export type SaasCreateWithoutOrdersInput = {
-  id?: string
-  name: string
-  slug: string
-  tagline: string
-  shortDescription: string
-  description: string
-  logoUrl?: string | null
-  accentColor?: string | null
-  countryCode?: string
-  language?: string
-  websiteUrl: string
-  trialUrl?: string | null
-  checkoutUrl?: string | null
-  docsUrl?: string | null
-  demoUrl?: string | null
-  pricingType: $Enums.PricingType
-  priceCents?: number | null
-  currency?: string
-  billingInterval?: $Enums.BillingInterval | null
-  pricingLabel?: string | null
-  isBrazilian?: boolean
-  isAdult?: boolean
-  tags?: Prisma.SaasCreatetagsInput | string[]
-  technologies?: Prisma.SaasCreatetechnologiesInput | string[]
-  status?: $Enums.SaasStatus
-  rejectionReason?: string | null
-  launchDate?: Date | string | null
-  publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  owner: Prisma.UserCreateNestedOneWithoutSaasInput
-  screenshots?: Prisma.SaasScreenshotCreateNestedManyWithoutSaasInput
-  categories?: Prisma.SaasCategoryCreateNestedManyWithoutSaasInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutSaasInput
-  favorites?: Prisma.FavoriteCreateNestedManyWithoutSaasInput
-  boosts?: Prisma.SaasBoostCreateNestedManyWithoutSaasInput
-  sponsorships?: Prisma.SaasSponsorshipCreateNestedManyWithoutSaasInput
-  analyticsEvents?: Prisma.AnalyticsEventCreateNestedManyWithoutSaasInput
-}
-
-export type SaasUncheckedCreateWithoutOrdersInput = {
-  id?: string
-  ownerId: string
-  name: string
-  slug: string
-  tagline: string
-  shortDescription: string
-  description: string
-  logoUrl?: string | null
-  accentColor?: string | null
-  countryCode?: string
-  language?: string
-  websiteUrl: string
-  trialUrl?: string | null
-  checkoutUrl?: string | null
-  docsUrl?: string | null
-  demoUrl?: string | null
-  pricingType: $Enums.PricingType
-  priceCents?: number | null
-  currency?: string
-  billingInterval?: $Enums.BillingInterval | null
-  pricingLabel?: string | null
-  isBrazilian?: boolean
-  isAdult?: boolean
-  tags?: Prisma.SaasCreatetagsInput | string[]
-  technologies?: Prisma.SaasCreatetechnologiesInput | string[]
-  status?: $Enums.SaasStatus
-  rejectionReason?: string | null
-  launchDate?: Date | string | null
-  publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  screenshots?: Prisma.SaasScreenshotUncheckedCreateNestedManyWithoutSaasInput
-  categories?: Prisma.SaasCategoryUncheckedCreateNestedManyWithoutSaasInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutSaasInput
-  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutSaasInput
-  boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutSaasInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedCreateNestedManyWithoutSaasInput
-  analyticsEvents?: Prisma.AnalyticsEventUncheckedCreateNestedManyWithoutSaasInput
-}
-
-export type SaasCreateOrConnectWithoutOrdersInput = {
-  where: Prisma.SaasWhereUniqueInput
-  create: Prisma.XOR<Prisma.SaasCreateWithoutOrdersInput, Prisma.SaasUncheckedCreateWithoutOrdersInput>
-}
-
-export type SaasUpsertWithoutOrdersInput = {
-  update: Prisma.XOR<Prisma.SaasUpdateWithoutOrdersInput, Prisma.SaasUncheckedUpdateWithoutOrdersInput>
-  create: Prisma.XOR<Prisma.SaasCreateWithoutOrdersInput, Prisma.SaasUncheckedCreateWithoutOrdersInput>
-  where?: Prisma.SaasWhereInput
-}
-
-export type SaasUpdateToOneWithWhereWithoutOrdersInput = {
-  where?: Prisma.SaasWhereInput
-  data: Prisma.XOR<Prisma.SaasUpdateWithoutOrdersInput, Prisma.SaasUncheckedUpdateWithoutOrdersInput>
-}
-
-export type SaasUpdateWithoutOrdersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  tagline?: Prisma.StringFieldUpdateOperationsInput | string
-  shortDescription?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
-  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accentColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  countryCode?: Prisma.StringFieldUpdateOperationsInput | string
-  language?: Prisma.StringFieldUpdateOperationsInput | string
-  websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-  priceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
-  pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  tags?: Prisma.SaasUpdatetagsInput | string[]
-  technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
-  status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
-  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  owner?: Prisma.UserUpdateOneRequiredWithoutSaasNestedInput
-  screenshots?: Prisma.SaasScreenshotUpdateManyWithoutSaasNestedInput
-  categories?: Prisma.SaasCategoryUpdateManyWithoutSaasNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutSaasNestedInput
-  favorites?: Prisma.FavoriteUpdateManyWithoutSaasNestedInput
-  boosts?: Prisma.SaasBoostUpdateManyWithoutSaasNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUpdateManyWithoutSaasNestedInput
-  analyticsEvents?: Prisma.AnalyticsEventUpdateManyWithoutSaasNestedInput
-}
-
-export type SaasUncheckedUpdateWithoutOrdersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  tagline?: Prisma.StringFieldUpdateOperationsInput | string
-  shortDescription?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
-  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accentColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  countryCode?: Prisma.StringFieldUpdateOperationsInput | string
-  language?: Prisma.StringFieldUpdateOperationsInput | string
-  websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-  priceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
-  pricingLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isBrazilian?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isAdult?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  tags?: Prisma.SaasUpdatetagsInput | string[]
-  technologies?: Prisma.SaasUpdatetechnologiesInput | string[]
-  status?: Prisma.EnumSaasStatusFieldUpdateOperationsInput | $Enums.SaasStatus
-  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  screenshots?: Prisma.SaasScreenshotUncheckedUpdateManyWithoutSaasNestedInput
-  categories?: Prisma.SaasCategoryUncheckedUpdateManyWithoutSaasNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutSaasNestedInput
-  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutSaasNestedInput
-  boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutSaasNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedUpdateManyWithoutSaasNestedInput
-  analyticsEvents?: Prisma.AnalyticsEventUncheckedUpdateManyWithoutSaasNestedInput
 }
 
 export type SaasCreateManyOwnerInput = {
@@ -2841,7 +2281,6 @@ export type SaasCreateManyOwnerInput = {
   language?: string
   websiteUrl: string
   trialUrl?: string | null
-  checkoutUrl?: string | null
   docsUrl?: string | null
   demoUrl?: string | null
   pricingType: $Enums.PricingType
@@ -2857,7 +2296,6 @@ export type SaasCreateManyOwnerInput = {
   rejectionReason?: string | null
   launchDate?: Date | string | null
   publishedAt?: Date | string | null
-  sponsoredUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -2875,7 +2313,6 @@ export type SaasUpdateWithoutOwnerInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
@@ -2891,7 +2328,6 @@ export type SaasUpdateWithoutOwnerInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   screenshots?: Prisma.SaasScreenshotUpdateManyWithoutSaasNestedInput
@@ -2899,9 +2335,7 @@ export type SaasUpdateWithoutOwnerInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutSaasNestedInput
   boosts?: Prisma.SaasBoostUpdateManyWithoutSaasNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUpdateManyWithoutSaasNestedInput
-  orders?: Prisma.PublicationOrderUpdateManyWithoutSaasNestedInput
 }
 
 export type SaasUncheckedUpdateWithoutOwnerInput = {
@@ -2917,7 +2351,6 @@ export type SaasUncheckedUpdateWithoutOwnerInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
@@ -2933,7 +2366,6 @@ export type SaasUncheckedUpdateWithoutOwnerInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   screenshots?: Prisma.SaasScreenshotUncheckedUpdateManyWithoutSaasNestedInput
@@ -2941,9 +2373,7 @@ export type SaasUncheckedUpdateWithoutOwnerInput = {
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutSaasNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutSaasNestedInput
   boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutSaasNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedUpdateManyWithoutSaasNestedInput
   analyticsEvents?: Prisma.AnalyticsEventUncheckedUpdateManyWithoutSaasNestedInput
-  orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutSaasNestedInput
 }
 
 export type SaasUncheckedUpdateManyWithoutOwnerInput = {
@@ -2959,7 +2389,6 @@ export type SaasUncheckedUpdateManyWithoutOwnerInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   websiteUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trialUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricingType?: Prisma.EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
@@ -2975,7 +2404,6 @@ export type SaasUncheckedUpdateManyWithoutOwnerInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   launchDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -2991,9 +2419,7 @@ export type SaasCountOutputType = {
   reviews: number
   favorites: number
   boosts: number
-  sponsorships: number
   analyticsEvents: number
-  orders: number
 }
 
 export type SaasCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3002,9 +2428,7 @@ export type SaasCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   reviews?: boolean | SaasCountOutputTypeCountReviewsArgs
   favorites?: boolean | SaasCountOutputTypeCountFavoritesArgs
   boosts?: boolean | SaasCountOutputTypeCountBoostsArgs
-  sponsorships?: boolean | SaasCountOutputTypeCountSponsorshipsArgs
   analyticsEvents?: boolean | SaasCountOutputTypeCountAnalyticsEventsArgs
-  orders?: boolean | SaasCountOutputTypeCountOrdersArgs
 }
 
 /**
@@ -3055,22 +2479,8 @@ export type SaasCountOutputTypeCountBoostsArgs<ExtArgs extends runtime.Types.Ext
 /**
  * SaasCountOutputType without action
  */
-export type SaasCountOutputTypeCountSponsorshipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.SaasSponsorshipWhereInput
-}
-
-/**
- * SaasCountOutputType without action
- */
 export type SaasCountOutputTypeCountAnalyticsEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.AnalyticsEventWhereInput
-}
-
-/**
- * SaasCountOutputType without action
- */
-export type SaasCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PublicationOrderWhereInput
 }
 
 
@@ -3088,7 +2498,6 @@ export type SaasSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   language?: boolean
   websiteUrl?: boolean
   trialUrl?: boolean
-  checkoutUrl?: boolean
   docsUrl?: boolean
   demoUrl?: boolean
   pricingType?: boolean
@@ -3104,7 +2513,6 @@ export type SaasSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   rejectionReason?: boolean
   launchDate?: boolean
   publishedAt?: boolean
-  sponsoredUntil?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -3113,9 +2521,7 @@ export type SaasSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   reviews?: boolean | Prisma.Saas$reviewsArgs<ExtArgs>
   favorites?: boolean | Prisma.Saas$favoritesArgs<ExtArgs>
   boosts?: boolean | Prisma.Saas$boostsArgs<ExtArgs>
-  sponsorships?: boolean | Prisma.Saas$sponsorshipsArgs<ExtArgs>
   analyticsEvents?: boolean | Prisma.Saas$analyticsEventsArgs<ExtArgs>
-  orders?: boolean | Prisma.Saas$ordersArgs<ExtArgs>
   _count?: boolean | Prisma.SaasCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["saas"]>
 
@@ -3133,7 +2539,6 @@ export type SaasSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   language?: boolean
   websiteUrl?: boolean
   trialUrl?: boolean
-  checkoutUrl?: boolean
   docsUrl?: boolean
   demoUrl?: boolean
   pricingType?: boolean
@@ -3149,7 +2554,6 @@ export type SaasSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   rejectionReason?: boolean
   launchDate?: boolean
   publishedAt?: boolean
-  sponsoredUntil?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -3169,7 +2573,6 @@ export type SaasSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   language?: boolean
   websiteUrl?: boolean
   trialUrl?: boolean
-  checkoutUrl?: boolean
   docsUrl?: boolean
   demoUrl?: boolean
   pricingType?: boolean
@@ -3185,7 +2588,6 @@ export type SaasSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   rejectionReason?: boolean
   launchDate?: boolean
   publishedAt?: boolean
-  sponsoredUntil?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -3205,7 +2607,6 @@ export type SaasSelectScalar = {
   language?: boolean
   websiteUrl?: boolean
   trialUrl?: boolean
-  checkoutUrl?: boolean
   docsUrl?: boolean
   demoUrl?: boolean
   pricingType?: boolean
@@ -3221,12 +2622,11 @@ export type SaasSelectScalar = {
   rejectionReason?: boolean
   launchDate?: boolean
   publishedAt?: boolean
-  sponsoredUntil?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type SaasOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "name" | "slug" | "tagline" | "shortDescription" | "description" | "logoUrl" | "accentColor" | "countryCode" | "language" | "websiteUrl" | "trialUrl" | "checkoutUrl" | "docsUrl" | "demoUrl" | "pricingType" | "priceCents" | "currency" | "billingInterval" | "pricingLabel" | "isBrazilian" | "isAdult" | "tags" | "technologies" | "status" | "rejectionReason" | "launchDate" | "publishedAt" | "sponsoredUntil" | "createdAt" | "updatedAt", ExtArgs["result"]["saas"]>
+export type SaasOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "name" | "slug" | "tagline" | "shortDescription" | "description" | "logoUrl" | "accentColor" | "countryCode" | "language" | "websiteUrl" | "trialUrl" | "docsUrl" | "demoUrl" | "pricingType" | "priceCents" | "currency" | "billingInterval" | "pricingLabel" | "isBrazilian" | "isAdult" | "tags" | "technologies" | "status" | "rejectionReason" | "launchDate" | "publishedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["saas"]>
 export type SaasInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   screenshots?: boolean | Prisma.Saas$screenshotsArgs<ExtArgs>
@@ -3234,9 +2634,7 @@ export type SaasInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   reviews?: boolean | Prisma.Saas$reviewsArgs<ExtArgs>
   favorites?: boolean | Prisma.Saas$favoritesArgs<ExtArgs>
   boosts?: boolean | Prisma.Saas$boostsArgs<ExtArgs>
-  sponsorships?: boolean | Prisma.Saas$sponsorshipsArgs<ExtArgs>
   analyticsEvents?: boolean | Prisma.Saas$analyticsEventsArgs<ExtArgs>
-  orders?: boolean | Prisma.Saas$ordersArgs<ExtArgs>
   _count?: boolean | Prisma.SaasCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SaasIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3255,9 +2653,7 @@ export type $SaasPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
     favorites: Prisma.$FavoritePayload<ExtArgs>[]
     boosts: Prisma.$SaasBoostPayload<ExtArgs>[]
-    sponsorships: Prisma.$SaasSponsorshipPayload<ExtArgs>[]
     analyticsEvents: Prisma.$AnalyticsEventPayload<ExtArgs>[]
-    orders: Prisma.$PublicationOrderPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3273,7 +2669,6 @@ export type $SaasPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     language: string
     websiteUrl: string
     trialUrl: string | null
-    checkoutUrl: string | null
     docsUrl: string | null
     demoUrl: string | null
     pricingType: $Enums.PricingType
@@ -3289,7 +2684,6 @@ export type $SaasPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     rejectionReason: string | null
     launchDate: Date | null
     publishedAt: Date | null
-    sponsoredUntil: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["saas"]>
@@ -3692,9 +3086,7 @@ export interface Prisma__SaasClient<T, Null = never, ExtArgs extends runtime.Typ
   reviews<T extends Prisma.Saas$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Saas$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   favorites<T extends Prisma.Saas$favoritesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Saas$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   boosts<T extends Prisma.Saas$boostsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Saas$boostsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SaasBoostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  sponsorships<T extends Prisma.Saas$sponsorshipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Saas$sponsorshipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SaasSponsorshipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   analyticsEvents<T extends Prisma.Saas$analyticsEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Saas$analyticsEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnalyticsEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  orders<T extends Prisma.Saas$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Saas$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PublicationOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3737,7 +3129,6 @@ export interface SaasFieldRefs {
   readonly language: Prisma.FieldRef<"Saas", 'String'>
   readonly websiteUrl: Prisma.FieldRef<"Saas", 'String'>
   readonly trialUrl: Prisma.FieldRef<"Saas", 'String'>
-  readonly checkoutUrl: Prisma.FieldRef<"Saas", 'String'>
   readonly docsUrl: Prisma.FieldRef<"Saas", 'String'>
   readonly demoUrl: Prisma.FieldRef<"Saas", 'String'>
   readonly pricingType: Prisma.FieldRef<"Saas", 'PricingType'>
@@ -3753,7 +3144,6 @@ export interface SaasFieldRefs {
   readonly rejectionReason: Prisma.FieldRef<"Saas", 'String'>
   readonly launchDate: Prisma.FieldRef<"Saas", 'DateTime'>
   readonly publishedAt: Prisma.FieldRef<"Saas", 'DateTime'>
-  readonly sponsoredUntil: Prisma.FieldRef<"Saas", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Saas", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Saas", 'DateTime'>
 }
@@ -4277,30 +3667,6 @@ export type Saas$boostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 }
 
 /**
- * Saas.sponsorships
- */
-export type Saas$sponsorshipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the SaasSponsorship
-   */
-  select?: Prisma.SaasSponsorshipSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the SaasSponsorship
-   */
-  omit?: Prisma.SaasSponsorshipOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.SaasSponsorshipInclude<ExtArgs> | null
-  where?: Prisma.SaasSponsorshipWhereInput
-  orderBy?: Prisma.SaasSponsorshipOrderByWithRelationInput | Prisma.SaasSponsorshipOrderByWithRelationInput[]
-  cursor?: Prisma.SaasSponsorshipWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.SaasSponsorshipScalarFieldEnum | Prisma.SaasSponsorshipScalarFieldEnum[]
-}
-
-/**
  * Saas.analyticsEvents
  */
 export type Saas$analyticsEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4322,30 +3688,6 @@ export type Saas$analyticsEventsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.AnalyticsEventScalarFieldEnum | Prisma.AnalyticsEventScalarFieldEnum[]
-}
-
-/**
- * Saas.orders
- */
-export type Saas$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the PublicationOrder
-   */
-  select?: Prisma.PublicationOrderSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the PublicationOrder
-   */
-  omit?: Prisma.PublicationOrderOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PublicationOrderInclude<ExtArgs> | null
-  where?: Prisma.PublicationOrderWhereInput
-  orderBy?: Prisma.PublicationOrderOrderByWithRelationInput | Prisma.PublicationOrderOrderByWithRelationInput[]
-  cursor?: Prisma.PublicationOrderWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.PublicationOrderScalarFieldEnum | Prisma.PublicationOrderScalarFieldEnum[]
 }
 
 /**

@@ -226,8 +226,6 @@ export type UserWhereInput = {
   reviews?: Prisma.ReviewListRelationFilter
   favorites?: Prisma.FavoriteListRelationFilter
   boosts?: Prisma.SaasBoostListRelationFilter
-  sponsorships?: Prisma.SaasSponsorshipListRelationFilter
-  orders?: Prisma.PublicationOrderListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
 }
 
@@ -246,8 +244,6 @@ export type UserOrderByWithRelationInput = {
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
   favorites?: Prisma.FavoriteOrderByRelationAggregateInput
   boosts?: Prisma.SaasBoostOrderByRelationAggregateInput
-  sponsorships?: Prisma.SaasSponsorshipOrderByRelationAggregateInput
-  orders?: Prisma.PublicationOrderOrderByRelationAggregateInput
   auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
 }
 
@@ -269,8 +265,6 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   reviews?: Prisma.ReviewListRelationFilter
   favorites?: Prisma.FavoriteListRelationFilter
   boosts?: Prisma.SaasBoostListRelationFilter
-  sponsorships?: Prisma.SaasSponsorshipListRelationFilter
-  orders?: Prisma.PublicationOrderListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
 }, "id" | "email" | "googleId">
 
@@ -321,8 +315,6 @@ export type UserCreateInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   boosts?: Prisma.SaasBoostCreateNestedManyWithoutUserInput
-  sponsorships?: Prisma.SaasSponsorshipCreateNestedManyWithoutUserInput
-  orders?: Prisma.PublicationOrderCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
 }
 
@@ -341,8 +333,6 @@ export type UserUncheckedCreateInput = {
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutUserInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedCreateNestedManyWithoutUserInput
-  orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
@@ -361,8 +351,6 @@ export type UserUpdateInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   boosts?: Prisma.SaasBoostUpdateManyWithoutUserNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUpdateManyWithoutUserNestedInput
-  orders?: Prisma.PublicationOrderUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
 }
 
@@ -381,8 +369,6 @@ export type UserUncheckedUpdateInput = {
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutUserNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedUpdateManyWithoutUserNestedInput
-  orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
@@ -550,34 +536,6 @@ export type UserUpdateOneRequiredWithoutBoostsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBoostsInput, Prisma.UserUpdateWithoutBoostsInput>, Prisma.UserUncheckedUpdateWithoutBoostsInput>
 }
 
-export type UserCreateNestedOneWithoutSponsorshipsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutSponsorshipsInput, Prisma.UserUncheckedCreateWithoutSponsorshipsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSponsorshipsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutSponsorshipsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutSponsorshipsInput, Prisma.UserUncheckedCreateWithoutSponsorshipsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSponsorshipsInput
-  upsert?: Prisma.UserUpsertWithoutSponsorshipsInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSponsorshipsInput, Prisma.UserUpdateWithoutSponsorshipsInput>, Prisma.UserUncheckedUpdateWithoutSponsorshipsInput>
-}
-
-export type UserCreateNestedOneWithoutOrdersInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutOrdersInput, Prisma.UserUncheckedCreateWithoutOrdersInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOrdersInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutOrdersNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutOrdersInput, Prisma.UserUncheckedCreateWithoutOrdersInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOrdersInput
-  upsert?: Prisma.UserUpsertWithoutOrdersInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOrdersInput, Prisma.UserUpdateWithoutOrdersInput>, Prisma.UserUncheckedUpdateWithoutOrdersInput>
-}
-
 export type UserCreateNestedOneWithoutAuditLogsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsInput, Prisma.UserUncheckedCreateWithoutAuditLogsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutAuditLogsInput
@@ -608,8 +566,6 @@ export type UserCreateWithoutSaasInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   boosts?: Prisma.SaasBoostCreateNestedManyWithoutUserInput
-  sponsorships?: Prisma.SaasSponsorshipCreateNestedManyWithoutUserInput
-  orders?: Prisma.PublicationOrderCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
 }
 
@@ -627,8 +583,6 @@ export type UserUncheckedCreateWithoutSaasInput = {
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutUserInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedCreateNestedManyWithoutUserInput
-  orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
@@ -662,8 +616,6 @@ export type UserUpdateWithoutSaasInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   boosts?: Prisma.SaasBoostUpdateManyWithoutUserNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUpdateManyWithoutUserNestedInput
-  orders?: Prisma.PublicationOrderUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
 }
 
@@ -681,8 +633,6 @@ export type UserUncheckedUpdateWithoutSaasInput = {
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutUserNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedUpdateManyWithoutUserNestedInput
-  orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
@@ -700,8 +650,6 @@ export type UserCreateWithoutReviewsInput = {
   saas?: Prisma.SaasCreateNestedManyWithoutOwnerInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   boosts?: Prisma.SaasBoostCreateNestedManyWithoutUserInput
-  sponsorships?: Prisma.SaasSponsorshipCreateNestedManyWithoutUserInput
-  orders?: Prisma.PublicationOrderCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
 }
 
@@ -719,8 +667,6 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   saas?: Prisma.SaasUncheckedCreateNestedManyWithoutOwnerInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutUserInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedCreateNestedManyWithoutUserInput
-  orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
@@ -754,8 +700,6 @@ export type UserUpdateWithoutReviewsInput = {
   saas?: Prisma.SaasUpdateManyWithoutOwnerNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   boosts?: Prisma.SaasBoostUpdateManyWithoutUserNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUpdateManyWithoutUserNestedInput
-  orders?: Prisma.PublicationOrderUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
 }
 
@@ -773,8 +717,6 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   saas?: Prisma.SaasUncheckedUpdateManyWithoutOwnerNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutUserNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedUpdateManyWithoutUserNestedInput
-  orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
@@ -792,8 +734,6 @@ export type UserCreateWithoutFavoritesInput = {
   saas?: Prisma.SaasCreateNestedManyWithoutOwnerInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   boosts?: Prisma.SaasBoostCreateNestedManyWithoutUserInput
-  sponsorships?: Prisma.SaasSponsorshipCreateNestedManyWithoutUserInput
-  orders?: Prisma.PublicationOrderCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
 }
 
@@ -811,8 +751,6 @@ export type UserUncheckedCreateWithoutFavoritesInput = {
   saas?: Prisma.SaasUncheckedCreateNestedManyWithoutOwnerInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutUserInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedCreateNestedManyWithoutUserInput
-  orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
@@ -846,8 +784,6 @@ export type UserUpdateWithoutFavoritesInput = {
   saas?: Prisma.SaasUpdateManyWithoutOwnerNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   boosts?: Prisma.SaasBoostUpdateManyWithoutUserNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUpdateManyWithoutUserNestedInput
-  orders?: Prisma.PublicationOrderUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
 }
 
@@ -865,8 +801,6 @@ export type UserUncheckedUpdateWithoutFavoritesInput = {
   saas?: Prisma.SaasUncheckedUpdateManyWithoutOwnerNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutUserNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedUpdateManyWithoutUserNestedInput
-  orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
@@ -884,8 +818,6 @@ export type UserCreateWithoutBoostsInput = {
   saas?: Prisma.SaasCreateNestedManyWithoutOwnerInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
-  sponsorships?: Prisma.SaasSponsorshipCreateNestedManyWithoutUserInput
-  orders?: Prisma.PublicationOrderCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
 }
 
@@ -903,8 +835,6 @@ export type UserUncheckedCreateWithoutBoostsInput = {
   saas?: Prisma.SaasUncheckedCreateNestedManyWithoutOwnerInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedCreateNestedManyWithoutUserInput
-  orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
@@ -938,8 +868,6 @@ export type UserUpdateWithoutBoostsInput = {
   saas?: Prisma.SaasUpdateManyWithoutOwnerNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUpdateManyWithoutUserNestedInput
-  orders?: Prisma.PublicationOrderUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
 }
 
@@ -957,192 +885,6 @@ export type UserUncheckedUpdateWithoutBoostsInput = {
   saas?: Prisma.SaasUncheckedUpdateManyWithoutOwnerNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedUpdateManyWithoutUserNestedInput
-  orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutUserNestedInput
-  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
-}
-
-export type UserCreateWithoutSponsorshipsInput = {
-  id?: string
-  name: string
-  email: string
-  emailVerifiedAt?: Date | string | null
-  passwordHash?: string | null
-  googleId?: string | null
-  avatarUrl?: string | null
-  role?: $Enums.UserRole
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  saas?: Prisma.SaasCreateNestedManyWithoutOwnerInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
-  boosts?: Prisma.SaasBoostCreateNestedManyWithoutUserInput
-  orders?: Prisma.PublicationOrderCreateNestedManyWithoutUserInput
-  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
-}
-
-export type UserUncheckedCreateWithoutSponsorshipsInput = {
-  id?: string
-  name: string
-  email: string
-  emailVerifiedAt?: Date | string | null
-  passwordHash?: string | null
-  googleId?: string | null
-  avatarUrl?: string | null
-  role?: $Enums.UserRole
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  saas?: Prisma.SaasUncheckedCreateNestedManyWithoutOwnerInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
-  boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutUserInput
-  orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutUserInput
-  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
-}
-
-export type UserCreateOrConnectWithoutSponsorshipsInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutSponsorshipsInput, Prisma.UserUncheckedCreateWithoutSponsorshipsInput>
-}
-
-export type UserUpsertWithoutSponsorshipsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutSponsorshipsInput, Prisma.UserUncheckedUpdateWithoutSponsorshipsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutSponsorshipsInput, Prisma.UserUncheckedCreateWithoutSponsorshipsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutSponsorshipsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutSponsorshipsInput, Prisma.UserUncheckedUpdateWithoutSponsorshipsInput>
-}
-
-export type UserUpdateWithoutSponsorshipsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  saas?: Prisma.SaasUpdateManyWithoutOwnerNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
-  boosts?: Prisma.SaasBoostUpdateManyWithoutUserNestedInput
-  orders?: Prisma.PublicationOrderUpdateManyWithoutUserNestedInput
-  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
-}
-
-export type UserUncheckedUpdateWithoutSponsorshipsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  saas?: Prisma.SaasUncheckedUpdateManyWithoutOwnerNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
-  boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutUserNestedInput
-  orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutUserNestedInput
-  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
-}
-
-export type UserCreateWithoutOrdersInput = {
-  id?: string
-  name: string
-  email: string
-  emailVerifiedAt?: Date | string | null
-  passwordHash?: string | null
-  googleId?: string | null
-  avatarUrl?: string | null
-  role?: $Enums.UserRole
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  saas?: Prisma.SaasCreateNestedManyWithoutOwnerInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
-  boosts?: Prisma.SaasBoostCreateNestedManyWithoutUserInput
-  sponsorships?: Prisma.SaasSponsorshipCreateNestedManyWithoutUserInput
-  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
-}
-
-export type UserUncheckedCreateWithoutOrdersInput = {
-  id?: string
-  name: string
-  email: string
-  emailVerifiedAt?: Date | string | null
-  passwordHash?: string | null
-  googleId?: string | null
-  avatarUrl?: string | null
-  role?: $Enums.UserRole
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  saas?: Prisma.SaasUncheckedCreateNestedManyWithoutOwnerInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
-  boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutUserInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedCreateNestedManyWithoutUserInput
-  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
-}
-
-export type UserCreateOrConnectWithoutOrdersInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutOrdersInput, Prisma.UserUncheckedCreateWithoutOrdersInput>
-}
-
-export type UserUpsertWithoutOrdersInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutOrdersInput, Prisma.UserUncheckedUpdateWithoutOrdersInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutOrdersInput, Prisma.UserUncheckedCreateWithoutOrdersInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutOrdersInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutOrdersInput, Prisma.UserUncheckedUpdateWithoutOrdersInput>
-}
-
-export type UserUpdateWithoutOrdersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  saas?: Prisma.SaasUpdateManyWithoutOwnerNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
-  boosts?: Prisma.SaasBoostUpdateManyWithoutUserNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUpdateManyWithoutUserNestedInput
-  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
-}
-
-export type UserUncheckedUpdateWithoutOrdersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  saas?: Prisma.SaasUncheckedUpdateManyWithoutOwnerNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
-  boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutUserNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
@@ -1161,8 +903,6 @@ export type UserCreateWithoutAuditLogsInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   boosts?: Prisma.SaasBoostCreateNestedManyWithoutUserInput
-  sponsorships?: Prisma.SaasSponsorshipCreateNestedManyWithoutUserInput
-  orders?: Prisma.PublicationOrderCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -1180,8 +920,6 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   boosts?: Prisma.SaasBoostUncheckedCreateNestedManyWithoutUserInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedCreateNestedManyWithoutUserInput
-  orders?: Prisma.PublicationOrderUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -1215,8 +953,6 @@ export type UserUpdateWithoutAuditLogsInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   boosts?: Prisma.SaasBoostUpdateManyWithoutUserNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUpdateManyWithoutUserNestedInput
-  orders?: Prisma.PublicationOrderUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -1234,8 +970,6 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   boosts?: Prisma.SaasBoostUncheckedUpdateManyWithoutUserNestedInput
-  sponsorships?: Prisma.SaasSponsorshipUncheckedUpdateManyWithoutUserNestedInput
-  orders?: Prisma.PublicationOrderUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1248,8 +982,6 @@ export type UserCountOutputType = {
   reviews: number
   favorites: number
   boosts: number
-  sponsorships: number
-  orders: number
   auditLogs: number
 }
 
@@ -1258,8 +990,6 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   reviews?: boolean | UserCountOutputTypeCountReviewsArgs
   favorites?: boolean | UserCountOutputTypeCountFavoritesArgs
   boosts?: boolean | UserCountOutputTypeCountBoostsArgs
-  sponsorships?: boolean | UserCountOutputTypeCountSponsorshipsArgs
-  orders?: boolean | UserCountOutputTypeCountOrdersArgs
   auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
 }
 
@@ -1304,20 +1034,6 @@ export type UserCountOutputTypeCountBoostsArgs<ExtArgs extends runtime.Types.Ext
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountSponsorshipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.SaasSponsorshipWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PublicationOrderWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
 export type UserCountOutputTypeCountAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.AuditLogWhereInput
 }
@@ -1338,8 +1054,6 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
   favorites?: boolean | Prisma.User$favoritesArgs<ExtArgs>
   boosts?: boolean | Prisma.User$boostsArgs<ExtArgs>
-  sponsorships?: boolean | Prisma.User$sponsorshipsArgs<ExtArgs>
-  orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
@@ -1389,8 +1103,6 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
   favorites?: boolean | Prisma.User$favoritesArgs<ExtArgs>
   boosts?: boolean | Prisma.User$boostsArgs<ExtArgs>
-  sponsorships?: boolean | Prisma.User$sponsorshipsArgs<ExtArgs>
-  orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1404,8 +1116,6 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
     favorites: Prisma.$FavoritePayload<ExtArgs>[]
     boosts: Prisma.$SaasBoostPayload<ExtArgs>[]
-    sponsorships: Prisma.$SaasSponsorshipPayload<ExtArgs>[]
-    orders: Prisma.$PublicationOrderPayload<ExtArgs>[]
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1817,8 +1527,6 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   reviews<T extends Prisma.User$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   favorites<T extends Prisma.User$favoritesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   boosts<T extends Prisma.User$boostsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$boostsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SaasBoostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  sponsorships<T extends Prisma.User$sponsorshipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sponsorshipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SaasSponsorshipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  orders<T extends Prisma.User$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PublicationOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditLogs<T extends Prisma.User$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2345,54 +2053,6 @@ export type User$boostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   distinct?: Prisma.SaasBoostScalarFieldEnum | Prisma.SaasBoostScalarFieldEnum[]
-}
-
-/**
- * User.sponsorships
- */
-export type User$sponsorshipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the SaasSponsorship
-   */
-  select?: Prisma.SaasSponsorshipSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the SaasSponsorship
-   */
-  omit?: Prisma.SaasSponsorshipOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.SaasSponsorshipInclude<ExtArgs> | null
-  where?: Prisma.SaasSponsorshipWhereInput
-  orderBy?: Prisma.SaasSponsorshipOrderByWithRelationInput | Prisma.SaasSponsorshipOrderByWithRelationInput[]
-  cursor?: Prisma.SaasSponsorshipWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.SaasSponsorshipScalarFieldEnum | Prisma.SaasSponsorshipScalarFieldEnum[]
-}
-
-/**
- * User.orders
- */
-export type User$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the PublicationOrder
-   */
-  select?: Prisma.PublicationOrderSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the PublicationOrder
-   */
-  omit?: Prisma.PublicationOrderOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PublicationOrderInclude<ExtArgs> | null
-  where?: Prisma.PublicationOrderWhereInput
-  orderBy?: Prisma.PublicationOrderOrderByWithRelationInput | Prisma.PublicationOrderOrderByWithRelationInput[]
-  cursor?: Prisma.PublicationOrderWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.PublicationOrderScalarFieldEnum | Prisma.PublicationOrderScalarFieldEnum[]
 }
 
 /**

@@ -80,27 +80,12 @@ export type Favorite = Prisma.FavoriteModel
  */
 export type SaasBoost = Prisma.SaasBoostModel
 /**
- * Model SaasSponsorship
- * 
- */
-export type SaasSponsorship = Prisma.SaasSponsorshipModel
-/**
  * Model AnalyticsEvent
  * 
  */
 export type AnalyticsEvent = Prisma.AnalyticsEventModel
 /**
- * Model PublicationOrder
- * 
- */
-export type PublicationOrder = Prisma.PublicationOrderModel
-/**
  * Model AuditLog
  * 
  */
 export type AuditLog = Prisma.AuditLogModel
-/**
- * Model WebhookEvent
- * 
- */
-export type WebhookEvent = Prisma.WebhookEventModel

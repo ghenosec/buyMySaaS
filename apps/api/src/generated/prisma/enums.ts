@@ -19,7 +19,6 @@ export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
 export const SaasStatus = {
   DRAFT: 'DRAFT',
-  PENDING_PAYMENT: 'PENDING_PAYMENT',
   PENDING_REVIEW: 'PENDING_REVIEW',
   PUBLISHED: 'PUBLISHED',
   REJECTED: 'REJECTED',
@@ -63,35 +62,7 @@ export const AnalyticsEventType = {
   PAGE_VIEW: 'PAGE_VIEW',
   WEBSITE_CLICK: 'WEBSITE_CLICK',
   TRIAL_CLICK: 'TRIAL_CLICK',
-  BUY_CLICK: 'BUY_CLICK',
   FAVORITE: 'FAVORITE'
 } as const
 
 export type AnalyticsEventType = (typeof AnalyticsEventType)[keyof typeof AnalyticsEventType]
-
-
-export const PublicationOrderStatus = {
-  PENDING: 'PENDING',
-  PAID: 'PAID',
-  FAILED: 'FAILED',
-  CANCELED: 'CANCELED',
-  REFUNDED: 'REFUNDED'
-} as const
-
-export type PublicationOrderStatus = (typeof PublicationOrderStatus)[keyof typeof PublicationOrderStatus]
-
-
-export const PublicationOrderType = {
-  PUBLICATION_FEE: 'PUBLICATION_FEE',
-  SPONSORED_PLACEMENT: 'SPONSORED_PLACEMENT'
-} as const
-
-export type PublicationOrderType = (typeof PublicationOrderType)[keyof typeof PublicationOrderType]
-
-
-export const PaymentProviderName = {
-  MOCK: 'MOCK',
-  MERCADO_PAGO: 'MERCADO_PAGO'
-} as const
-
-export type PaymentProviderName = (typeof PaymentProviderName)[keyof typeof PaymentProviderName]
