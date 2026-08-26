@@ -52,8 +52,6 @@ const categories = [
 ] as const;
 async function main() {
   await prisma.auditLog.deleteMany();
-  await prisma.webhookEvent.deleteMany();
-  await prisma.publicationOrder.deleteMany();
   await prisma.analyticsEvent.deleteMany();
   await prisma.favorite.deleteMany();
   await prisma.saasBoost.deleteMany();

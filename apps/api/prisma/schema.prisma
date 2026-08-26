@@ -14,7 +14,6 @@ enum UserRole {
 
 enum SaasStatus {
   DRAFT
-  PENDING_PAYMENT
   PENDING_REVIEW
   PUBLISHED
   REJECTED
@@ -46,26 +45,7 @@ enum AnalyticsEventType {
   PAGE_VIEW
   WEBSITE_CLICK
   TRIAL_CLICK
-  BUY_CLICK
   FAVORITE
-}
-
-enum PublicationOrderStatus {
-  PENDING
-  PAID
-  FAILED
-  CANCELED
-  REFUNDED
-}
-
-enum PublicationOrderType {
-  PUBLICATION_FEE
-  SPONSORED_PLACEMENT
-}
-
-enum PaymentProviderName {
-  MOCK
-  MERCADO_PAGO
 }
 
 model User {
@@ -83,8 +63,6 @@ model User {
   reviews         Review[]
   favorites       Favorite[]
   boosts          SaasBoost[]
-  sponsorships    SaasSponsorship[]
-  orders          PublicationOrder[]
   auditLogs       AuditLog[]         @relation("AuditActor")
 }
 
@@ -102,7 +80,6 @@ model Saas {
   language         String             @default("pt-BR")
   websiteUrl       String
   trialUrl         String?
-  checkoutUrl      String?
   docsUrl          String?
   demoUrl          String?
   pricingType      PricingType
@@ -119,7 +96,6 @@ model Saas {
   rejectionReason  String?
   launchDate       DateTime?
   publishedAt      DateTime?
-  sponsoredUntil   DateTime?
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
   owner            User               @relation(fields: [ownerId], references: [id], onDelete: Cascade)
@@ -128,12 +104,9 @@ model Saas {
   reviews          Review[]
   favorites        Favorite[]
   boosts           SaasBoost[]
-  sponsorships     SaasSponsorship[]
   analyticsEvents  AnalyticsEvent[]
-  orders           PublicationOrder[]
 
   @@index([status, publishedAt])
-  @@index([status, sponsoredUntil])
   @@index([ownerId, status])
   @@index([priceCents])
 }
@@ -213,22 +186,6 @@ model SaasBoost {
   @@index([saasId, createdAt])
 }
 
-model SaasSponsorship {
-  id        String           @id @default(uuid())
-  userId    String
-  saasId    String
-  orderId   String           @unique
-  startsAt  DateTime
-  endsAt    DateTime
-  createdAt DateTime         @default(now())
-  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  saas      Saas             @relation(fields: [saasId], references: [id], onDelete: Cascade)
-  order     PublicationOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
-
-  @@index([saasId, endsAt])
-  @@index([userId, createdAt])
-}
-
 model AnalyticsEvent {
   id          String             @id @default(uuid())
   saasId      String
@@ -239,29 +196,6 @@ model AnalyticsEvent {
   saas        Saas               @relation(fields: [saasId], references: [id], onDelete: Cascade)
 
   @@index([saasId, type, createdAt])
-}
-
-model PublicationOrder {
-  id                String                 @id @default(uuid())
-  userId            String
-  saasId            String
-  type              PublicationOrderType   @default(PUBLICATION_FEE)
-  provider          PaymentProviderName
-  providerPaymentId String?                @unique
-  amountCents       Int
-  currency          String
-  entitlementDays   Int?
-  status            PublicationOrderStatus @default(PENDING)
-  checkoutUrl       String?
-  paidAt            DateTime?
-  createdAt         DateTime               @default(now())
-  updatedAt         DateTime               @updatedAt
-  user              User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  saas              Saas                   @relation(fields: [saasId], references: [id], onDelete: Cascade)
-  sponsorship       SaasSponsorship?
-
-  @@index([saasId, status])
-  @@index([saasId, type, status])
 }
 
 model AuditLog {
@@ -275,10 +209,4 @@ model AuditLog {
   actor       User?    @relation("AuditActor", fields: [actorUserId], references: [id], onDelete: SetNull)
 
   @@index([entityType, entityId, createdAt])
-}
-
-model WebhookEvent {
-  id         String   @id
-  provider   String
-  receivedAt DateTime @default(now())
 }

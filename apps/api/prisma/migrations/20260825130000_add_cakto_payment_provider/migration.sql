@@ -1,0 +1,1 @@
+ALTER TYPE "PaymentProviderName" ADD VALUE IF NOT EXISTS 'CAKTO';
