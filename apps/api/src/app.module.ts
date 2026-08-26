@@ -10,7 +10,6 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { EngagementsModule } from './modules/engagements/engagements.module';
 import { HealthModule } from './modules/health/health.module';
-import { PaymentsModule } from './modules/payments/payments.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
 import { SaasModule } from './modules/saas/saas.module';
 import { StorageModule } from './modules/storage/storage.module';
@@ -34,24 +33,6 @@ const envSchema = z
     GOOGLE_CLIENT_SECRET: optionalNonEmptyString(),
     GOOGLE_REDIRECT_URI: optionalUrl,
     MODERATION_BLOCKED_TERMS: z.string().optional(),
-    PUBLICATION_FEE_ENABLED: z.enum(['true', 'false']).default('false'),
-    PUBLICATION_FEE_CENTS: z.coerce.number().int().nonnegative().default(990),
-    PUBLICATION_FEE_CURRENCY: z.string().min(3).max(3).default('BRL'),
-    SPONSORED_PLACEMENT_ENABLED: z.enum(['true', 'false']).default('true'),
-    SPONSORED_PLACEMENT_PRICE_CENTS: z.coerce
-      .number()
-      .int()
-      .nonnegative()
-      .default(2990),
-    SPONSORED_PLACEMENT_CURRENCY: z.string().min(3).max(3).default('BRL'),
-    SPONSORED_PLACEMENT_DURATION_DAYS: z.coerce
-      .number()
-      .int()
-      .positive()
-      .default(7),
-    PAYMENT_PROVIDER: z.enum(['mock', 'mercado_pago']).default('mock'),
-    MERCADO_PAGO_ACCESS_TOKEN: optionalNonEmptyString(),
-    MERCADO_PAGO_WEBHOOK_SECRET: optionalNonEmptyString(16),
     STORAGE_PROVIDER: z.enum(['local', 's3']).default('local'),
     S3_BUCKET: optionalNonEmptyString(),
     FORCE_HTTPS: z.enum(['true', 'false']).default('false'),
@@ -97,33 +78,6 @@ const envSchema = z
           path: ['FORCE_HTTPS'],
           message: 'FORCE_HTTPS deve estar ativo em produção',
         });
-      if (
-        (config.PUBLICATION_FEE_ENABLED === 'true' ||
-          config.SPONSORED_PLACEMENT_ENABLED === 'true') &&
-        config.PAYMENT_PROVIDER !== 'mercado_pago'
-      )
-        context.addIssue({
-          code: 'custom',
-          path: ['PAYMENT_PROVIDER'],
-          message: 'Produção com pagamento ativo exige Mercado Pago',
-        });
-    }
-    if (
-      config.NODE_ENV === 'production' &&
-      config.PAYMENT_PROVIDER === 'mercado_pago'
-    ) {
-      if (!config.MERCADO_PAGO_ACCESS_TOKEN)
-        context.addIssue({
-          code: 'custom',
-          path: ['MERCADO_PAGO_ACCESS_TOKEN'],
-          message: 'Token do Mercado Pago não configurado',
-        });
-      if (!config.MERCADO_PAGO_WEBHOOK_SECRET)
-        context.addIssue({
-          code: 'custom',
-          path: ['MERCADO_PAGO_WEBHOOK_SECRET'],
-          message: 'Secret do webhook do Mercado Pago não configurado',
-        });
     }
     if (config.STORAGE_PROVIDER === 's3' && !config.S3_BUCKET)
       context.addIssue({
@@ -148,7 +102,6 @@ const envSchema = z
     SaasModule,
     EngagementsModule,
     AnalyticsModule,
-    PaymentsModule,
     AdminModule,
     StorageModule,
   ],

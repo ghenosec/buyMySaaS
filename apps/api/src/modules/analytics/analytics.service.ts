@@ -31,19 +31,14 @@ export class AnalyticsService {
     referrer?: string,
     ip?: string,
   ) {
-    if (!['WEBSITE_CLICK', 'TRIAL_CLICK', 'BUY_CLICK'].includes(type))
+    if (!['WEBSITE_CLICK', 'TRIAL_CLICK'].includes(type))
       throw new ForbiddenException('Tipo de CTA inválido');
     const saas = await this.prisma.saas.findFirst({
       where: { slug, status: 'PUBLISHED' },
-      select: { id: true, websiteUrl: true, trialUrl: true, checkoutUrl: true },
+      select: { id: true, websiteUrl: true, trialUrl: true },
     });
     if (!saas) throw new NotFoundException('SaaS não encontrado');
-    const target =
-      type === 'TRIAL_CLICK'
-        ? saas.trialUrl
-        : type === 'BUY_CLICK'
-          ? saas.checkoutUrl
-          : saas.websiteUrl;
+    const target = type === 'TRIAL_CLICK' ? saas.trialUrl : saas.websiteUrl;
     if (!target) throw new NotFoundException('Link indisponível');
     await this.record(saas.id, type, referrer, ip);
     return assertSafeExternalUrl(target);
@@ -62,7 +57,6 @@ export class AnalyticsService {
       PAGE_VIEW: 0,
       WEBSITE_CLICK: 0,
       TRIAL_CLICK: 0,
-      BUY_CLICK: 0,
       FAVORITE: 0,
     };
     const byDay = new Map<
@@ -77,7 +71,7 @@ export class AnalyticsService {
       if (event.type.endsWith('CLICK')) bucket.clicks++;
       byDay.set(date, bucket);
     }
-    const clicks = totals.WEBSITE_CLICK + totals.TRIAL_CLICK + totals.BUY_CLICK;
+    const clicks = totals.WEBSITE_CLICK + totals.TRIAL_CLICK;
     return {
       totals,
       ctr: totals.PAGE_VIEW
@@ -102,9 +96,7 @@ export class AnalyticsService {
     return {
       saas: products.length,
       views: count('PAGE_VIEW'),
-      clicks:
-        count('WEBSITE_CLICK') + count('TRIAL_CLICK') + count('BUY_CLICK'),
-      buyClicks: count('BUY_CLICK'),
+      clicks: count('WEBSITE_CLICK') + count('TRIAL_CLICK'),
       trialClicks: count('TRIAL_CLICK'),
       favorites: count('FAVORITE'),
     };

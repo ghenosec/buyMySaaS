@@ -20,44 +20,29 @@ export class AdminService {
     private readonly states: PublicationStateService,
   ) {}
   async dashboard() {
-    const [
-      pending,
-      pendingReviews,
-      published,
-      users,
-      recentSubmissions,
-      recentPayments,
-    ] = await this.prisma.$transaction([
-      this.prisma.saas.count({ where: { status: 'PENDING_REVIEW' } }),
-      this.prisma.review.count({
-        where: { moderationStatus: 'PENDING' },
-      }),
-      this.prisma.saas.count({ where: { status: 'PUBLISHED' } }),
-      this.prisma.user.count(),
-      this.prisma.saas.findMany({
-        where: {
-          status: { in: ['PENDING_REVIEW', 'PUBLISHED', 'REJECTED'] },
-        },
-        take: 6,
-        orderBy: { updatedAt: 'desc' },
-        include: { owner: { select: { name: true, email: true } } },
-      }),
-      this.prisma.publicationOrder.findMany({
-        take: 6,
-        orderBy: { updatedAt: 'desc' },
-        include: {
-          saas: { select: { name: true } },
-          user: { select: { email: true } },
-        },
-      }),
-    ]);
+    const [pending, pendingReviews, published, users, recentSubmissions] =
+      await this.prisma.$transaction([
+        this.prisma.saas.count({ where: { status: 'PENDING_REVIEW' } }),
+        this.prisma.review.count({
+          where: { moderationStatus: 'PENDING' },
+        }),
+        this.prisma.saas.count({ where: { status: 'PUBLISHED' } }),
+        this.prisma.user.count(),
+        this.prisma.saas.findMany({
+          where: {
+            status: { in: ['PENDING_REVIEW', 'PUBLISHED', 'REJECTED'] },
+          },
+          take: 6,
+          orderBy: { updatedAt: 'desc' },
+          include: { owner: { select: { name: true, email: true } } },
+        }),
+      ]);
     return {
       pending,
       pendingReviews,
       published,
       users,
       recentSubmissions,
-      recentPayments,
     };
   }
   submissions(page = 1) {
@@ -87,7 +72,6 @@ export class AdminService {
             },
             orderBy: { createdAt: 'desc' },
           },
-          orders: { orderBy: { createdAt: 'desc' } },
         },
       }),
       this.prisma.review.findMany({
