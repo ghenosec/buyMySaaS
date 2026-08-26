@@ -56,6 +56,12 @@ export class SaasController {
   ) {
     return this.saas.update(user.id, id, dto);
   }
+  @Post('me/saas/:id/submit') @UseGuards(AuthGuard) submit(
+    @CurrentUser() user: AuthUser,
+    @Param('id') id: string,
+  ) {
+    return this.saas.submit(user.id, id);
+  }
   @Delete('me/saas/:id') @UseGuards(AuthGuard) archive(
     @CurrentUser() user: AuthUser,
     @Param('id') id: string,

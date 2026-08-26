@@ -42,10 +42,6 @@ export class CreateSaasDto {
   @IsOptional()
   @IsUrl({ require_protocol: true })
   @MaxLength(500)
-  checkoutUrl?: string;
-  @IsOptional()
-  @IsUrl({ require_protocol: true })
-  @MaxLength(500)
   docsUrl?: string;
   @IsOptional()
   @IsUrl({ require_protocol: true })

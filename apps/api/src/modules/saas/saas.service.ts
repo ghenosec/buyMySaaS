@@ -5,6 +5,7 @@ import { assertSafeExternalUrl } from '../../common/safe-url';
 import { PrismaService } from '../prisma/prisma.service';
 import { ModerationService } from '../moderation/moderation.service';
 import { CreateSaasDto, ExploreQueryDto, UpdateSaasDto } from './saas.dto';
+import { PublicationStateService } from './publication-state.service';
 import { TrendingService, type TrendSignals } from './trending.service';
 
 const privateInclude = {
@@ -40,7 +41,6 @@ const publicSaasFields = {
   language: true,
   websiteUrl: true,
   trialUrl: true,
-  checkoutUrl: true,
   docsUrl: true,
   demoUrl: true,
   pricingType: true,
@@ -54,7 +54,6 @@ const publicSaasFields = {
   technologies: true,
   status: true,
   publishedAt: true,
-  sponsoredUntil: true,
   updatedAt: true,
 } as const;
 
@@ -125,6 +124,7 @@ export class SaasService {
     private readonly prisma: PrismaService,
     private readonly trending: TrendingService,
     private readonly moderation: ModerationService,
+    private readonly states: PublicationStateService,
   ) {}
 
   async create(ownerId: string, dto: CreateSaasDto) {
@@ -166,6 +166,33 @@ export class SaasService {
         },
       },
       include: privateInclude,
+    });
+  }
+
+  async submit(ownerId: string, id: string) {
+    const saas = await this.prisma.saas.findUnique({ where: { id } });
+    assertOwnership(saas, ownerId);
+    this.moderation.assertAllowed([
+      saas.name,
+      saas.slug,
+      saas.tagline,
+      saas.shortDescription,
+      saas.description,
+      saas.websiteUrl,
+      saas.trialUrl,
+      saas.docsUrl,
+      saas.demoUrl,
+      saas.pricingLabel,
+      saas.tags,
+      saas.technologies,
+    ]);
+    this.states.assertCanSubmit(saas.status);
+    return this.prisma.saas.update({
+      where: { id },
+      data: {
+        status: this.states.afterSubmission(),
+        rejectionReason: null,
+      },
     });
   }
 
@@ -288,47 +315,15 @@ export class SaasService {
         : query.sort === 'price_desc'
           ? { priceCents: 'desc' }
           : { publishedAt: 'desc' };
-    const now = new Date();
-    const sponsoredWhere: Prisma.SaasWhereInput = {
-      AND: [where, { sponsoredUntil: { gt: now } }],
-    };
-    const organicWhere: Prisma.SaasWhereInput = {
-      AND: [
-        where,
-        { OR: [{ sponsoredUntil: null }, { sponsoredUntil: { lte: now } }] },
-      ],
-    };
-    const [sponsoredTotal, total] = await this.prisma.$transaction([
-      this.prisma.saas.count({ where: sponsoredWhere }),
-      this.prisma.saas.count({ where }),
-    ]);
+    const total = await this.prisma.saas.count({ where });
     const skip = (query.page - 1) * query.pageSize;
-    const sponsoredSkip = Math.min(skip, sponsoredTotal);
-    const sponsoredTake = Math.max(
-      0,
-      Math.min(query.pageSize, sponsoredTotal - sponsoredSkip),
-    );
-    const sponsoredData = sponsoredTake
-      ? await this.prisma.saas.findMany({
-          where: sponsoredWhere,
-          select: publicListSelect,
-          orderBy: [{ sponsoredUntil: 'desc' }, orderBy],
-          skip: sponsoredSkip,
-          take: sponsoredTake,
-        })
-      : [];
-    const organicTake = query.pageSize - sponsoredData.length;
-    const organicSkip = Math.max(0, skip - sponsoredTotal);
-    const organicData = organicTake
-      ? await this.prisma.saas.findMany({
-          where: organicWhere,
-          select: publicListSelect,
-          orderBy,
-          skip: organicSkip,
-          take: organicTake,
-        })
-      : [];
-    const data = [...sponsoredData, ...organicData];
+    const data = await this.prisma.saas.findMany({
+      where,
+      select: publicListSelect,
+      orderBy,
+      skip,
+      take: query.pageSize,
+    });
     const enriched = data.map((saas) =>
       this.toPublicListItem(
         saas,
@@ -343,11 +338,7 @@ export class SaasService {
       ),
     );
     if (query.sort === 'rating')
-      enriched.sort(
-        (a, b) =>
-          Number(Boolean(b.isSponsored)) - Number(Boolean(a.isSponsored)) ||
-          b.averageRating - a.averageRating,
-      );
+      enriched.sort((a, b) => b.averageRating - a.averageRating);
     return {
       data: enriched,
       meta: {
@@ -370,7 +361,6 @@ export class SaasService {
       ...item,
       averageRating: this.average(saas.reviews),
       _count: { boosts: _count.boosts },
-      isSponsored: this.isSponsored(item.sponsoredUntil),
     };
   }
 
@@ -406,7 +396,6 @@ export class SaasService {
     for (const key of [
       'websiteUrl',
       'trialUrl',
-      'checkoutUrl',
       'docsUrl',
       'demoUrl',
     ] as const) {
@@ -427,7 +416,6 @@ export class SaasService {
       dto.description,
       dto.websiteUrl,
       dto.trialUrl,
-      dto.checkoutUrl,
       dto.docsUrl,
       dto.demoUrl,
       dto.pricingLabel,
@@ -453,12 +441,7 @@ export class SaasService {
       averageRating: this.average(reviews),
       score,
       _count: { boosts: _count.boosts },
-      isSponsored: this.isSponsored(item.sponsoredUntil),
     };
-  }
-
-  private isSponsored(sponsoredUntil?: Date | string | null) {
-    return sponsoredUntil ? new Date(sponsoredUntil) > new Date() : false;
   }
 
   private async listTrendingPublic(
@@ -503,12 +486,7 @@ export class SaasService {
           }),
         ),
       )
-      .sort(
-        (a, b) =>
-          Number(Boolean(b.isSponsored)) - Number(Boolean(a.isSponsored)) ||
-          b.score - a.score ||
-          a.name.localeCompare(b.name),
-      );
+      .sort((a, b) => b.score - a.score || a.name.localeCompare(b.name));
     const start = (query.page - 1) * query.pageSize;
     return {
       data: enriched.slice(start, start + query.pageSize),
@@ -525,7 +503,7 @@ export class SaasService {
     where: Prisma.SaasWhereInput,
     since: Date,
   ) {
-    const [recent, analytics, favorites, boosts, sponsored, reviews] =
+    const [recent, analytics, favorites, boosts, reviews] =
       await this.prisma.$transaction([
         this.prisma.saas.findMany({
           where,
@@ -548,11 +526,6 @@ export class SaasService {
           where: { createdAt: { gte: since } },
           orderBy: { saasId: 'asc' },
         }),
-        this.prisma.saas.findMany({
-          where: { AND: [where, { sponsoredUntil: { gt: new Date() } }] },
-          select: { id: true },
-          orderBy: { sponsoredUntil: 'desc' },
-        }),
         this.prisma.review.groupBy({
           by: ['saasId'],
           where: {
@@ -569,7 +542,6 @@ export class SaasService {
         ...analytics.map((item) => item.saasId),
         ...favorites.map((item) => item.saasId),
         ...boosts.map((item) => item.saasId),
-        ...sponsored.map((item) => item.id),
         ...reviews.map((item) => item.saasId),
       ]),
     ];
@@ -731,12 +703,7 @@ export class SaasService {
       .map((saas) =>
         this.toPublicListItem(saas, Number(ranks.get(saas.id) ?? 0)),
       )
-      .sort(
-        (a, b) =>
-          Number(Boolean(b.isSponsored)) - Number(Boolean(a.isSponsored)) ||
-          b.score - a.score ||
-          a.name.localeCompare(b.name),
-      );
+      .sort((a, b) => b.score - a.score || a.name.localeCompare(b.name));
     const start = (query.page - 1) * query.pageSize;
     return {
       data: enriched.slice(start, start + query.pageSize),
@@ -792,7 +759,6 @@ export class SaasService {
       'logoUrl',
       'websiteUrl',
       'trialUrl',
-      'checkoutUrl',
       'docsUrl',
       'demoUrl',
       'isAdult',
