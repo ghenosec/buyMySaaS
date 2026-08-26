@@ -1,6 +1,5 @@
 const labels: Record<string, string> = {
   DRAFT: 'Rascunho',
-  PENDING_PAYMENT: 'Aguardando pagamento',
   PENDING_REVIEW: 'Em análise',
   PUBLISHED: 'Publicado',
   REJECTED: 'Rejeitado',
