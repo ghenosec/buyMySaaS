@@ -6,7 +6,7 @@
 
 A ideia do Buy My SaaS nasceu do [Find-My-Saas](https://find-my-saas.com/) para dar uma vitrine a produtos digitais criados por desenvolvedores autônomos, pequenos times e empresas que estão construindo soluções SaaS.
 
-A plataforma reúne descoberta, publicação, moderação, analytics e pagamentos em uma experiência simples: quem procura ferramentas encontra bons produtos; quem cria SaaS ganha um espaço organizado para apresentar, validar e divulgar sua solução.
+A plataforma reúne descoberta, publicação gratuita, moderação e analytics em uma experiência simples: quem procura ferramentas encontra bons produtos; quem cria SaaS ganha um espaço organizado para apresentar, validar e divulgar sua solução.
 
 ## O que é o Buy My SaaS?
 
@@ -33,7 +33,7 @@ Visitantes podem explorar produtos por categoria, preço, origem, avaliação e 
 - Busca full-text em português com relevância, operadores e tolerância a erros de digitação
 - Página individual para cada produto
 - Informações de preço, país, tecnologias, categorias e descrição completa
-- Links rastreados para site, trial ou checkout do SaaS
+- Links rastreados para o site ou trial do SaaS
 
 ### Perfil do produto
 
@@ -49,7 +49,6 @@ Cada SaaS pode ter:
 - Modelo de preço
 - Link do site
 - Link de trial
-- Link de checkout
 - Marcação para conteúdo +18
 - Avaliações públicas
 
@@ -89,18 +88,15 @@ A plataforma registra interações importantes, como:
 - Visualizações de página
 - Cliques no site do SaaS
 - Cliques em trial
-- Cliques em compra
 - Favoritos
 - Boosts/impulsionamentos únicos por usuário
 - Avaliações
 
 Com isso, o maker consegue entender melhor o interesse gerado pelo produto, e a vitrine consegue destacar SaaS em alta por engajamento recente da comunidade — não apenas por data de publicação.
 
-### Pagamentos e publicação
+### Publicação gratuita
 
-O Buy My SaaS usa a primeira publicação gratuita e após o primeiro produto, cobra um valor simbólico de R$ 9,90. Sendo possível também a monetização por destaque patrocinado.
-
-O maker pode cadastrar e enviar um SaaS para análise sem pagar. Depois que o produto é publicado, ele pode comprar um destaque patrocinado por período fixo. O destaque aparece identificado no catálogo, ganha prioridade na listagem e não substitui a moderação.
+Cadastrar, enviar e manter produtos no Buy My SaaS é gratuito. Não há planos, taxa de publicação, checkout ou compra de destaque. A posição no catálogo e a seção “Em alta” usam sinais orgânicos da comunidade, como visualizações, favoritos, avaliações e impulsionamentos.
 
 ## Segurança e qualidade
 
@@ -144,7 +140,6 @@ O maker tem uma jornada guiada:
 5. Revisa o anúncio
 6. Envia para análise
 7. Acompanha métricas após a publicação
-8. Compra ou renova destaque patrocinado para produtos publicados
 
 Esse fluxo ajuda a manter o catálogo organizado e evita publicações incompletas.
 
@@ -172,7 +167,7 @@ O painel permite revisar produtos enviados, aprovar o que está pronto, rejeitar
 - Favoritos
 - Avaliações
 - Analytics
-- Integração preparada para Mercado Pago
+- Publicação gratuita, sem planos ou integrações de pagamento
 - Storage local ou S3-compatible
 - README público com apresentação do produto
 
@@ -189,7 +184,6 @@ Entre elas:
 - PostgreSQL
 - Prisma
 - Docker
-- Mercado Pago
 - S3-compatible storage
 - Playwright
 - Jest
@@ -201,7 +195,7 @@ Buy My SaaS está em fase de MVP funcional.
 O produto já cobre a jornada principal: descoberta pública, cadastro de produto, envio para análise, aprovação administrativa e publicação no catálogo.
 
 Próximas evoluções naturais incluem o deploy final com domínio público,
-storage externo e Mercado Pago em produção.
+storage externo e melhorias de aquisição, comunidade e retenção.
 
 ## Desenvolvido por
 
