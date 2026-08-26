@@ -17,8 +17,6 @@ import { AuthController } from '../src/modules/auth/auth.controller';
 import { AuthService } from '../src/modules/auth/auth.service';
 import { EngagementsController } from '../src/modules/engagements/engagements.controller';
 import { EngagementsService } from '../src/modules/engagements/engagements.service';
-import { PaymentsController } from '../src/modules/payments/payments.controller';
-import { PaymentsService } from '../src/modules/payments/payments.service';
 import { SaasController } from '../src/modules/saas/saas.controller';
 import { SaasService } from '../src/modules/saas/saas.service';
 import { AuthUser } from '../src/common/auth-user';
@@ -44,7 +42,6 @@ describe('API contracts', () => {
         SaasController,
         EngagementsController,
         AnalyticsController,
-        PaymentsController,
         AdminController,
       ],
       providers: [
@@ -72,6 +69,7 @@ describe('API contracts', () => {
             mine: jest.fn(),
             mineOne: jest.fn(),
             archive: jest.fn(),
+            submit: jest.fn().mockResolvedValue({ status: 'PENDING_REVIEW' }),
             getPublic: jest.fn(),
           },
         },
@@ -94,21 +92,6 @@ describe('API contracts', () => {
             resolveRedirect: jest.fn(),
             ownerAnalytics: jest.fn(),
             dashboard: jest.fn(),
-          },
-        },
-        {
-          provide: PaymentsService,
-          useValue: {
-            submit: jest.fn().mockResolvedValue({
-              requiresPayment: false,
-              status: 'PENDING_REVIEW',
-            }),
-            createSponsorshipCheckout: jest.fn().mockResolvedValue({
-              requiresPayment: true,
-              checkoutUrl: 'https://checkout.example.com',
-            }),
-            confirmMock: jest.fn(),
-            webhook: jest.fn(),
           },
         },
         {
@@ -206,9 +189,6 @@ describe('API contracts', () => {
       .expect(201);
     await request(app.getHttpServer())
       .post('/api/v1/me/saas/saas-1/submit')
-      .expect(201);
-    await request(app.getHttpServer())
-      .post('/api/v1/me/saas/saas-1/sponsorship-checkout')
       .expect(201);
     await request(app.getHttpServer())
       .post('/api/v1/admin/submissions/saas-1/approve')
