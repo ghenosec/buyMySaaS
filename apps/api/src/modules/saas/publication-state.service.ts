@@ -9,8 +9,8 @@ export class PublicationStateService {
         'Este SaaS não pode ser enviado neste estado',
       );
   }
-  afterSubmission(feeEnabled: boolean): SaasStatus {
-    return feeEnabled ? 'PENDING_PAYMENT' : 'PENDING_REVIEW';
+  afterSubmission(): SaasStatus {
+    return 'PENDING_REVIEW';
   }
   assertCanModerate(status: SaasStatus) {
     if (status !== 'PENDING_REVIEW')
