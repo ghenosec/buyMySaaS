@@ -236,7 +236,7 @@ export function SubmissionDetail({ id }: { id: string }) {
           <h3>Excluir produto</h3>
           <p className="muted" style={{ fontSize: 14 }}>
             Esta ação remove o SaaS do catálogo e apaga dados relacionados como
-            reviews, favoritos, analytics e pedidos.
+            reviews, favoritos e analytics.
           </p>
           <label className="label">
             Digite {item.name} para confirmar

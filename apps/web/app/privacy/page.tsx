@@ -170,10 +170,6 @@ export default function Privacy() {
               .
             </li>
             <li>
-              <strong>Mercado Pago</strong> — processamento de pagamentos quando
-              publicações pagas estiverem habilitadas.
-            </li>
-            <li>
               <strong>Provedor de banco de dados PostgreSQL</strong> —
               armazenamento dos dados da aplicação.
             </li>

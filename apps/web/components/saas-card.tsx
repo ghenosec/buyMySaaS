@@ -1,4 +1,4 @@
-import { ArrowUpRight, Flame, Megaphone, ShieldAlert, Star } from 'lucide-react';
+import { ArrowUpRight, Flame, ShieldAlert, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { money } from '@/lib/api';
@@ -59,12 +59,6 @@ export function SaasCard({ saas }: { saas: Saas }) {
           <span className="pill">
             <Star size={13} fill="currentColor" />
             {saas.averageRating}
-          </span>
-        )}
-        {saas.isSponsored && (
-          <span className="pill pill-sponsored">
-            <Megaphone size={13} />
-            Patrocinado
           </span>
         )}
         {saas.isAdult && (

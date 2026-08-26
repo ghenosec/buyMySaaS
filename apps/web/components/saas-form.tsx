@@ -19,7 +19,6 @@ const schema = z.object({
   language: z.string().min(2),
   websiteUrl: z.url(),
   trialUrl: z.union([z.url(), z.literal('')]),
-  checkoutUrl: z.union([z.url(), z.literal('')]),
   pricingType: z.enum([
     'FREE',
     'FREEMIUM',
@@ -80,7 +79,6 @@ const defaults: Values = {
   language: 'pt-BR',
   websiteUrl: '',
   trialUrl: '',
-  checkoutUrl: '',
   pricingType: 'FREEMIUM',
   priceInput: '',
   currency: 'BRL',
@@ -138,7 +136,6 @@ export function SaasForm({ id }: { id?: string }) {
         screenshotUrls: item.screenshots?.map((s) => s.url) ?? [],
         isAdult: item.isAdult ?? false,
         trialUrl: item.trialUrl ?? '',
-        checkoutUrl: item.checkoutUrl ?? '',
         priceInput: centsToPriceInput(item.priceCents),
         billingInterval: item.billingInterval ?? undefined,
         pricingLabel: item.pricingLabel ?? '',
@@ -161,7 +158,6 @@ export function SaasForm({ id }: { id?: string }) {
         .map((v) => v.trim())
         .filter(Boolean),
       trialUrl: values.trialUrl || undefined,
-      checkoutUrl: values.checkoutUrl || undefined,
       logoUrl: values.logoUrl || undefined,
       screenshotUrls: values.screenshotUrls,
     };
@@ -517,8 +513,12 @@ Ideal para equipes que querem reduzir planilhas, evitar retrabalho e acompanhar 
         </section>
         <section className="card stack" style={{ padding: 24 }}>
           <div>
-            <span className="eyebrow">3. Preço e links</span>
+            <span className="eyebrow">3. Produto e links</span>
             <h2>Deixe a proposta fácil de entender</h2>
+            <p className="muted" style={{ marginBottom: 0 }}>
+              A publicação no Buy My SaaS é grátis. O preço abaixo descreve
+              apenas o seu próprio produto.
+            </p>
           </div>
           <label className="label">
             Website HTTPS
@@ -529,24 +529,14 @@ Ideal para equipes que querem reduzir planilhas, evitar retrabalho e acompanhar 
             />
             <small className="error">{errors.websiteUrl?.message}</small>
           </label>
-          <div className="two-col">
-            <label className="label">
-              URL de trial
-              <input
-                className="input"
-                {...register('trialUrl')}
-                placeholder="Ex: https://seudominio.com/testar"
-              />
-            </label>
-            <label className="label">
-              URL de checkout
-              <input
-                className="input"
-                {...register('checkoutUrl')}
-                placeholder="Ex: https://pay.seudominio.com/produto"
-              />
-            </label>
-          </div>
+          <label className="label">
+            URL de trial
+            <input
+              className="input"
+              {...register('trialUrl')}
+              placeholder="Ex: https://seudominio.com/testar"
+            />
+          </label>
           <div className="two-col">
             <label className="label">
               Modelo

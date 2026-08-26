@@ -90,12 +90,12 @@ export default function Terms() {
         </section>
 
         <section className="stack">
-          <h2>6. Pagamentos e links externos</h2>
+          <h2>6. Gratuidade e links externos</h2>
           <p>
-            Quando houver pagamento para publicação, boost ou outro recurso, o
-            processamento poderá ser realizado por provedor externo, como
-            Mercado Pago. Links de compra, trial e contratação levam para sites
-            externos, sujeitos aos termos e políticas de cada fornecedor.
+            O Buy My SaaS não cobra pela publicação ou pelo uso dos recursos da
+            plataforma. Links para o site ou trial de um produto levam para
+            serviços externos, sujeitos aos termos e políticas de cada
+            fornecedor.
           </p>
         </section>
 
@@ -111,9 +111,9 @@ export default function Terms() {
         <section className="stack">
           <h2>8. Alterações e disponibilidade</h2>
           <p>
-            Podemos alterar funcionalidades, regras, preços, critérios de
-            moderação e estes termos para melhorar a plataforma, cumprir
-            obrigações legais ou reduzir abuso.
+            Podemos alterar funcionalidades, regras, critérios de moderação e
+            estes termos para melhorar a plataforma, cumprir obrigações legais
+            ou reduzir abuso.
           </p>
         </section>
       </div>

@@ -14,7 +14,7 @@ type Props = {
 
 export function PublishSaasLink({
   className = 'btn',
-  children = 'Publicar meu SaaS',
+  children = 'Publicar grátis',
   showIcon = true,
 }: Props) {
   const { data: user } = useQuery({

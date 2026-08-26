@@ -4,7 +4,6 @@ import {
   CalendarDays,
   Check,
   Globe2,
-  Megaphone,
   ShieldAlert,
   Star,
   UserRound,
@@ -45,12 +44,7 @@ export default async function SaasDetail({ params }: Props) {
   if (!saas) notFound();
   const cta = saas.trialUrl
     ? { label: 'Testar grátis', type: 'TRIAL_CLICK' }
-    : saas.checkoutUrl
-      ? {
-          label: saas.pricingType === 'SUBSCRIPTION' ? 'Assinar' : 'Comprar',
-          type: 'BUY_CLICK',
-        }
-      : { label: 'Acessar SaaS', type: 'WEBSITE_CLICK' };
+    : { label: 'Acessar SaaS', type: 'WEBSITE_CLICK' };
   const price =
     saas.pricingType === 'FREE'
       ? 'Grátis'
@@ -109,12 +103,6 @@ export default async function SaasDetail({ params }: Props) {
               <span className="pill" style={{ color: 'var(--danger)' }}>
                 <ShieldAlert size={13} />
                 +18
-              </span>
-            )}
-            {saas.isSponsored && (
-              <span className="pill pill-sponsored">
-                <Megaphone size={13} />
-                Patrocinado
               </span>
             )}
           </div>

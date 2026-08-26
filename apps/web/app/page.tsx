@@ -31,7 +31,8 @@ export default async function Home() {
           </h1>
           <p>
             Ferramentas independentes criadas por desenvolvedores que estão
-            construindo algo novo.
+            construindo algo novo. Descubra produtos ou publique o seu
+            gratuitamente.
           </p>
           <SearchBar />
           <div className="hero-actions">
