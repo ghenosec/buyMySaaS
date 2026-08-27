@@ -11,7 +11,10 @@ function remoteImagePattern(url: string, pathname: string) {
 }
 
 function apiImagePattern(url: string) {
-  return remoteImagePattern(url, '/uploads/**');
+  return [
+    remoteImagePattern(url, '/api/v1/uploads/**'),
+    remoteImagePattern(url, '/uploads/**'),
+  ];
 }
 
 function storageImagePattern(url: string) {
@@ -21,8 +24,6 @@ function storageImagePattern(url: string) {
 }
 
 const apiImageUrls = [
-  'http://localhost:3001',
-  'http://127.0.0.1:3001',
   process.env.API_URL,
   process.env.NEXT_PUBLIC_API_URL,
 ]
@@ -36,10 +37,10 @@ const apiImageUrls = [
   })
   .filter((pattern): pattern is ReturnType<typeof apiImagePattern> =>
     Boolean(pattern),
-  );
+  )
+  .flat();
 
 const storageImageUrls = [
-  process.env.S3_PUBLIC_URL,
   process.env.NEXT_PUBLIC_UPLOADS_URL,
 ]
   .filter((url): url is string => Boolean(url))
@@ -64,6 +65,18 @@ const connectSources = [process.env.NEXT_PUBLIC_API_URL]
     }
   })
   .filter((origin): origin is string => Boolean(origin));
+
+if (process.env.VERCEL === '1' && process.env.NODE_ENV === 'production') {
+  for (const [name, value] of [
+    ['WEB_URL', process.env.WEB_URL],
+    ['API_URL', process.env.API_URL],
+    ['NEXT_PUBLIC_API_URL', process.env.NEXT_PUBLIC_API_URL],
+  ] as const) {
+    if (!value) throw new Error(`${name} não configurada`);
+    if (new URL(value).protocol !== 'https:')
+      throw new Error(`${name} deve usar HTTPS em produção`);
+  }
+}
 
 const securityHeaders = [
   { key: 'X-Content-Type-Options', value: 'nosniff' },
