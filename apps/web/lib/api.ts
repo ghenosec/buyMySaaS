@@ -1,8 +1,25 @@
 import { Category, Paginated, Saas } from './types';
 
-export const browserApiUrl =
-  process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1';
-const serverApiUrl = `${process.env.API_URL ?? 'http://localhost:3001'}/api/v1`;
+function apiV1Url(value: string) {
+  const url = new URL(value);
+  url.pathname = `${url.pathname.replace(/\/$/, '').replace(/\/api\/v1$/, '')}/api/v1`;
+  return url.toString().replace(/\/$/, '');
+}
+
+const publicApiEnvironment = process.env.NEXT_PUBLIC_API_URL;
+const serverApiEnvironment = process.env.API_URL;
+
+if (process.env.NODE_ENV === 'production' && !publicApiEnvironment)
+  throw new Error('NEXT_PUBLIC_API_URL não configurada');
+if (process.env.NODE_ENV === 'production' && !serverApiEnvironment)
+  throw new Error('API_URL não configurada');
+
+export const browserApiUrl = apiV1Url(
+  publicApiEnvironment ?? 'http://localhost:3001',
+);
+const serverApiUrl = apiV1Url(
+  serverApiEnvironment ?? 'http://localhost:3001',
+);
 
 export async function publicApi<T>(
   path: string,

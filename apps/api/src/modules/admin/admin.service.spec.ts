@@ -4,6 +4,11 @@ import { UserRole } from '../../generated/prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { PublicationStateService } from '../saas/publication-state.service';
 import { AdminService } from './admin.service';
+import { StorageService } from '../storage/storage.service';
+
+const storage = {
+  deleteManagedUrls: jest.fn(),
+} as unknown as StorageService;
 
 type TransactionClient = {
   user: {
@@ -48,6 +53,7 @@ describe('AdminService permissions', () => {
     service = new AdminService(
       prisma as unknown as PrismaService,
       {} as PublicationStateService,
+      storage,
     );
   });
 
@@ -145,7 +151,11 @@ describe('AdminService review moderation', () => {
         callback(tx),
       ),
     } as unknown as PrismaService;
-    const service = new AdminService(prisma, {} as PublicationStateService);
+    const service = new AdminService(
+      prisma,
+      {} as PublicationStateService,
+      storage,
+    );
 
     await service.approveReview('admin-1', 'review-1');
 

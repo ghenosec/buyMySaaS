@@ -4,6 +4,11 @@ import { ModerationService } from '../moderation/moderation.service';
 import { SaasService } from './saas.service';
 import { PublicationStateService } from './publication-state.service';
 import { TrendingService } from './trending.service';
+import { StorageService } from '../storage/storage.service';
+
+const storage = {
+  deleteManagedUrls: jest.fn(),
+} as unknown as StorageService;
 
 describe('SaasService public responses', () => {
   const findMany = jest.fn().mockResolvedValue([]);
@@ -21,6 +26,7 @@ describe('SaasService public responses', () => {
     new TrendingService(),
     moderation,
     new PublicationStateService(),
+    storage,
   );
 
   beforeEach(() => jest.clearAllMocks());
@@ -94,6 +100,7 @@ describe('SaasService free publication', () => {
       new TrendingService(),
       moderation,
       new PublicationStateService(),
+      storage,
     );
 
     await expect(service.submit('user-1', 'saas-1')).resolves.toEqual({
