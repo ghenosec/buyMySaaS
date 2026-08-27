@@ -51,6 +51,10 @@ const categories = [
   ['Outros', 'outros', 'Soluções independentes diversas', 'Shapes'],
 ] as const;
 async function main() {
+  if (process.env.NODE_ENV === 'production')
+    throw new Error(
+      'O seed apaga dados existentes e é bloqueado quando NODE_ENV=production.',
+    );
   await prisma.auditLog.deleteMany();
   await prisma.analyticsEvent.deleteMany();
   await prisma.favorite.deleteMany();

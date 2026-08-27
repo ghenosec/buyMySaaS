@@ -34,7 +34,8 @@ async function bootstrap() {
     if (
       process.env.FORCE_HTTPS !== 'true' ||
       request.secure ||
-      isLocalHostname(request.hostname)
+      isLocalHostname(request.hostname) ||
+      request.path === '/api/v1/health'
     )
       return next();
     if (request.method === 'GET' || request.method === 'HEAD') {
@@ -76,18 +77,18 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
-  app.enableCors({
-    origin: process.env.WEB_URL ?? 'http://localhost:3000',
-    credentials: true,
-  });
   const webOrigin = new URL(process.env.WEB_URL ?? 'http://localhost:3000')
     .origin;
+  app.enableCors({
+    origin: webOrigin,
+    credentials: true,
+  });
   app.use((request: Request, response: Response, next: NextFunction) => {
     if (!stateChangingMethods.has(request.method)) return next();
     const origin = request.get('origin');
     const referer = request.get('referer');
     const requestOrigin = origin ?? (referer ? safeOrigin(referer) : undefined);
-    if (requestOrigin && requestOrigin !== webOrigin) {
+    if (!requestOrigin || requestOrigin !== webOrigin) {
       response.status(403).json({
         statusCode: 403,
         code: 'CSRF_ORIGIN_DENIED',
@@ -126,8 +127,11 @@ async function bootstrap() {
   }
 
   const port = Number(process.env.PORT ?? 3001);
-  await app.listen(port);
-  Logger.log(`API disponível em http://localhost:${port}/api/v1`, 'Bootstrap');
+  await app.listen(port, '0.0.0.0');
+  Logger.log(
+    `API disponível em ${process.env.API_URL ?? `http://localhost:${port}`}/api/v1`,
+    'Bootstrap',
+  );
 }
 
 void bootstrap();

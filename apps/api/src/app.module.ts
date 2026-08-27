@@ -38,6 +38,15 @@ const envSchema = z
     FORCE_HTTPS: z.enum(['true', 'false']).default('false'),
     TRUST_PROXY_HOPS: z.coerce.number().int().min(0).max(10).default(0),
     ENABLE_API_DOCS: z.enum(['true', 'false']).default('false'),
+    PORT: z.coerce.number().int().min(1).max(65_535).default(3001),
+    REVIEWS_ENABLED: z.enum(['true', 'false']).default('true'),
+    UPLOAD_DIR: optionalNonEmptyString(),
+    S3_ENDPOINT: optionalUrl,
+    S3_REGION: optionalNonEmptyString(),
+    S3_ACCESS_KEY_ID: optionalNonEmptyString(),
+    S3_SECRET_ACCESS_KEY: optionalNonEmptyString(),
+    S3_PUBLIC_URL: optionalUrl,
+    S3_FORCE_PATH_STYLE: z.enum(['true', 'false']).default('false'),
   })
   .passthrough()
   .superRefine((config, context) => {
@@ -78,20 +87,36 @@ const envSchema = z
           path: ['FORCE_HTTPS'],
           message: 'FORCE_HTTPS deve estar ativo em produção',
         });
+      if (config.STORAGE_PROVIDER !== 's3')
+        context.addIssue({
+          code: 'custom',
+          path: ['STORAGE_PROVIDER'],
+          message: 'STORAGE_PROVIDER deve ser s3 em produção',
+        });
     }
-    if (config.STORAGE_PROVIDER === 's3' && !config.S3_BUCKET)
-      context.addIssue({
-        code: 'custom',
-        path: ['S3_BUCKET'],
-        message: 'S3_BUCKET é obrigatório para storage S3',
-      });
+    if (config.STORAGE_PROVIDER === 's3') {
+      for (const [name, value] of [
+        ['S3_BUCKET', config.S3_BUCKET],
+        ['S3_ACCESS_KEY_ID', config.S3_ACCESS_KEY_ID],
+        ['S3_SECRET_ACCESS_KEY', config.S3_SECRET_ACCESS_KEY],
+      ] as const)
+        if (!value)
+          context.addIssue({
+            code: 'custom',
+            path: [name],
+            message: `${name} é obrigatório para storage S3`,
+          });
+    }
   });
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: [join(process.cwd(), '../../.env'), '.env'],
+      envFilePath: [
+        join(__dirname, '../../../.env'),
+        join(__dirname, '../.env'),
+      ],
       validate: (config) => envSchema.parse(config),
     }),
     ThrottlerModule.forRoot([{ ttl: 60_000, limit: 100 }]),

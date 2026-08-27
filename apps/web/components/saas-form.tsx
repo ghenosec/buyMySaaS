@@ -95,6 +95,9 @@ export function SaasForm({ id }: { id?: string }) {
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
   const [uploadingScreenshots, setUploadingScreenshots] = useState(false);
+  const [pendingUploads, setPendingUploads] = useState<Record<string, string>>(
+    {},
+  );
   const [mounted, setMounted] = useState(false);
   const { data: categories = [] } = useQuery({
     queryKey: ['categories'],
@@ -166,6 +169,7 @@ export function SaasForm({ id }: { id?: string }) {
         method: id ? 'PATCH' : 'POST',
         body: JSON.stringify(payload),
       });
+      setPendingUploads({});
       if (id && saved.requiresReapproval) {
         toast.success('Alterações enviadas para reaprovação');
         router.push('/dashboard/saas');
@@ -189,9 +193,19 @@ export function SaasForm({ id }: { id?: string }) {
       throw new Error(`${label} precisa ter até 5 MB`);
     const data = new FormData();
     data.append('file', file);
-    return clientApi<{ url: string }>('/uploads', {
+    return clientApi<{ key: string; url: string }>('/uploads', {
       method: 'POST',
       body: data,
+    });
+  }
+  async function deletePendingUpload(url: string) {
+    const key = pendingUploads[url];
+    if (!key) return;
+    await clientApi<void>(`/uploads/${key}`, { method: 'DELETE' });
+    setPendingUploads((current) => {
+      const next = { ...current };
+      delete next[url];
+      return next;
     });
   }
   async function uploadLogo(file?: File) {
@@ -199,6 +213,11 @@ export function SaasForm({ id }: { id?: string }) {
     setUploading(true);
     try {
       const result = await uploadImage(file, 'uma logo');
+      if (logoUrl) await deletePendingUpload(logoUrl);
+      setPendingUploads((current) => ({
+        ...current,
+        [result.url]: result.key,
+      }));
       setValue('logoUrl', result.url, {
         shouldDirty: true,
         shouldValidate: true,
@@ -226,6 +245,10 @@ export function SaasForm({ id }: { id?: string }) {
       for (const file of selected) {
         const result = await uploadImage(file, 'imagens de exemplo');
         uploaded.push(result.url);
+        setPendingUploads((current) => ({
+          ...current,
+          [result.url]: result.key,
+        }));
       }
       setValue('screenshotUrls', [...screenshotUrls, ...uploaded], {
         shouldDirty: true,
@@ -243,10 +266,17 @@ export function SaasForm({ id }: { id?: string }) {
     }
   }
   function removeLogo() {
+    if (logoUrl)
+      void deletePendingUpload(logoUrl).catch(() =>
+        toast.error('A logo saiu do formulário, mas não pôde ser excluída'),
+      );
     setValue('logoUrl', '', { shouldDirty: true, shouldValidate: true });
     toast.success('Logo removida');
   }
   function removeScreenshot(url: string) {
+    void deletePendingUpload(url).catch(() =>
+      toast.error('A imagem saiu do formulário, mas não pôde ser excluída'),
+    );
     setValue(
       'screenshotUrls',
       screenshotUrls.filter((item) => item !== url),
