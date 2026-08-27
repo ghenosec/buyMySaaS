@@ -2,6 +2,10 @@
   "name": "buy-my-saas",
   "private": true,
   "packageManager": "npm@11.8.0",
+  "engines": {
+    "node": "24.x",
+    "npm": "11.x"
+  },
   "workspaces": [
     "apps/*"
   ],
@@ -12,9 +16,12 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run test --workspace=@bms/api",
     "test:e2e": "npm run test:e2e --workspace=@bms/web",
+    "start:api": "npm run start:prod --workspace=@bms/api",
     "db:generate": "npm run prisma:generate --workspace=@bms/api",
-    "db:migrate": "npm run prisma:migrate --workspace=@bms/api",
-    "db:seed": "npm run prisma:seed --workspace=@bms/api",
+    "db:migrate": "npm run prisma:migrate:dev --workspace=@bms/api",
+    "db:migrate:deploy": "npm run prisma:migrate:deploy --workspace=@bms/api",
+    "db:migrate:status": "npm run prisma:migrate:status --workspace=@bms/api",
+    "db:seed": "npm run prisma:seed:dev --workspace=@bms/api",
     "db:studio": "npm run prisma:studio --workspace=@bms/api",
     "security:audit": "npm audit --audit-level=high",
     "format": "prettier --write ."

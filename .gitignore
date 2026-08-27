@@ -3,11 +3,13 @@ node_modules/
 dist/
 coverage/
 .turbo/
-.env
-.env.local
+*.tsbuildinfo
+.env*
+!.env.example
 apps/api/uploads/
 playwright-report/
 test-results/
 .lazyweb/
 implementation.md
 GUIA_TECNICO_PRIVADO.md
+DEPLOY.md
