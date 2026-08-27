@@ -19,6 +19,25 @@ import { AuthService } from './auth.service';
 
 const googleStateCookie = 'bms_google_oauth_state';
 
+function sessionCookieOptions() {
+  const production = process.env.NODE_ENV === 'production';
+  return {
+    httpOnly: true,
+    secure: production,
+    sameSite: production ? ('none' as const) : ('lax' as const),
+    path: '/',
+  };
+}
+
+function googleStateCookieOptions() {
+  return {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax' as const,
+    path: '/',
+  };
+}
+
 @Controller('auth')
 export class AuthController {
   constructor(private readonly auth: AuthService) {}
@@ -41,10 +60,7 @@ export class AuthController {
   google(@Req() request: Request, @Res() response: Response) {
     const state = randomBytes(32).toString('hex');
     response.cookie(googleStateCookie, state, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
+      ...googleStateCookieOptions(),
       maxAge: 10 * 60 * 1000,
     });
     response.redirect(
@@ -62,7 +78,7 @@ export class AuthController {
   ) {
     const cookieState = request.cookies?.[googleStateCookie] as
       string | undefined;
-    response.clearCookie(googleStateCookie, { path: '/' });
+    response.clearCookie(googleStateCookie, googleStateCookieOptions());
     if (!code || !state || !cookieState || !this.safeEqual(state, cookieState))
       throw new GoneException(
         'Sessão de login Google expirada. Tente novamente.',
@@ -74,7 +90,10 @@ export class AuthController {
     );
     this.setCookie(response, result.token);
     response.redirect(
-      `${process.env.WEB_URL ?? 'http://localhost:3000'}/dashboard`,
+      new URL(
+        '/dashboard',
+        process.env.WEB_URL ?? 'http://localhost:3000',
+      ).toString(),
     );
   }
 
@@ -82,7 +101,7 @@ export class AuthController {
   @HttpCode(204)
   logout(@Res({ passthrough: true }) response: Response) {
     response.clearCookie(process.env.AUTH_COOKIE_NAME ?? 'bms_session', {
-      path: '/',
+      ...sessionCookieOptions(),
     });
   }
 
@@ -108,10 +127,7 @@ export class AuthController {
 
   private setCookie(response: Response, token: string) {
     response.cookie(process.env.AUTH_COOKIE_NAME ?? 'bms_session', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
+      ...sessionCookieOptions(),
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
   }

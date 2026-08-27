@@ -4,6 +4,7 @@ import { assertOwnership } from '../../common/ownership';
 import { assertSafeExternalUrl } from '../../common/safe-url';
 import { PrismaService } from '../prisma/prisma.service';
 import { ModerationService } from '../moderation/moderation.service';
+import { StorageService } from '../storage/storage.service';
 import { CreateSaasDto, ExploreQueryDto, UpdateSaasDto } from './saas.dto';
 import { PublicationStateService } from './publication-state.service';
 import { TrendingService, type TrendSignals } from './trending.service';
@@ -125,6 +126,7 @@ export class SaasService {
     private readonly trending: TrendingService,
     private readonly moderation: ModerationService,
     private readonly states: PublicationStateService,
+    private readonly storage: StorageService,
   ) {}
 
   async create(ownerId: string, dto: CreateSaasDto) {
@@ -245,7 +247,7 @@ export class SaasService {
       data.status = 'PENDING_REVIEW';
       data.rejectionReason = null;
     }
-    return this.prisma.$transaction(async (tx) => {
+    const updated = await this.prisma.$transaction(async (tx) => {
       if (dto.categoryIds) {
         await tx.saasCategory.deleteMany({ where: { saasId: id } });
         data.categories = {
@@ -286,6 +288,20 @@ export class SaasService {
         });
       return { ...updated, requiresReapproval };
     });
+    const nextUrls = new Set([
+      dto.logoUrl !== undefined ? dto.logoUrl : current.logoUrl,
+      ...(dto.screenshotUrls ??
+        current.screenshots.map((screenshot) => screenshot.url)),
+    ]);
+    await this.storage.deleteManagedUrls([
+      ...(current.logoUrl && !nextUrls.has(current.logoUrl)
+        ? [current.logoUrl]
+        : []),
+      ...current.screenshots
+        .map((screenshot) => screenshot.url)
+        .filter((url) => !nextUrls.has(url)),
+    ]);
+    return updated;
   }
 
   async listPublic(query: ExploreQueryDto) {

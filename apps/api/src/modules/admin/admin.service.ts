@@ -11,6 +11,7 @@ import {
 } from '../../generated/prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { PublicationStateService } from '../saas/publication-state.service';
+import { StorageService } from '../storage/storage.service';
 import { ReviewModerationQueryDto } from './admin.dto';
 
 @Injectable()
@@ -18,6 +19,7 @@ export class AdminService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly states: PublicationStateService,
+    private readonly storage: StorageService,
   ) {}
   async dashboard() {
     const [pending, pendingReviews, published, users, recentSubmissions] =
@@ -203,9 +205,18 @@ export class AdminService {
   async remove(actorUserId: string, id: string) {
     const item = await this.prisma.saas.findUnique({
       where: { id },
-      select: { id: true, name: true, slug: true, status: true, ownerId: true },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        status: true,
+        ownerId: true,
+        logoUrl: true,
+        screenshots: { select: { url: true } },
+      },
     });
     if (!item) throw new NotFoundException();
+    const { logoUrl, screenshots, ...auditMetadata } = item;
     await this.prisma.$transaction(async (tx) => {
       await tx.auditLog.create({
         data: {
@@ -213,11 +224,15 @@ export class AdminService {
           action: 'SAAS_DELETED',
           entityType: 'Saas',
           entityId: id,
-          metadata: item,
+          metadata: auditMetadata,
         },
       });
       await tx.saas.delete({ where: { id } });
     });
+    await this.storage.deleteManagedUrls([
+      logoUrl,
+      ...screenshots.map((screenshot) => screenshot.url),
+    ]);
   }
 
   async reviews(query: ReviewModerationQueryDto) {
